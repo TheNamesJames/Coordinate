@@ -14,7 +14,8 @@ import PubNub
 class AppDelegate: UIResponder, UIApplicationDelegate, PNObjectEventListener {
   
   var window: UIWindow?
-  var client: PubNub?
+  var pubnubClient: PubNub?
+  let channel = "test1"
   
   // For demo purposes the initialization is done in the init function to
   // ensure the PubNub client is instantiated before it is used.
@@ -23,16 +24,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PNObjectEventListener {
 //FIXME: Replace 'demo' w/ pub/sub keys
     let configuration = PNConfiguration(publishKey: "pub-c-8c43a01e-df02-406f-a32b-9fbeab9ef6a8", subscribeKey: "sub-c-bcc0247e-8ee7-11e5-b7bf-02ee2ddab7fe")
     // Instantiate PubNub client.
-    client = PubNub.clientWithConfiguration(configuration)
+    pubnubClient = PubNub.clientWithConfiguration(configuration)
     
     super.init()
-    client?.addListener(self)
+    pubnubClient?.addListener(self)
   }
   
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
     // Override point for customization after application launch.
     
-    self.client?.subscribeToChannels(["my_channel"], withPresence: true)
+    self.pubnubClient?.subscribeToChannels([self.channel], withPresence: true)
     
     return true
   }
