@@ -12,12 +12,15 @@ PODS:
     - PubNub/Core (= 4.2.3)
   - PubNub/Core (4.2.3):
     - CocoaLumberjack (= 2.2.0)
+  - StatusBarNotificationCenter (1.1.3)
 
 DEPENDENCIES:
   - PubNub
+  - StatusBarNotificationCenter
 
 SPEC CHECKSUMS:
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
   PubNub: 461805c30ce11332a6ee5ab2c34be2d4c82c38d7
+  StatusBarNotificationCenter: f788bd9192bf5f7a40117f96a173a138be739823
 
 COCOAPODS: 0.39.0

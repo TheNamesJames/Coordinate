@@ -21,7 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PNObjectEventListener {
   // ensure the PubNub client is instantiated before it is used.
   override init() {
     // Instantiate configuration instance.
-//FIXME: Replace 'demo' w/ pub/sub keys
     let configuration = PNConfiguration(publishKey: "pub-c-8c43a01e-df02-406f-a32b-9fbeab9ef6a8", subscribeKey: "sub-c-bcc0247e-8ee7-11e5-b7bf-02ee2ddab7fe")
     // Instantiate PubNub client.
     pubnubClient = PubNub.clientWithConfiguration(configuration)
