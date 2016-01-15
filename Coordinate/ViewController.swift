@@ -8,12 +8,30 @@
 
 import UIKit
 import CoreLocation
+import MapKit
 import StatusBarNotificationCenter //TODO: Replace Status bar notification w/ custom drop-down view from Navigation bar
 
-class ViewController: UIViewController, CLLocationManagerDelegate {
+public struct Member {
+  let name: String
+  let location: CLLocationCoordinate2D
+}
+
+class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
   
+  @IBOutlet weak var mapView: MKMapView!
   private var locationManager = CLLocationManager()
   private var showingStatusNotification = false
+  
+  var data: [Member]
+
+  required init?(coder aDecoder: NSCoder) {
+    let john = Member(name: "John", location: CLLocationCoordinate2D(latitude: 51.515372, longitude: -0.141880))
+    let joe = Member(name: "Joe", location: CLLocationCoordinate2D(latitude: 51.521958, longitude: -0.046652))
+    let bob = Member(name: "Bob", location: CLLocationCoordinate2D(latitude: 51.522525, longitude: -0.041899))
+    data = [john, joe, bob]
+    
+    super.init(coder: aDecoder)
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -27,6 +45,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         self.locationManager.requestAlwaysAuthorization()
       }
     }
+    
+    var annotations: [MKAnnotation] = []
+    for member in data {
+      let annotation = MKPointAnnotation()
+      annotation.coordinate = member.location
+      annotation.title = member.name
+      annotations.append(annotation)
+    }
+    self.mapView.addAnnotations(annotations)
   }
   
   override func didReceiveMemoryWarning() {
@@ -124,5 +151,31 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 //      })
     }
   }
+  
+  func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+    var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier("MemberPinAnnotation")
+    if annotationView == nil {
+      annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "MemberPinAnnotation")
+      annotationView!.centerOffset = CGPointMake(10, -20)
+    }
+    
+    annotationView!.annotation = annotation
+    
+    return annotationView
+  }
+  
+  
+  // MARK: - Navigation
+  
+  // In a storyboard-based application, you will often want to do a little preparation before navigation
+  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    if segue.identifier == "ShowMembersSegue" {
+      let destination = segue.destinationViewController as! MembersViewController
+      destination.data = data
+    }
+  // Get the new view controller using segue.destinationViewController.
+  // Pass the selected object to the new view controller.
+  }
+
 }
 
