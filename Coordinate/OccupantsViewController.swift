@@ -16,6 +16,12 @@ class OccupantsViewController: UIViewController, UINavigationBarDelegate, UITabl
     super.viewDidLoad()
     
     // Do any additional setup after loading the view.
+    let blurEffect = UIBlurEffect(style: .ExtraLight)
+    let blurView = UIVisualEffectView(effect: blurEffect)
+    blurView.frame = tableView.frame
+    tableView.backgroundColor = UIColor.clearColor()
+    tableView.backgroundView = blurView
+    tableView.separatorEffect = UIVibrancyEffect(forBlurEffect: blurEffect)
   }
   
   override func didReceiveMemoryWarning() {
@@ -36,11 +42,15 @@ class OccupantsViewController: UIViewController, UINavigationBarDelegate, UITabl
       switch sender.state {
       case .Began:
         UIView.animateWithDuration(0.25, animations: { () -> Void in
-          self.tableView.alpha = 0.0
+          let effectView = self.tableView.backgroundView as! UIVisualEffectView
+          effectView.effect = UIBlurEffect(style: .Light)
+          effectView.alpha = 0.4
         })
       case .Ended:
         UIView.animateWithDuration(0.25, animations: { () -> Void in
-          self.tableView.alpha = 1.0
+          let effectView = self.tableView.backgroundView as! UIVisualEffectView
+          effectView.effect = UIBlurEffect(style: .ExtraLight)
+          effectView.alpha = 1.0
         })
         
       default: break
