@@ -78,9 +78,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
       fallthrough
     
     case .AuthorizedAlways:
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
 // TODO: Re-enable location updates
-//        self.locationManager.startUpdatingLocation()
+        self.locationManager.startUpdatingLocation()
     }
   }
   
@@ -144,6 +144,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     if let newLocation = locations.last {
       print("current position: \(newLocation.coordinate.longitude) , \(newLocation.coordinate.latitude)")
+      
+//TODO: Re-enable publishing location
 //      let message = "{\"lat\":\(newLocation.coordinate.latitude),\"lng\":\(newLocation.coordinate.longitude), \"alt\": \(newLocation.altitude)}"
 //      let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
 //      delegate.pubnubClient?.publish(message, toChannel: delegate.channel, withCompletion: { (status) -> Void in

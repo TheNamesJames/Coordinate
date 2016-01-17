@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="eoD-Ti-YQB">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eoD-Ti-YQB">
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                             </mapView>
                         </subviews>
@@ -78,7 +78,7 @@
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MemberCell" textLabel="Xpo-Xj-ShG" style="IBUITableViewCellStyleDefault" id="wiZ-ZH-D84">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MemberCell" textLabel="Xpo-Xj-ShG" imageView="sid-c6-k5l" style="IBUITableViewCellStyleDefault" id="wiZ-ZH-D84">
                                         <rect key="frame" x="0.0" y="28" width="600" height="88"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wiZ-ZH-D84" id="DzE-2f-D3J">
@@ -86,7 +86,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Xpo-Xj-ShG">
-                                                    <rect key="frame" x="15" y="0.0" width="570" height="87"/>
+                                                    <rect key="frame" x="117" y="0.0" width="468" height="87"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <gestureRecognizers/>
@@ -94,6 +94,10 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="Contact" id="sid-c6-k5l">
+                                                    <rect key="frame" x="15" y="0.0" width="87" height="87"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </tableViewCellContentView>
@@ -104,7 +108,7 @@
                                 <connections>
                                     <outlet property="dataSource" destination="GM8-iz-VA5" id="m2s-0F-wj8"/>
                                     <outlet property="delegate" destination="GM8-iz-VA5" id="VMx-xe-i1e"/>
-                                    <outletCollection property="gestureRecognizers" destination="1X8-ZQ-9xe" appends="YES" id="it5-mz-d8z"/>
+                                    <outletCollection property="gestureRecognizers" destination="1X8-ZQ-9xe" appends="YES" id="ZVk-d1-to0"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -151,4 +155,7 @@
             <point key="canvasLocation" x="-185" y="400"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Contact" width="128" height="128"/>
+    </resources>
 </document>
