@@ -10,23 +10,26 @@ import UIKit
 
 class MembersViewController: UIViewController, UINavigationBarDelegate, UITableViewDataSource, UITableViewDelegate {
   
+  @IBOutlet weak var blurView: UIVisualEffectView!
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var navBar: UINavigationBar!
   @IBOutlet weak var navItem: UINavigationItem!
   
   var data: [Member] = []
+  var delegate: MembersViewControllerDelegate? = nil
+  
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    
+    self.transitioningDelegate = self
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
     // Do any additional setup after loading the view.
-    let blurEffect = UIBlurEffect(style: .ExtraLight)
-    let blurView = UIVisualEffectView(effect: blurEffect)
-    blurView.frame = tableView.frame
     tableView.backgroundColor = UIColor.clearColor()
-    tableView.backgroundView = blurView
     tableView.separatorStyle = .None
-//    tableView.separatorEffect = UIVibrancyEffect(forBlurEffect: blurEffect)
   }
   
   override func didReceiveMemoryWarning() {
@@ -48,20 +51,21 @@ class MembersViewController: UIViewController, UINavigationBarDelegate, UITableV
         let cell = self.tableView.cellForRowAtIndexPath(indexPath)!
         
         UIView.animateWithDuration(0.1, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-          let effectView = self.tableView.backgroundView as! UIVisualEffectView
-          effectView.effect = UIBlurEffect(style: .Light)
+          self.blurView.effect = nil
           self.navItem.title = cell.textLabel?.text
           }, completion: { (finished) -> Void in
+            self.delegate?.previewMemberLocation(self.data[indexPath.row])
+            
             UIView.animateWithDuration(0.1, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
-//              self.tableView.backgroundView!.backgroundColor = UIColor.clearColor()
-              self.tableView.backgroundView!.alpha = 0.4
-              for visibleCell in self.tableView.visibleCells {
-                if visibleCell != cell {
-                  visibleCell.alpha = 0.0
-                } else {
-                  visibleCell.alpha = 1.0
-                }
-              }
+              self.tableView.visibleCells.forEach({ (visibleCell) -> () in
+                // Make all cell contents transparent except for imageView
+                visibleCell.contentView.subviews.filter({ !($0 is UIImageView) }).forEach({ $0.alpha = 0.0 })
+                
+                var frame = visibleCell.imageView!.frame
+                frame.origin.x = (visibleCell == cell) ? 15.0 : -frame.width/2
+                visibleCell.imageView!.frame = frame
+              })
+              
               }, completion: nil)
         })
       }
@@ -71,14 +75,15 @@ class MembersViewController: UIViewController, UINavigationBarDelegate, UITableV
         let cell = self.tableView.cellForRowAtIndexPath(indexPath)!
         self.navItem.title = cell.textLabel?.text
         UIView.animateWithDuration(0.2, animations: { () -> Void in
-          for visibleCell in self.tableView.visibleCells {
-            if visibleCell != cell {
-              visibleCell.alpha = 0.0
-            } else {
-              visibleCell.alpha = 1.0
-            }
-          }
+          
+          self.tableView.visibleCells.forEach({ (visibleCell) -> () in
+            var frame = visibleCell.imageView!.frame
+            frame.origin.x = (visibleCell == cell) ? 15.0 : -frame.width/2
+            visibleCell.imageView!.frame = frame
+          })
+          
           }, completion: { (finished) -> Void in
+            self.delegate?.previewMemberLocation(self.data[indexPath.row])
         })
       }
     case .Ended:
@@ -89,16 +94,20 @@ class MembersViewController: UIViewController, UINavigationBarDelegate, UITableV
       fallthrough
     case .Recognized: 
       UIView.animateWithDuration(0.15, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-        let effectView = self.tableView.backgroundView as! UIVisualEffectView
-        effectView.effect = UIBlurEffect(style: .ExtraLight)
+        self.blurView.effect = UIBlurEffect(style: .ExtraLight)
         self.navItem.title = "Members"
         }, completion: { (finished) -> Void in
+          self.delegate?.previewMemberLocation(nil)
+          
           UIView.animateWithDuration(0.15, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
-//            self.tableView.backgroundView!.backgroundColor = nil
-            self.tableView.backgroundView!.alpha = 1.0
-            
-            self.tableView.visibleCells.forEach({ (cell) -> () in
-              cell.alpha = 1.0
+            self.tableView.visibleCells.forEach({ (visibleCell) -> () in
+              visibleCell.alpha = 1.0
+              // Return all cell contents to full opacity
+              visibleCell.contentView.subviews.forEach({ $0.alpha = 1.0 })
+              
+              var frame = visibleCell.imageView!.frame
+              frame.origin.x = 15.0
+              visibleCell.imageView!.frame = frame
             })
             
             self.tableView.visibleCells.forEach({ $0.alpha = 1.0 })
@@ -145,4 +154,18 @@ class MembersViewController: UIViewController, UINavigationBarDelegate, UITableV
   }
   */
   
+}
+
+extension MembersViewController: UIViewControllerTransitioningDelegate {
+  func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    return MembersTransitionController(presenting: true)
+  }
+  
+  func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    return MembersTransitionController(presenting: false)
+  }
+}
+
+protocol MembersViewControllerDelegate {
+  func previewMemberLocation(member: Member?) //, atZoomLevel: MKZoomScale)
 }

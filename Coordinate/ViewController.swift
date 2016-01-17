@@ -16,7 +16,7 @@ public struct Member {
   let location: CLLocationCoordinate2D
 }
 
-class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
+class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, MembersViewControllerDelegate {
   
   @IBOutlet weak var mapView: MKMapView!
   private var locationManager = CLLocationManager()
@@ -61,7 +61,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     // Dispose of any resources that can be recreated.
   }
   
-  // MARK: CLLocationManagerDelegate
+  // MARK: - CLLocationManagerDelegate
 
   func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
     switch status {
@@ -118,22 +118,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
       
     default: break
     }
-    
-    
-    
-    if error.code == CLError.Denied.rawValue {
-      let alert = UIAlertController(title: "Error", message: "Location Services Disabled", preferredStyle: .Alert)
-      alert.message = "Turn on Location Services in Settings > Coordinate to allow Coordinate to use your current location"
-      
-      if let url = NSURL(string: UIApplicationOpenSettingsURLString) {
-        alert.addAction(UIAlertAction(title: "Settings", style: .Default, handler: { (action) -> Void in
-          UIApplication.sharedApplication().openURL(url)
-        }))
-      }
-      alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-      
-      self.presentViewController(alert, animated: true, completion: nil)
-    }
   }
   
   func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -169,15 +153,43 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
   
   // MARK: - Navigation
   
+  @IBAction func membersButtonPressed(sender: AnyObject) {
+    self.performSegueWithIdentifier("ShowMembersSegue", sender: sender)
+  }
+
   // In a storyboard-based application, you will often want to do a little preparation before navigation
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == "ShowMembersSegue" {
-      let destination = segue.destinationViewController as! MembersViewController
-      destination.data = data
+      let destinationVC = segue.destinationViewController as! MembersViewController
+      destinationVC.data = data
+      destinationVC.delegate = self
     }
-  // Get the new view controller using segue.destinationViewController.
-  // Pass the selected object to the new view controller.
   }
 
+  // MARK: - MembersViewControllerDelegate
+  
+  private var prePreviewMapRect: MKMapRect? = nil
+  
+  func previewMemberLocation(member: Member?) {
+    if let member = member {
+      if prePreviewMapRect == nil {
+        prePreviewMapRect = self.mapView.visibleMapRect
+      }
+      
+      var region = self.mapView.region;
+      let span = MKCoordinateSpanMake(0.005, 0.005);
+      
+      region.center = member.location;
+      
+      region.span = span;
+      
+//      self.mapView.setRegion(region, animated: true)
+      MKMapView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 10, options: UIViewAnimationOptions.CurveEaseIn, animations: {
+        self.mapView.setRegion(region, animated: true)
+        }, completion: nil)
+    } else {
+      mapView.setVisibleMapRect(self.prePreviewMapRect!, animated:true)
+      prePreviewMapRect = nil
+    }
+  }
 }
-

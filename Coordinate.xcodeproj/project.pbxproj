@@ -16,9 +16,8 @@
 		A08B4E771C352E7B0043D79D /* CoordinateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08B4E761C352E7B0043D79D /* CoordinateTests.swift */; };
 		A08B4E821C352E7B0043D79D /* CoordinateUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08B4E811C352E7B0043D79D /* CoordinateUITests.swift */; };
 		A0D7B5B81C47B2C200F1F3C1 /* MembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D7B5B71C47B2C200F1F3C1 /* MembersViewController.swift */; };
-		A0D7B5B91C47B2C200F1F3C1 /* MembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D7B5B71C47B2C200F1F3C1 /* MembersViewController.swift */; };
-		A0D7B5BA1C47B2C200F1F3C1 /* MembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D7B5B71C47B2C200F1F3C1 /* MembersViewController.swift */; };
 		A0D7B5BC1C47B68E00F1F3C1 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0D7B5BB1C47B68E00F1F3C1 /* MapKit.framework */; };
+		A0FABDC41C4C1C540010B40E /* MembersTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FABDC31C4C1C540010B40E /* MembersTransitionController.swift */; };
 		FE159DA21B523D88F67C4AE6 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF3F27652FDEBDFE62FE93EC /* Pods.framework */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +55,7 @@
 		A08B4E831C352E7B0043D79D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0D7B5B71C47B2C200F1F3C1 /* MembersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MembersViewController.swift; sourceTree = "<group>"; };
 		A0D7B5BB1C47B68E00F1F3C1 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		A0FABDC31C4C1C540010B40E /* MembersTransitionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MembersTransitionController.swift; sourceTree = "<group>"; };
 		AA0CFF06E68CB79057393298 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		DF3F27652FDEBDFE62FE93EC /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FDB2B16321FD8B732BDC370C /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -132,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				A08B4E5E1C352E7B0043D79D /* AppDelegate.swift */,
+				A0FABDC31C4C1C540010B40E /* MembersTransitionController.swift */,
 				A08B4E601C352E7B0043D79D /* ViewController.swift */,
 				A0D7B5B71C47B2C200F1F3C1 /* MembersViewController.swift */,
 				A08B4E621C352E7B0043D79D /* Main.storyboard */,
@@ -347,6 +348,7 @@
 				A08B4E611C352E7B0043D79D /* ViewController.swift in Sources */,
 				A08B4E671C352E7B0043D79D /* Coordinate.xcdatamodeld in Sources */,
 				A08B4E5F1C352E7B0043D79D /* AppDelegate.swift in Sources */,
+				A0FABDC41C4C1C540010B40E /* MembersTransitionController.swift in Sources */,
 				A0D7B5B81C47B2C200F1F3C1 /* MembersViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -356,7 +358,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A08B4E771C352E7B0043D79D /* CoordinateTests.swift in Sources */,
-				A0D7B5B91C47B2C200F1F3C1 /* MembersViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -365,7 +366,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A08B4E821C352E7B0043D79D /* CoordinateUITests.swift in Sources */,
-				A0D7B5BA1C47B2C200F1F3C1 /* MembersViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
