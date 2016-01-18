@@ -48,7 +48,7 @@
         <!--Members-->
         <scene sceneID="QLc-XM-xGl">
             <objects>
-                <viewController title="Members" id="GM8-iz-VA5" customClass="MembersViewController" customModule="Coordinate" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MembersViewController" title="Members" id="GM8-iz-VA5" customClass="MembersViewController" customModule="Coordinate" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Inp-yo-9IM"/>
                         <viewControllerLayoutGuide type="bottom" id="51Q-nH-KUz"/>
@@ -108,7 +108,8 @@
                                     <constraint firstAttribute="height" constant="44" id="ttx-ex-R5N"/>
                                 </constraints>
                                 <items>
-                                    <navigationItem title="Members" id="xXM-fN-qpj">
+                                    <navigationItem id="xXM-fN-qpj">
+                                        <nil key="title"/>
                                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="z19-Zt-EAz">
                                             <connections>
                                                 <action selector="doneTapped:" destination="GM8-iz-VA5" id="IVv-1x-GBX"/>
@@ -151,6 +152,34 @@
                 </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="585" y="1116"/>
+        </scene>
+        <!--Table View Controller-->
+        <scene sceneID="aaG-ZP-jiI">
+            <objects>
+                <tableViewController id="QYP-oX-oI7" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="F8R-WJ-nw2">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="6hc-E6-BDU">
+                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6hc-E6-BDU" id="qh1-KL-YP1">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="QYP-oX-oI7" id="F8C-oN-7C6"/>
+                            <outlet property="delegate" destination="QYP-oX-oI7" id="DKy-r0-zeZ"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8L7-UK-3PF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1281" y="1116"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Gre-ih-jOS">

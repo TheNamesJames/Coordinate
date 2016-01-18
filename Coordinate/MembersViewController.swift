@@ -42,6 +42,8 @@ class MembersViewController: UIViewController, UINavigationBarDelegate, UITableV
     self.dismissViewControllerAnimated(true, completion: nil)
   }
   
+  private var previewMemberIndex: Int? = nil
+  
   @IBAction func memberCellLongTapped(sender: UILongPressGestureRecognizer) {
     switch sender.state {
     case .Possible: break
@@ -53,20 +55,19 @@ class MembersViewController: UIViewController, UINavigationBarDelegate, UITableV
         UIView.animateWithDuration(0.1, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
           self.blurView.effect = nil
           self.navItem.title = cell.textLabel?.text
-          }, completion: { (finished) -> Void in
-            self.delegate?.previewMemberLocation(self.data[indexPath.row])
+
+          self.tableView.visibleCells.forEach({ (visibleCell) -> () in
+            // Make all cell contents transparent except for imageView
+            visibleCell.contentView.subviews.filter({ !(($0 is UIImageView) || ($0 is UIVisualEffectView)) }).forEach({ $0.alpha = 0.0 })
             
-            UIView.animateWithDuration(0.1, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
-              self.tableView.visibleCells.forEach({ (visibleCell) -> () in
-                // Make all cell contents transparent except for imageView
-                visibleCell.contentView.subviews.filter({ !($0 is UIImageView) }).forEach({ $0.alpha = 0.0 })
-                
-                var frame = visibleCell.imageView!.frame
-                frame.origin.x = (visibleCell == cell) ? 15.0 : -frame.width/2
-                visibleCell.imageView!.frame = frame
-              })
-              
-              }, completion: nil)
+            var frame = visibleCell.imageView!.frame
+            frame.origin.x = (visibleCell == cell) ? 15.0 : -frame.width/2
+            visibleCell.imageView!.frame = frame
+          })
+          
+          }, completion: { (finished) -> Void in
+            self.previewMemberIndex = indexPath.row
+            self.delegate?.previewMemberLocation(self.data[indexPath.row])
         })
       }
     case .Changed:
@@ -83,7 +84,10 @@ class MembersViewController: UIViewController, UINavigationBarDelegate, UITableV
           })
           
           }, completion: { (finished) -> Void in
-            self.delegate?.previewMemberLocation(self.data[indexPath.row])
+            if let previewIndex = self.previewMemberIndex where previewIndex != indexPath.row {
+              self.previewMemberIndex = indexPath.row
+              self.delegate?.previewMemberLocation(self.data[indexPath.row])
+            }
         })
       }
     case .Ended:
@@ -97,6 +101,7 @@ class MembersViewController: UIViewController, UINavigationBarDelegate, UITableV
         self.blurView.effect = UIBlurEffect(style: .ExtraLight)
         self.navItem.title = "Members"
         }, completion: { (finished) -> Void in
+          self.previewMemberIndex = nil
           self.delegate?.previewMemberLocation(nil)
           
           UIView.animateWithDuration(0.15, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
@@ -137,6 +142,9 @@ class MembersViewController: UIViewController, UINavigationBarDelegate, UITableV
     cell.imageView!.image!.drawInRect(imageRect);
     cell.imageView!.image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+    
+    cell.imageView!.backgroundColor = UIColor.whiteColor()
+    cell.imageView!.layer.cornerRadius = itemSize.width/2
     
     return cell
   }

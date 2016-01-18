@@ -188,8 +188,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         self.mapView.setRegion(region, animated: true)
         }, completion: nil)
     } else {
-      mapView.setVisibleMapRect(self.prePreviewMapRect!, animated:true)
-      prePreviewMapRect = nil
+      if self.prePreviewMapRect != nil {
+        mapView.setVisibleMapRect(self.prePreviewMapRect!, animated:true)
+        prePreviewMapRect = nil
+      }
     }
   }
 }
