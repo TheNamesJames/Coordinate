@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A04183C41C4EA9E10091D1AF /* MemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04183C31C4EA9E10091D1AF /* MemberTableViewCell.swift */; };
 		A08B4E5F1C352E7B0043D79D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08B4E5E1C352E7B0043D79D /* AppDelegate.swift */; };
 		A08B4E611C352E7B0043D79D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08B4E601C352E7B0043D79D /* ViewController.swift */; };
 		A08B4E641C352E7B0043D79D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A08B4E621C352E7B0043D79D /* Main.storyboard */; };
@@ -15,6 +16,9 @@
 		A08B4E6C1C352E7B0043D79D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A08B4E6A1C352E7B0043D79D /* LaunchScreen.storyboard */; };
 		A08B4E771C352E7B0043D79D /* CoordinateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08B4E761C352E7B0043D79D /* CoordinateTests.swift */; };
 		A08B4E821C352E7B0043D79D /* CoordinateUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08B4E811C352E7B0043D79D /* CoordinateUITests.swift */; };
+		A09E6DD81C4EAF5200ADC53F /* MembersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09E6DD71C4EAF5200ADC53F /* MembersTableViewController.swift */; };
+		A09E6DDA1C4FC55A00ADC53F /* EventTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09E6DD91C4FC55A00ADC53F /* EventTableViewCell.swift */; };
+		A09E6DDC1C4FC57800ADC53F /* EventsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09E6DDB1C4FC57800ADC53F /* EventsTableViewController.swift */; };
 		A0D7B5B81C47B2C200F1F3C1 /* MembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D7B5B71C47B2C200F1F3C1 /* MembersViewController.swift */; };
 		A0D7B5BC1C47B68E00F1F3C1 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0D7B5BB1C47B68E00F1F3C1 /* MapKit.framework */; };
 		A0FABDC41C4C1C540010B40E /* MembersTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FABDC31C4C1C540010B40E /* MembersTransitionController.swift */; };
@@ -39,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A04183C31C4EA9E10091D1AF /* MemberTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberTableViewCell.swift; sourceTree = "<group>"; };
 		A08B4E5B1C352E7B0043D79D /* Coordinate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Coordinate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A08B4E5E1C352E7B0043D79D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A08B4E601C352E7B0043D79D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -53,6 +58,9 @@
 		A08B4E7D1C352E7B0043D79D /* CoordinateUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoordinateUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A08B4E811C352E7B0043D79D /* CoordinateUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateUITests.swift; sourceTree = "<group>"; };
 		A08B4E831C352E7B0043D79D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A09E6DD71C4EAF5200ADC53F /* MembersTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MembersTableViewController.swift; sourceTree = "<group>"; };
+		A09E6DD91C4FC55A00ADC53F /* EventTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTableViewCell.swift; sourceTree = "<group>"; };
+		A09E6DDB1C4FC57800ADC53F /* EventsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsTableViewController.swift; sourceTree = "<group>"; };
 		A0D7B5B71C47B2C200F1F3C1 /* MembersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MembersViewController.swift; sourceTree = "<group>"; };
 		A0D7B5BB1C47B68E00F1F3C1 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		A0FABDC31C4C1C540010B40E /* MembersTransitionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MembersTransitionController.swift; sourceTree = "<group>"; };
@@ -136,6 +144,10 @@
 				A08B4E601C352E7B0043D79D /* ViewController.swift */,
 				A0D7B5B71C47B2C200F1F3C1 /* MembersViewController.swift */,
 				A08B4E621C352E7B0043D79D /* Main.storyboard */,
+				A09E6DD91C4FC55A00ADC53F /* EventTableViewCell.swift */,
+				A09E6DDB1C4FC57800ADC53F /* EventsTableViewController.swift */,
+				A04183C31C4EA9E10091D1AF /* MemberTableViewCell.swift */,
+				A09E6DD71C4EAF5200ADC53F /* MembersTableViewController.swift */,
 				A08B4E681C352E7B0043D79D /* Assets.xcassets */,
 				A08B4E6A1C352E7B0043D79D /* LaunchScreen.storyboard */,
 				A08B4E6D1C352E7B0043D79D /* Info.plist */,
@@ -345,8 +357,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A09E6DDA1C4FC55A00ADC53F /* EventTableViewCell.swift in Sources */,
 				A08B4E611C352E7B0043D79D /* ViewController.swift in Sources */,
+				A09E6DDC1C4FC57800ADC53F /* EventsTableViewController.swift in Sources */,
+				A04183C41C4EA9E10091D1AF /* MemberTableViewCell.swift in Sources */,
 				A08B4E671C352E7B0043D79D /* Coordinate.xcdatamodeld in Sources */,
+				A09E6DD81C4EAF5200ADC53F /* MembersTableViewController.swift in Sources */,
 				A08B4E5F1C352E7B0043D79D /* AppDelegate.swift in Sources */,
 				A0FABDC41C4C1C540010B40E /* MembersTransitionController.swift in Sources */,
 				A0D7B5B81C47B2C200F1F3C1 /* MembersViewController.swift in Sources */,

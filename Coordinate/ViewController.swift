@@ -9,7 +9,6 @@
 import UIKit
 import CoreLocation
 import MapKit
-import StatusBarNotificationCenter //TODO: Replace Status bar notification w/ custom drop-down view from Navigation bar
 
 public struct Member {
   let name: String
@@ -20,7 +19,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
   
   @IBOutlet weak var mapView: MKMapView!
   private var locationManager = CLLocationManager()
-  private var showingStatusNotification = false
   
   var data: [Member]
 
@@ -45,6 +43,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         self.locationManager.requestAlwaysAuthorization()
       }
     }
+    
+    let userTrackingButton = MKUserTrackingBarButtonItem(mapView: self.mapView)
+    self.toolbarItems = [userTrackingButton]
     
     var annotations: [MKAnnotation] = []
     for member in data {
@@ -90,17 +91,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     switch error.code {
     case CLError.LocationUnknown.rawValue:
       // Ignore error: Core Location will continue trying
-      if !showingStatusNotification {
-        var sbncCenterConfig = NotificationCenterConfiguration(baseWindow: self.view.window!)
-        sbncCenterConfig.level = UIWindowLevelStatusBar
-        sbncCenterConfig.dismissible = false
-        var sbncLabelConfig = NotificationLabelConfiguration()
-        sbncLabelConfig.backgroundColor = UIColor.redColor()
-        sbncLabelConfig.textColor = UIColor.whiteColor()
-        StatusBarNotificationCenter.showStatusBarNotificationWithMessage("Unable to get your location", withNotificationCenterConfiguration: sbncCenterConfig, andNotificationLabelConfiguration: sbncLabelConfig)
-        showingStatusNotification = true
-      }
-
+      // TODO: show some onscreen notification
+      break
       
     case CLError.Denied.rawValue:
       let alert = UIAlertController(title: "Error", message: "Location Services Disabled", preferredStyle: .Alert)
@@ -120,12 +112,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
   }
   
-  func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    if showingStatusNotification {
-      StatusBarNotificationCenter.dismissNotificationWithCompletion(nil);
-      showingStatusNotification = false
-    }
-    
+  func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {    
     if let newLocation = locations.last {
       print("current position: \(newLocation.coordinate.longitude) , \(newLocation.coordinate.latitude)")
       
@@ -164,6 +151,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
       destinationVC.data = data
       destinationVC.delegate = self
     }
+    if segue.identifier == "TestShowMembers" {
+      let destinationVC = segue.destinationViewController as! MembersTableViewController
+      destinationVC.data = self.data
+    }
   }
 
   // MARK: - MembersViewControllerDelegate
@@ -193,5 +184,31 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         prePreviewMapRect = nil
       }
     }
+  }
+}
+
+extension ViewController: UITableViewDataSource, UITableViewDelegate {
+  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return self.data.count
+  }
+  
+  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCellWithIdentifier("MemberCell", forIndexPath: indexPath) as! MemberTableViewCell
+    
+    cell.textLabel!.text = self.data[indexPath.row].name
+    cell.setContactColour({
+      switch indexPath.row % 3 {
+      case 0:
+        return UIColor(red: 211/255, green: 84/255, blue: 0/255, alpha: 0.5)
+      case 1:
+        return UIColor(red: 241/255, green: 196/255, blue: 15/255, alpha: 0.5)
+      case 2:
+        return UIColor(red: 39/255, green: 174/255, blue: 96/255, alpha: 0.5)
+      default:
+        return UIColor.clearColor()
+      }
+    }())
+    
+    return cell
   }
 }
