@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import PubNub
+import Parse
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, PNObjectEventListener {
@@ -34,6 +35,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PNObjectEventListener {
     // Override point for customization after application launch.
     
     self.pubnubClient?.subscribeToChannels([self.channel], withPresence: true)
+    
+    Parse.setApplicationId("31RXt2ouIOmAJyWWIiEVxczRqdfpc14r24GDfJ39", clientKey: "puqn1t3EAL6l6hiqGpm1m5Pwt3APa7sPhNZ9IR9T")
     
     return true
   }

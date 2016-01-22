@@ -141,6 +141,7 @@ class EventsTableViewController: UITableViewController {
       let destinationVC = segue.destinationViewController as! ViewController
       if let cell = sender as? UITableViewCell {
         let indexSelected = self.tableView.indexPathForCell(cell)!
+        destinationVC.title = self.data[indexSelected.row].name
         destinationVC.data = self.data[indexSelected.row].members
       } else {
         destinationVC.data = []
