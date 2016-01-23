@@ -63,6 +63,7 @@ class MembersTableViewController: UITableViewController {
           self.tableView.visibleCells.forEach({ (visibleCell) -> () in
             // Make all cell contents transparent except for imageView
             visibleCell.contentView.subviews.filter({ !(($0 is UIImageView) || ($0 is UIVisualEffectView)) }).forEach({ $0.alpha = 0.0 })
+            visibleCell.textLabel?.alpha = 0.0
             
             var frame = visibleCell.imageView!.frame
             frame.origin.x = (visibleCell == cell) ? 15.0 : -frame.width/2
@@ -111,6 +112,7 @@ class MembersTableViewController: UITableViewController {
               visibleCell.alpha = 1.0
               // Return all cell contents to full opacity
               visibleCell.contentView.subviews.forEach({ $0.alpha = 1.0 })
+              visibleCell.textLabel?.alpha = 1.0
               
               var frame = visibleCell.imageView!.frame
               frame.origin.x = 15.0

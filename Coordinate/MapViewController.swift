@@ -63,7 +63,6 @@ class MapViewController: UIViewController, PreviewMemberListener {
       
       region.span = span;
       
-      //      self.mapView.setRegion(region, animated: true)
       MKMapView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 10, options: UIViewAnimationOptions.CurveEaseIn, animations: {
         self.mapView.setRegion(region, animated: true)
         }, completion: nil)

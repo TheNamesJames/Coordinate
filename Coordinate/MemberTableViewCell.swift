@@ -41,8 +41,6 @@ class MemberTableViewCell: UITableViewCell {
   
   func setContactColour(colour: UIColor) {
     self.imageView!.layer.borderColor = colour.CGColor
-//    self.blurView.backgroundColor = colour
-//    self.blurView.contentView.backgroundColor = colour
   }
   
 }

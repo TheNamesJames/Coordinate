@@ -82,7 +82,6 @@ class EventsTableViewController: UITableViewController {
     
     for (index, member) in event.members.enumerate() {
       cell.contactImages[index].image = UIImage(named: member.name)
-//      cell.contactImages[index].layer.zPosition = CGFloat(index) + 1.0
     }
     
     cell.contactImages.forEach { (contactImageView) -> () in
@@ -143,7 +142,7 @@ class EventsTableViewController: UITableViewController {
         destinationVC.title = self.data[indexSelected.row].name
         destinationVC.data = self.data[indexSelected.row].members
       } else {
-        destinationVC.data = []
+        fatalError("segue from \(self) not initiated by UITableViewCell")
       }
     }
   }
