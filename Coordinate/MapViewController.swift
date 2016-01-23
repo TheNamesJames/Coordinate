@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class MapViewController: UIViewController, PreviewMemberDelegate {
+class MapViewController: UIViewController, PreviewMemberListener {
   
   var data: [Member]!
   

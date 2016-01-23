@@ -15,7 +15,7 @@ public struct Member {
   let location: CLLocationCoordinate2D
 }
 
-class ViewController: UIViewController, CLLocationManagerDelegate {
+class ViewController: UIViewController, CLLocationManagerDelegate, PreviewMemberListener {
   
   @IBOutlet weak var mapVCContainer: UIView!
   private var mapVC: MapViewController!
@@ -49,7 +49,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     self.membersTVC = self.storyboard?.instantiateViewControllerWithIdentifier("MembersTableViewController") as! MembersTableViewController
     self.membersTVC.data = self.data
-    self.membersTVC.previewMemberDelegate = self.mapVC
+    self.membersTVC.addPreviewMemberListener(self.mapVC)
+    self.membersTVC.addPreviewMemberListener(self)
     self.membersTableView = self.membersTVC.view as! UITableView
     self.view.addSubview(self.membersTableView)
   }
@@ -138,6 +139,24 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
       
       let userTrackingButton = MKUserTrackingBarButtonItem(mapView: self.mapVC.mapView)
       self.toolbarItems = [userTrackingButton]
+    }
+  }
+  
+  // MARK: - PreviewMemberDelegate
+  
+  private var prePreviewTitle: String? = nil
+  
+  func previewMember(member: Member?) {
+    if let member = member {
+      if prePreviewTitle == nil {
+        prePreviewTitle = self.title
+      }
+      self.title = member.name
+    } else {
+      if self.prePreviewTitle != nil {
+        self.title = prePreviewTitle
+        prePreviewTitle = nil
+      }
     }
   }
 }

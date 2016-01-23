@@ -8,14 +8,24 @@
 
 import UIKit
 
-protocol PreviewMemberDelegate {
+protocol PreviewMemberListener: NSObjectProtocol {
   func previewMember(member: Member?) //, atZoomLevel: MKZoomScale)
 }
 
 class MembersTableViewController: UITableViewController {
   
-  var previewMemberDelegate: PreviewMemberDelegate?
+  private var previewMemberListeners: [PreviewMemberListener] = []
   var data: [Member]!
+  
+  func addPreviewMemberListener(listener: PreviewMemberListener) {
+    self.previewMemberListeners.append(listener)
+  }
+  
+  func removePreviewMemberListener(listener: PreviewMemberListener) {
+    if let index = self.previewMemberListeners.indexOf({ $0 === listener }) {
+      self.previewMemberListeners.removeAtIndex(index)
+    }
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -49,8 +59,6 @@ class MembersTableViewController: UITableViewController {
         
         UIView.animateWithDuration(0.1, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
           (self.tableView as! TransparentTableView).backgroundBlurView.effect = nil
-          // TODO: Move to ViewController
-//          self.navItem.title = cell.textLabel?.text
           
           self.tableView.visibleCells.forEach({ (visibleCell) -> () in
             // Make all cell contents transparent except for imageView
@@ -63,15 +71,13 @@ class MembersTableViewController: UITableViewController {
           
           }, completion: { (finished) -> Void in
             self.previewMemberIndex = indexPath.row
-            self.previewMemberDelegate?.previewMember(self.data[indexPath.row])
+            self.firePreviewMember(self.data[indexPath.row])
         })
       }
     case .Changed:
       let point = sender.locationInView(self.tableView)
       if let indexPath = self.tableView.indexPathForRowAtPoint(point) {
         let cell = self.tableView.cellForRowAtIndexPath(indexPath)!
-        // TODO: Move to ViewController
-//        self.navItem.title = cell.textLabel?.text
         UIView.animateWithDuration(0.2, animations: { () -> Void in
           
           self.tableView.visibleCells.forEach({ (visibleCell) -> () in
@@ -83,7 +89,7 @@ class MembersTableViewController: UITableViewController {
           }, completion: { (finished) -> Void in
             if let previewIndex = self.previewMemberIndex where previewIndex != indexPath.row {
               self.previewMemberIndex = indexPath.row
-              self.previewMemberDelegate?.previewMember(self.data[indexPath.row])
+              self.firePreviewMember(self.data[indexPath.row])
             }
         })
       }
@@ -96,11 +102,9 @@ class MembersTableViewController: UITableViewController {
     case .Recognized:
       UIView.animateWithDuration(0.15, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
         (self.tableView as! TransparentTableView).backgroundBlurView.effect = UIBlurEffect(style: .ExtraLight)
-        // TODO: Move to ViewController
-//        self.navItem.title = "Members"
         }, completion: { (finished) -> Void in
           self.previewMemberIndex = nil
-          self.previewMemberDelegate?.previewMember(nil)
+          self.firePreviewMember(nil)
           
           UIView.animateWithDuration(0.15, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
             self.tableView.visibleCells.forEach({ (visibleCell) -> () in
@@ -139,6 +143,12 @@ class MembersTableViewController: UITableViewController {
     cell.imageView!.image = UIImage(named: self.data[indexPath.row].name)
     
     return cell
+  }
+  
+  func firePreviewMember(member: Member?) {
+    for listener in previewMemberListeners {
+      listener.previewMember(member)
+    }
   }
   
   /*
