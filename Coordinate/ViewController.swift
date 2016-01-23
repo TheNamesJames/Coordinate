@@ -23,16 +23,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, PreviewMember
   private var membersTVC: MembersTableViewController!
   
   private var locationManager = CLLocationManager()
-  var data: [Member]
-
-  required init?(coder aDecoder: NSCoder) {
-    let john = Member(name: "John", location: CLLocationCoordinate2D(latitude: 51.515372, longitude: -0.141880))
-    let joe = Member(name: "Joe", location: CLLocationCoordinate2D(latitude: 51.521958, longitude: -0.046652))
-    let bob = Member(name: "Bob", location: CLLocationCoordinate2D(latitude: 51.522525, longitude: -0.041899))
-    data = [john, joe, bob]
-    
-    super.init(coder: aDecoder)
-  }
+  var data: [Member]!
+  
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -67,25 +59,25 @@ class ViewController: UIViewController, CLLocationManagerDelegate, PreviewMember
   }
   
   // MARK: - CLLocationManagerDelegate
-
+  
   func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
     switch status {
     case .NotDetermined: break
-    
+      
     case .Restricted:
       fallthrough
-    
+      
     case .Denied:
       //TODO: Disable PubNub sending??
       break
       
     case .AuthorizedWhenInUse:
       fallthrough
-    
+      
     case .AuthorizedAlways:
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-// TODO: Re-enable location updates
-        self.locationManager.startUpdatingLocation()
+      self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+      // TODO: Re-enable location updates
+      self.locationManager.startUpdatingLocation()
     }
   }
   
