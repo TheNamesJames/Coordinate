@@ -15,7 +15,7 @@ class MemberTableViewCell: UITableViewCell {
     return self.nameLabel
   }
   
-  @IBOutlet private weak var blurView: UIVisualEffectView!
+  @IBOutlet weak var cellBlurView: UIVisualEffectView!
   
   @IBOutlet weak var contactImage: UIImageView!
   override var imageView: UIImageView? {
@@ -29,6 +29,8 @@ class MemberTableViewCell: UITableViewCell {
     self.imageView!.clipsToBounds = true
     self.imageView!.layer.borderWidth = 2.0
     self.imageView!.layer.borderColor = UIColor.clearColor().CGColor
+    
+    self.cellBlurView.effect = nil
   }
   
   override func setSelected(selected: Bool, animated: Bool) {

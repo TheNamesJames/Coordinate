@@ -15,11 +15,14 @@ public struct Member {
   let location: CLLocationCoordinate2D
 }
 
-class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, MembersViewControllerDelegate {
+class ViewController: UIViewController, CLLocationManagerDelegate {
   
-  @IBOutlet weak var mapView: MKMapView!
+  @IBOutlet weak var mapVCContainer: UIView!
+  private var mapVC: MapViewController!
+  var membersTableView: UITableView!
+  private var membersTVC: MembersTableViewController!
+  
   private var locationManager = CLLocationManager()
-  
   var data: [Member]
 
   required init?(coder aDecoder: NSCoder) {
@@ -44,17 +47,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
       }
     }
     
-    let userTrackingButton = MKUserTrackingBarButtonItem(mapView: self.mapView)
-    self.toolbarItems = [userTrackingButton]
+    self.membersTVC = self.storyboard?.instantiateViewControllerWithIdentifier("MembersTableViewController") as! MembersTableViewController
+    self.membersTVC.data = self.data
+    self.membersTVC.previewMemberDelegate = self.mapVC
+    self.membersTableView = self.membersTVC.view as! UITableView
+    self.view.addSubview(self.membersTableView)
+  }
+  
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
     
-    var annotations: [MKAnnotation] = []
-    for member in data {
-      let annotation = MKPointAnnotation()
-      annotation.coordinate = member.location
-      annotation.title = member.name
-      annotations.append(annotation)
-    }
-    self.mapView.addAnnotations(annotations)
+    self.membersTableView.frame = self.mapVCContainer.frame
   }
   
   override func didReceiveMemoryWarning() {
@@ -112,7 +115,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
   }
   
-  func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {    
+  func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     if let newLocation = locations.last {
       print("current position: \(newLocation.coordinate.longitude) , \(newLocation.coordinate.latitude)")
       
@@ -125,90 +128,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
   }
   
-  func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
-    var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier("MemberPinAnnotation")
-    if annotationView == nil {
-      annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "MemberPinAnnotation")
-      annotationView!.centerOffset = CGPointMake(10, -20)
-    }
-    
-    annotationView!.annotation = annotation
-    
-    return annotationView
-  }
-  
-  
   // MARK: - Navigation
   
-  @IBAction func membersButtonPressed(sender: AnyObject) {
-    self.performSegueWithIdentifier("ShowMembersSegue", sender: sender)
-  }
-
   // In a storyboard-based application, you will often want to do a little preparation before navigation
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    if segue.identifier == "ShowMembersSegue" {
-      let destinationVC = segue.destinationViewController as! MembersViewController
-      destinationVC.data = data
-      destinationVC.delegate = self
+    if segue.identifier == "EmbedMapSegue" {
+      self.mapVC = segue.destinationViewController as! MapViewController
+      self.mapVC.data = self.data
+      
+      let userTrackingButton = MKUserTrackingBarButtonItem(mapView: self.mapVC.mapView)
+      self.toolbarItems = [userTrackingButton]
     }
-    if segue.identifier == "TestShowMembers" {
-      let destinationVC = segue.destinationViewController as! MembersTableViewController
-      destinationVC.data = self.data
-    }
-  }
-
-  // MARK: - MembersViewControllerDelegate
-  
-  private var prePreviewMapRect: MKMapRect? = nil
-  
-  func previewMemberLocation(member: Member?) {
-    if let member = member {
-      if prePreviewMapRect == nil {
-        prePreviewMapRect = self.mapView.visibleMapRect
-      }
-      
-      var region = self.mapView.region;
-      let span = MKCoordinateSpanMake(0.005, 0.005);
-      
-      region.center = member.location;
-      
-      region.span = span;
-      
-//      self.mapView.setRegion(region, animated: true)
-      MKMapView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 10, options: UIViewAnimationOptions.CurveEaseIn, animations: {
-        self.mapView.setRegion(region, animated: true)
-        }, completion: nil)
-    } else {
-      if self.prePreviewMapRect != nil {
-        mapView.setVisibleMapRect(self.prePreviewMapRect!, animated:true)
-        prePreviewMapRect = nil
-      }
-    }
-  }
-}
-
-extension ViewController: UITableViewDataSource, UITableViewDelegate {
-  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.data.count
-  }
-  
-  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier("MemberCell", forIndexPath: indexPath) as! MemberTableViewCell
-    
-    cell.textLabel!.text = self.data[indexPath.row].name
-    cell.setContactColour({
-      switch indexPath.row % 3 {
-      case 0:
-        return UIColor(red: 211/255, green: 84/255, blue: 0/255, alpha: 0.5)
-      case 1:
-        return UIColor(red: 241/255, green: 196/255, blue: 15/255, alpha: 0.5)
-      case 2:
-        return UIColor(red: 39/255, green: 174/255, blue: 96/255, alpha: 0.5)
-      default:
-        return UIColor.clearColor()
-      }
-    }())
-    
-    return cell
   }
 }

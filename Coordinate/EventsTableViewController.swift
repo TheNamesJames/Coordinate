@@ -136,7 +136,6 @@ class EventsTableViewController: UITableViewController {
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     // Get the new view controller using segue.destinationViewController.
     // Pass the selected object to the new view controller.
-    print(sender)
     if segue.identifier == "ShowEventSegue" {
       let destinationVC = segue.destinationViewController as! ViewController
       if let cell = sender as? UITableViewCell {
@@ -146,7 +145,6 @@ class EventsTableViewController: UITableViewController {
       } else {
         destinationVC.data = []
       }
-      
     }
   }
   

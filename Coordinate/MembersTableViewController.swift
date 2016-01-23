@@ -8,9 +8,14 @@
 
 import UIKit
 
+protocol PreviewMemberDelegate {
+  func previewMember(member: Member?) //, atZoomLevel: MKZoomScale)
+}
+
 class MembersTableViewController: UITableViewController {
   
-  var data: [Member]? = nil
+  var previewMemberDelegate: PreviewMemberDelegate?
+  var data: [Member]!
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -20,11 +25,98 @@ class MembersTableViewController: UITableViewController {
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    
+    self.automaticallyAdjustsScrollViewInsets = false
+    
+    let longPress = UILongPressGestureRecognizer(target: self, action: "longPressed:")
+    self.tableView.addGestureRecognizer(longPress)
   }
   
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
+  }
+  
+  private var previewMemberIndex: Int? = nil
+  
+  func longPressed(sender: UILongPressGestureRecognizer) {
+    switch sender.state {
+    case .Possible: break
+    case .Began:
+      let point = sender.locationInView(self.tableView)
+      if let indexPath = self.tableView.indexPathForRowAtPoint(point) {
+        let cell = self.tableView.cellForRowAtIndexPath(indexPath)!
+        
+        UIView.animateWithDuration(0.1, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+          (self.tableView as! TransparentTableView).backgroundBlurView.effect = nil
+          // TODO: Move to ViewController
+//          self.navItem.title = cell.textLabel?.text
+          
+          self.tableView.visibleCells.forEach({ (visibleCell) -> () in
+            // Make all cell contents transparent except for imageView
+            visibleCell.contentView.subviews.filter({ !(($0 is UIImageView) || ($0 is UIVisualEffectView)) }).forEach({ $0.alpha = 0.0 })
+            
+            var frame = visibleCell.imageView!.frame
+            frame.origin.x = (visibleCell == cell) ? 15.0 : -frame.width/2
+            visibleCell.imageView!.frame = frame
+          })
+          
+          }, completion: { (finished) -> Void in
+            self.previewMemberIndex = indexPath.row
+            self.previewMemberDelegate?.previewMember(self.data[indexPath.row])
+        })
+      }
+    case .Changed:
+      let point = sender.locationInView(self.tableView)
+      if let indexPath = self.tableView.indexPathForRowAtPoint(point) {
+        let cell = self.tableView.cellForRowAtIndexPath(indexPath)!
+        // TODO: Move to ViewController
+//        self.navItem.title = cell.textLabel?.text
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+          
+          self.tableView.visibleCells.forEach({ (visibleCell) -> () in
+            var frame = visibleCell.imageView!.frame
+            frame.origin.x = (visibleCell == cell) ? 15.0 : -frame.width/2
+            visibleCell.imageView!.frame = frame
+          })
+          
+          }, completion: { (finished) -> Void in
+            if let previewIndex = self.previewMemberIndex where previewIndex != indexPath.row {
+              self.previewMemberIndex = indexPath.row
+              self.previewMemberDelegate?.previewMember(self.data[indexPath.row])
+            }
+        })
+      }
+    case .Ended:
+      fallthrough
+    case .Cancelled:
+      fallthrough
+    case .Failed:
+      fallthrough
+    case .Recognized:
+      UIView.animateWithDuration(0.15, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+        (self.tableView as! TransparentTableView).backgroundBlurView.effect = UIBlurEffect(style: .ExtraLight)
+        // TODO: Move to ViewController
+//        self.navItem.title = "Members"
+        }, completion: { (finished) -> Void in
+          self.previewMemberIndex = nil
+          self.previewMemberDelegate?.previewMember(nil)
+          
+          UIView.animateWithDuration(0.15, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
+            self.tableView.visibleCells.forEach({ (visibleCell) -> () in
+              visibleCell.alpha = 1.0
+              // Return all cell contents to full opacity
+              visibleCell.contentView.subviews.forEach({ $0.alpha = 1.0 })
+              
+              var frame = visibleCell.imageView!.frame
+              frame.origin.x = 15.0
+              visibleCell.imageView!.frame = frame
+            })
+            
+            self.tableView.visibleCells.forEach({ $0.alpha = 1.0 })
+            }, completion: nil)
+      })
+    }
   }
   
   // MARK: - Table view data source
@@ -36,14 +128,15 @@ class MembersTableViewController: UITableViewController {
   
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     // #warning Incomplete implementation, return the number of rows
-    return data?.count ?? 0
+    return data.count
   }
   
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("MemberCell", forIndexPath: indexPath) as! MemberTableViewCell
     
-    cell.textLabel!.text = self.data![indexPath.row].name
+    cell.textLabel!.text = self.data[indexPath.row].name
+    cell.imageView!.image = UIImage(named: self.data[indexPath.row].name)
     
     return cell
   }
