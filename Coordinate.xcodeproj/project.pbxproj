@@ -20,6 +20,8 @@
 		A09E6DD81C4EAF5200ADC53F /* MembersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09E6DD71C4EAF5200ADC53F /* MembersTableViewController.swift */; };
 		A09E6DDA1C4FC55A00ADC53F /* EventTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09E6DD91C4FC55A00ADC53F /* EventTableViewCell.swift */; };
 		A09E6DDC1C4FC57800ADC53F /* EventsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09E6DDB1C4FC57800ADC53F /* EventsTableViewController.swift */; };
+		A0B2B2211C5429E900356333 /* RoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B2B2201C5429E900356333 /* RoundedImageView.swift */; };
+		A0B2B2231C54394F00356333 /* UserTrackingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B2B2221C54394F00356333 /* UserTrackingButton.swift */; };
 		A0CC8E851C53A4510001897E /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CC8E841C53A4510001897E /* MapViewController.swift */; };
 		A0D7B5BC1C47B68E00F1F3C1 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0D7B5BB1C47B68E00F1F3C1 /* MapKit.framework */; };
 		A0DC0BCA1C502C6F00FD378A /* ParseTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DC0BC91C502C6F00FD378A /* ParseTestViewController.swift */; };
@@ -63,6 +65,8 @@
 		A09E6DD71C4EAF5200ADC53F /* MembersTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MembersTableViewController.swift; sourceTree = "<group>"; };
 		A09E6DD91C4FC55A00ADC53F /* EventTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTableViewCell.swift; sourceTree = "<group>"; };
 		A09E6DDB1C4FC57800ADC53F /* EventsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsTableViewController.swift; sourceTree = "<group>"; };
+		A0B2B2201C5429E900356333 /* RoundedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedImageView.swift; sourceTree = "<group>"; };
+		A0B2B2221C54394F00356333 /* UserTrackingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTrackingButton.swift; sourceTree = "<group>"; };
 		A0CC8E841C53A4510001897E /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		A0D7B5BB1C47B68E00F1F3C1 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		A0DC0BC91C502C6F00FD378A /* ParseTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseTestViewController.swift; sourceTree = "<group>"; };
@@ -141,6 +145,7 @@
 		A08B4E5D1C352E7B0043D79D /* Coordinate */ = {
 			isa = PBXGroup;
 			children = (
+				A0B2B2221C54394F00356333 /* UserTrackingButton.swift */,
 				A0CC8E841C53A4510001897E /* MapViewController.swift */,
 				A08B4E5E1C352E7B0043D79D /* AppDelegate.swift */,
 				A08B4E601C352E7B0043D79D /* ViewController.swift */,
@@ -150,6 +155,7 @@
 				A09E6DDB1C4FC57800ADC53F /* EventsTableViewController.swift */,
 				A04183C31C4EA9E10091D1AF /* MemberTableViewCell.swift */,
 				A09E6DD71C4EAF5200ADC53F /* MembersTableViewController.swift */,
+				A0B2B2201C5429E900356333 /* RoundedImageView.swift */,
 				A08B4E681C352E7B0043D79D /* Assets.xcassets */,
 				A08B4E6A1C352E7B0043D79D /* LaunchScreen.storyboard */,
 				A08B4E6D1C352E7B0043D79D /* Info.plist */,
@@ -369,6 +375,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A0CC8E851C53A4510001897E /* MapViewController.swift in Sources */,
+				A0B2B2231C54394F00356333 /* UserTrackingButton.swift in Sources */,
 				A09E6DDA1C4FC55A00ADC53F /* EventTableViewCell.swift in Sources */,
 				A08B4E611C352E7B0043D79D /* ViewController.swift in Sources */,
 				A09E6DDC1C4FC57800ADC53F /* EventsTableViewController.swift in Sources */,
@@ -376,6 +383,7 @@
 				A08B4E671C352E7B0043D79D /* Coordinate.xcdatamodeld in Sources */,
 				A09E6DD81C4EAF5200ADC53F /* MembersTableViewController.swift in Sources */,
 				A0DC0BCA1C502C6F00FD378A /* ParseTestViewController.swift in Sources */,
+				A0B2B2211C5429E900356333 /* RoundedImageView.swift in Sources */,
 				A08B4E5F1C352E7B0043D79D /* AppDelegate.swift in Sources */,
 				A04105A61C53AD9200B01C47 /* TransparentTableView.swift in Sources */,
 			);

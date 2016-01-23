@@ -128,21 +128,32 @@ class MembersTableViewController: UITableViewController {
   // MARK: - Table view data source
   
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-    // #warning Incomplete implementation, return the number of sections
-    return 1
+    return 2
   }
   
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    // #warning Incomplete implementation, return the number of rows
-    return data.count
+    switch section {
+    case 0:
+      return 1
+    case 1:
+      // TODO: Remove fake rows
+      return data.count * 3
+    default:
+      fatalError("Unexpected number of sections")
+    }
   }
   
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    if indexPath.section == 0 {
+      return tableView.dequeueReusableCellWithIdentifier("ControlsCell", forIndexPath: indexPath)
+    }
+    
     let cell = tableView.dequeueReusableCellWithIdentifier("MemberCell", forIndexPath: indexPath) as! MemberTableViewCell
     
-    cell.textLabel!.text = self.data[indexPath.row].name
-    cell.imageView!.image = UIImage(named: self.data[indexPath.row].name)
+    // TODO: Remove fake rows
+    cell.textLabel!.text = self.data[indexPath.row % 3].name
+    cell.imageView!.image = UIImage(named: self.data[indexPath.row % 3].name)
     
     return cell
   }

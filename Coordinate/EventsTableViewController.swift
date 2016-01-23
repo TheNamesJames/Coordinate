@@ -72,7 +72,7 @@ class EventsTableViewController: UITableViewController {
       
       for var i = cell.contactImages.count; i < event.members.count; i++  {
         let newFrame = referenceContactImage.frame.offsetBy(dx: CGFloat(i) * (2*referenceContactImage.frame.width/3), dy: 0.0)
-        let newContactImage = UIImageView(frame: newFrame)
+        let newContactImage = RoundedImageView(frame: newFrame)
         cell.contactImages.append(newContactImage)
         cell.contentView.insertSubview(newContactImage, atIndex: referenceIndex! + i)
       }
@@ -82,13 +82,7 @@ class EventsTableViewController: UITableViewController {
     
     for (index, member) in event.members.enumerate() {
       cell.contactImages[index].image = UIImage(named: member.name)
-    }
-    
-    cell.contactImages.forEach { (contactImageView) -> () in
-      contactImageView.layer.cornerRadius = contactImageView.frame.width/2
-      contactImageView.clipsToBounds = true
-    }
-    
+    }    
     
     return cell
   }

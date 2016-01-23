@@ -25,10 +25,6 @@ class MemberTableViewCell: UITableViewCell {
   override func awakeFromNib() {
     super.awakeFromNib()
     // Initialization code
-    self.imageView!.layer.cornerRadius = self.imageView!.frame.width/2
-    self.imageView!.clipsToBounds = true
-    self.imageView!.layer.borderWidth = 2.0
-    self.imageView!.layer.borderColor = UIColor.clearColor().CGColor
     
     self.cellBlurView.effect = nil
   }
