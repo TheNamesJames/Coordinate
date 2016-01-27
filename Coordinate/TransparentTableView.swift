@@ -17,20 +17,10 @@ class TransparentTableView: UITableView {
     
     if self.backgroundBlurView == nil {
       self.backgroundBlurView = UIVisualEffectView(effect: UIBlurEffect(style: .ExtraLight))
-      // FIXME: Change to height of total height of rows OR set origin.y in scrollViewDidScroll...
-      self.backgroundBlurView.frame = self.bounds
+      
+      self.backgroundBlurView.frame = CGRect(origin: CGPointZero, size: self.contentSize)
       self.insertSubview(self.backgroundBlurView, atIndex: 0)
     }
-    
-    var rowsToShow = self.numberOfRowsInSection(0)
-    if rowsToShow > 3 {
-      rowsToShow = 3
-    }
-    // FIXME: Not actually correct...
-    let inset = self.frame.height - CGFloat(rowsToShow) * self.rowHeight
-    self.contentInset = UIEdgeInsets(top: inset, left: 0.0, bottom: 0.0, right: 0.0)
-    // FIXME: Should auto-scroll to inset initially (i.e. on init?)
-    self.contentOffset = CGPoint(x: 0.0, y: -inset + 100)
   }
   
   // Ignore touch if not inside cell or blur background

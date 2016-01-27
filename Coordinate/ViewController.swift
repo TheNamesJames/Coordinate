@@ -39,8 +39,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, PreviewMember
       }
     }
     
-    self.membersTVC = self.storyboard?.instantiateViewControllerWithIdentifier("MembersTableViewController") as! MembersTableViewController
+    self.membersTVC = self.storyboard!.instantiateViewControllerWithIdentifier("MembersTableViewController") as! MembersTableViewController
     self.membersTVC.data = self.data
+    self.membersTVC.mapView = self.mapVC.mapView
     self.membersTVC.addPreviewMemberListener(self.mapVC)
     self.membersTVC.addPreviewMemberListener(self)
     self.membersTableView = self.membersTVC.view as! UITableView
@@ -128,9 +129,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, PreviewMember
     if segue.identifier == "EmbedMapSegue" {
       self.mapVC = segue.destinationViewController as! MapViewController
       self.mapVC.data = self.data
-      
-      let userTrackingButton = MKUserTrackingBarButtonItem(mapView: self.mapVC.mapView)
-      self.toolbarItems = [userTrackingButton]
     }
   }
   

@@ -9,19 +9,68 @@
 import UIKit
 import MapKit
 
-//enum UserTracking : Int {
-//  
-//  case Plain // regular table view
-//  case Grouped // preferences style table view
-//}
-
-
 class UserTrackingButton: UIButton {
   
-  weak var mapView: MKMapView!
+  weak var mapView: MKMapView? {
+    willSet {
+      if let mapView = mapView {
+        mapView.removeObserver(self, forKeyPath: "userTrackingMode")
+      }
+    }
+    didSet {
+      if let mapView = mapView {
+        let options = NSKeyValueObservingOptions.Initial.union(NSKeyValueObservingOptions.New)
+        mapView.addObserver(self, forKeyPath: "userTrackingMode", options: options, context: nil)
+      }
+    }
+  }
   
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    
+    self.addTarget(self, action: "pressed:", forControlEvents: UIControlEvents.TouchUpInside)
+  }
   
-  // TODO: custom init w/ mapView
+  override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    let trackingMode = MKUserTrackingMode(rawValue: change!["new"] as! Int)!
+    
+    self.updateView(trackingMode, animated: false)
+  }
+  
+  func pressed(sender: AnyObject?) {
+    let newTrackingMode: MKUserTrackingMode
+    switch self.mapView?.userTrackingMode ?? .None {
+    case .None:
+      newTrackingMode = .Follow
+    case .Follow:
+      newTrackingMode = .FollowWithHeading
+    case .FollowWithHeading:
+      newTrackingMode = .Follow
+    }
+    
+    self.mapView?.setUserTrackingMode(newTrackingMode, animated: true)
+    self.updateView(newTrackingMode, animated: true)
+  }
+  
+  private func updateView(trackingMode: MKUserTrackingMode, animated: Bool) {
+    let title: String
+    switch trackingMode {
+    case .None:
+      title = "Locate"
+    case .Follow:
+      title = "Heading"
+    case .FollowWithHeading:
+      title = "w/out Heading"
+    }
+    
+    self.setTitle(title, forState: .Normal)
+  }
+  
+  deinit {
+    if let mapView = mapView {
+      mapView.removeObserver(self, forKeyPath: "userTrackingMode")
+    }
+  }
+  
   // TODO: set button images
-  // TODO: use KV Observation https://github.com/sartak/IIUserTrackingBarButtonItem/blob/master/IIUserTrackingBarButtonItem.m
 }

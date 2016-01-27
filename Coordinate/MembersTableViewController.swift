@@ -7,12 +7,22 @@
 //
 
 import UIKit
+import MapKit
 
 protocol PreviewMemberListener: NSObjectProtocol {
   func previewMember(member: Member?) //, atZoomLevel: MKZoomScale)
 }
 
 class MembersTableViewController: UITableViewController {
+  
+  weak var mapView: MKMapView? {
+    didSet {
+      let firstCell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0))
+      if let controlCell = firstCell as! LocationControlTableViewCell? {
+        controlCell.userTrackingButton.mapView = mapView
+      }
+    }
+  }
   
   private var previewMemberListeners: [PreviewMemberListener] = []
   var data: [Member]!
@@ -40,6 +50,15 @@ class MembersTableViewController: UITableViewController {
     
     let longPress = UILongPressGestureRecognizer(target: self, action: "longPressed:")
     self.tableView.addGestureRecognizer(longPress)
+    
+    //    let membersToShow = 3
+    //    (self.tableView as! TransparentTableView).membersToShow = membersToShow
+    //    let inset = CGFloat(membersToShow) * self.tableView.rowHeight
+    let inset = self.tableView.frame.height - CGFloat(4) * self.tableView.rowHeight
+    // FIXME: Should auto-scroll to inset initially (i.e. on init?)
+    self.tableView.contentInset = UIEdgeInsets(top: inset, left: 0.0, bottom: 0.0, right: 0.0)
+    self.tableView.contentOffset = CGPoint(x: 0.0, y: -inset)
+    
   }
   
   override func didReceiveMemoryWarning() {
@@ -90,6 +109,7 @@ class MembersTableViewController: UITableViewController {
           }, completion: { (finished) -> Void in
             if let previewIndex = self.previewMemberIndex where previewIndex != indexPath.row {
               self.previewMemberIndex = indexPath.row
+              // FIXME: Check for indexpath.row out of bounds
               self.firePreviewMember(self.data[indexPath.row])
             }
         })
@@ -146,7 +166,11 @@ class MembersTableViewController: UITableViewController {
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     if indexPath.section == 0 {
-      return tableView.dequeueReusableCellWithIdentifier("ControlsCell", forIndexPath: indexPath)
+      let controlCell = tableView.dequeueReusableCellWithIdentifier("ControlsCell", forIndexPath: indexPath) as! LocationControlTableViewCell
+      if controlCell.userTrackingButton.mapView != self.mapView {
+        controlCell.userTrackingButton.mapView = self.mapView
+      }
+      return controlCell
     }
     
     let cell = tableView.dequeueReusableCellWithIdentifier("MemberCell", forIndexPath: indexPath) as! MemberTableViewCell

@@ -54,7 +54,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MemberCell" rowHeight="64" id="6hc-E6-BDU" customClass="MemberTableViewCell" customModule="Coordinate" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MemberCell" id="6hc-E6-BDU" customClass="MemberTableViewCell" customModule="Coordinate" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="600" height="64"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6hc-E6-BDU" id="qh1-KL-YP1">
@@ -109,18 +109,17 @@
                                     <outlet property="nameLabel" destination="K4M-9K-rJa" id="RLF-Hm-hBK"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ControlsCell" id="Isn-Sf-SPw">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ControlsCell" id="Isn-Sf-SPw" customClass="LocationControlTableViewCell" customModule="Coordinate" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="92" width="600" height="64"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Isn-Sf-SPw" id="Tji-Ap-v6G">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="64"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NM3-Jb-E8q">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NM3-Jb-E8q" customClass="UserTrackingButton" customModule="Coordinate" customModuleProvider="target">
                                             <rect key="frame" x="15" y="17" width="50" height="30"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="30" id="A44-0Z-CXu"/>
-                                                <constraint firstAttribute="width" constant="50" id="aiV-JK-cGL"/>
                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="b2M-1V-w5i"/>
                                             </constraints>
                                             <state key="normal" title="Locate"/>
@@ -133,6 +132,9 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="userTrackingButton" destination="NM3-Jb-E8q" id="CMi-Mz-Txy"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
