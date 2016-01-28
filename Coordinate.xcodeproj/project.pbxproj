@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		A04105A61C53AD9200B01C47 /* TransparentTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04105A51C53AD9200B01C47 /* TransparentTableView.swift */; };
 		A04183C41C4EA9E10091D1AF /* MemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04183C31C4EA9E10091D1AF /* MemberTableViewCell.swift */; };
+		A069B6981C5A98C000413CC4 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069B6971C5A98C000413CC4 /* LoginViewController.swift */; };
 		A08B4E5F1C352E7B0043D79D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08B4E5E1C352E7B0043D79D /* AppDelegate.swift */; };
 		A08B4E611C352E7B0043D79D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08B4E601C352E7B0043D79D /* ViewController.swift */; };
 		A08B4E641C352E7B0043D79D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A08B4E621C352E7B0043D79D /* Main.storyboard */; };
@@ -49,6 +50,7 @@
 /* Begin PBXFileReference section */
 		A04105A51C53AD9200B01C47 /* TransparentTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransparentTableView.swift; sourceTree = "<group>"; };
 		A04183C31C4EA9E10091D1AF /* MemberTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberTableViewCell.swift; sourceTree = "<group>"; };
+		A069B6971C5A98C000413CC4 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		A08B4E5B1C352E7B0043D79D /* Coordinate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Coordinate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A08B4E5E1C352E7B0043D79D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A08B4E601C352E7B0043D79D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -147,18 +149,10 @@
 		A08B4E5D1C352E7B0043D79D /* Coordinate */ = {
 			isa = PBXGroup;
 			children = (
-				A0B2B2221C54394F00356333 /* UserTrackingButton.swift */,
-				A0CC8E841C53A4510001897E /* MapViewController.swift */,
 				A08B4E5E1C352E7B0043D79D /* AppDelegate.swift */,
-				A08B4E601C352E7B0043D79D /* ViewController.swift */,
-				A0C7F2B61C5663E4001BD3C5 /* LocationControlTableViewCell.swift */,
+				A0DFD8631C5A28DC00EDA31D /* Views */,
+				A0DFD8621C5A28C700EDA31D /* Controllers */,
 				A08B4E621C352E7B0043D79D /* Main.storyboard */,
-				A04105A51C53AD9200B01C47 /* TransparentTableView.swift */,
-				A09E6DD91C4FC55A00ADC53F /* EventTableViewCell.swift */,
-				A09E6DDB1C4FC57800ADC53F /* EventsTableViewController.swift */,
-				A04183C31C4EA9E10091D1AF /* MemberTableViewCell.swift */,
-				A09E6DD71C4EAF5200ADC53F /* MembersTableViewController.swift */,
-				A0B2B2201C5429E900356333 /* RoundedImageView.swift */,
 				A08B4E681C352E7B0043D79D /* Assets.xcassets */,
 				A08B4E6A1C352E7B0043D79D /* LaunchScreen.storyboard */,
 				A08B4E6D1C352E7B0043D79D /* Info.plist */,
@@ -184,6 +178,31 @@
 				A08B4E831C352E7B0043D79D /* Info.plist */,
 			);
 			path = CoordinateUITests;
+			sourceTree = "<group>";
+		};
+		A0DFD8621C5A28C700EDA31D /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				A0CC8E841C53A4510001897E /* MapViewController.swift */,
+				A08B4E601C352E7B0043D79D /* ViewController.swift */,
+				A09E6DDB1C4FC57800ADC53F /* EventsTableViewController.swift */,
+				A09E6DD71C4EAF5200ADC53F /* MembersTableViewController.swift */,
+				A069B6971C5A98C000413CC4 /* LoginViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		A0DFD8631C5A28DC00EDA31D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A0B2B2221C54394F00356333 /* UserTrackingButton.swift */,
+				A0C7F2B61C5663E4001BD3C5 /* LocationControlTableViewCell.swift */,
+				A04105A51C53AD9200B01C47 /* TransparentTableView.swift */,
+				A09E6DD91C4FC55A00ADC53F /* EventTableViewCell.swift */,
+				A04183C31C4EA9E10091D1AF /* MemberTableViewCell.swift */,
+				A0B2B2201C5429E900356333 /* RoundedImageView.swift */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 		A0FD0E4A1C5044A600984A9E /* InitialSetup */ = {
@@ -377,6 +396,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A069B6981C5A98C000413CC4 /* LoginViewController.swift in Sources */,
 				A0C7F2B71C5663E4001BD3C5 /* LocationControlTableViewCell.swift in Sources */,
 				A0CC8E851C53A4510001897E /* MapViewController.swift in Sources */,
 				A0B2B2231C54394F00356333 /* UserTrackingButton.swift in Sources */,
