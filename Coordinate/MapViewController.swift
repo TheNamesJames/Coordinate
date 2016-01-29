@@ -28,6 +28,7 @@ class MapViewController: UIViewController, PreviewMemberListener {
     }
     self.mapView.addAnnotations(annotations)
     
+    
   }
   
   override func didReceiveMemoryWarning() {
@@ -77,6 +78,10 @@ class MapViewController: UIViewController, PreviewMemberListener {
 
 extension MapViewController: MKMapViewDelegate {
   func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+    if annotation === mapView.userLocation {
+      return nil
+    }
+    
     var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier("MemberPinAnnotation")
     if annotationView == nil {
       annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "MemberPinAnnotation")

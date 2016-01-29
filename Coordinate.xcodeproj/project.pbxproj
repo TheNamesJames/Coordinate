@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A009C3DA1C5B68F200E34A89 /* SimulatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009C3D91C5B68F200E34A89 /* SimulatorViewController.swift */; };
 		A04105A61C53AD9200B01C47 /* TransparentTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04105A51C53AD9200B01C47 /* TransparentTableView.swift */; };
 		A04183C41C4EA9E10091D1AF /* MemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04183C31C4EA9E10091D1AF /* MemberTableViewCell.swift */; };
 		A069B6981C5A98C000413CC4 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069B6971C5A98C000413CC4 /* LoginViewController.swift */; };
@@ -48,6 +49,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A009C3D91C5B68F200E34A89 /* SimulatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimulatorViewController.swift; sourceTree = "<group>"; };
 		A04105A51C53AD9200B01C47 /* TransparentTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransparentTableView.swift; sourceTree = "<group>"; };
 		A04183C31C4EA9E10091D1AF /* MemberTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberTableViewCell.swift; sourceTree = "<group>"; };
 		A069B6971C5A98C000413CC4 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				A0DFD8631C5A28DC00EDA31D /* Views */,
 				A0DFD8621C5A28C700EDA31D /* Controllers */,
 				A08B4E621C352E7B0043D79D /* Main.storyboard */,
+				A009C3D91C5B68F200E34A89 /* SimulatorViewController.swift */,
 				A08B4E681C352E7B0043D79D /* Assets.xcassets */,
 				A08B4E6A1C352E7B0043D79D /* LaunchScreen.storyboard */,
 				A08B4E6D1C352E7B0043D79D /* Info.plist */,
@@ -406,6 +409,7 @@
 				A04183C41C4EA9E10091D1AF /* MemberTableViewCell.swift in Sources */,
 				A08B4E671C352E7B0043D79D /* Coordinate.xcdatamodeld in Sources */,
 				A09E6DD81C4EAF5200ADC53F /* MembersTableViewController.swift in Sources */,
+				A009C3DA1C5B68F200E34A89 /* SimulatorViewController.swift in Sources */,
 				A0DC0BCA1C502C6F00FD378A /* ParseTestViewController.swift in Sources */,
 				A0B2B2211C5429E900356333 /* RoundedImageView.swift in Sources */,
 				A08B4E5F1C352E7B0043D79D /* AppDelegate.swift in Sources */,

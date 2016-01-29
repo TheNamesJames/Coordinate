@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="tHR-6r-rTu">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="O8u-4G-4nP">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
@@ -161,7 +161,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PP6-NH-bHI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1713" y="-370"/>
+            <point key="canvasLocation" x="-2563" y="-370"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="Aiu-5k-dy8">
@@ -281,7 +281,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FcH-4D-URn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-961" y="-370"/>
+            <point key="canvasLocation" x="-1793" y="-370"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Gre-ih-jOS">
@@ -477,7 +477,6 @@
                                     <outlet property="eventImage" destination="zP5-77-J54" id="d7B-uo-qM8"/>
                                     <outlet property="eventLabel" destination="NpV-lV-Hcl" id="Evr-bt-p6h"/>
                                     <outletCollection property="contactImages" destination="wau-kP-jJT" collectionClass="NSMutableArray" id="RMr-vm-EfY"/>
-                                    <segue destination="BYZ-38-t0r" kind="show" identifier="ShowEventSegue" id="xi6-gW-V9o"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -487,10 +486,129 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Events" id="sgz-P6-P0W"/>
+                    <connections>
+                        <segue destination="Tuu-MT-r8B" kind="show" identifier="ShowSimulatorSegue" id="lgV-Jn-itS"/>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="ShowEventSegue" id="ZYN-Fh-var"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XFq-M3-cxZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-177" y="400"/>
+        </scene>
+        <!--Simulator View Controller-->
+        <scene sceneID="Jf2-7k-Xl0">
+            <objects>
+                <viewController id="Tuu-MT-r8B" customClass="SimulatorViewController" customModule="Coordinate" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Iw5-AJ-bfS"/>
+                        <viewControllerLayoutGuide type="bottom" id="XwJ-y9-8Xe"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="5BT-WO-xHt">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login to simulate location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WFu-D8-R06">
+                                <rect key="frame" x="203" y="94" width="195" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="UQV-JN-EVP"/>
+                                    <constraint firstAttribute="width" constant="195" id="Z3Y-Ov-y8x"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fkY-M5-sXj">
+                                <rect key="frame" x="360" y="199" width="38" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="38" id="jJC-qZ-UhS"/>
+                                    <constraint firstAttribute="height" constant="30" id="mZs-fW-Vra"/>
+                                </constraints>
+                                <state key="normal" title="Login"/>
+                                <connections>
+                                    <action selector="loginPressed:" destination="Tuu-MT-r8B" eventType="touchUpInside" id="hcM-Om-R8o"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="brf-3h-9Bp">
+                                <rect key="frame" x="203" y="123" width="195" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="195" id="Riz-3v-Fc4"/>
+                                    <constraint firstAttribute="height" constant="30" id="viH-Kb-rws"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LoI-Mg-rNd">
+                                <rect key="frame" x="203" y="161" width="195" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="I5E-JX-DHu"/>
+                                    <constraint firstAttribute="width" constant="195" id="QS5-yU-CRF"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no"/>
+                            </textField>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eT2-ZY-hjQ">
+                                <rect key="frame" x="0.0" y="298" width="600" height="302"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Tuu-MT-r8B" id="wPq-TN-2bk"/>
+                                </connections>
+                            </mapView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Drag map to set location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lqV-G6-ovK">
+                                <rect key="frame" x="203" y="237" width="195" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="Jgt-nu-KlN"/>
+                                    <constraint firstAttribute="width" constant="195" id="TwX-3K-gxI"/>
+                                    <constraint firstAttribute="height" constant="21" id="bRi-QM-oqv"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="188" id="hg6-BQ-ZF4"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CD4-6Q-8LM">
+                                <rect key="frame" x="203" y="206" width="4" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="lqV-G6-ovK" firstAttribute="centerX" secondItem="5BT-WO-xHt" secondAttribute="centerX" id="0rF-no-9NB"/>
+                            <constraint firstItem="WFu-D8-R06" firstAttribute="centerX" secondItem="5BT-WO-xHt" secondAttribute="centerX" id="1gt-Et-asg"/>
+                            <constraint firstItem="eT2-ZY-hjQ" firstAttribute="top" secondItem="lqV-G6-ovK" secondAttribute="bottom" constant="40" id="2Vu-Fj-GqB"/>
+                            <constraint firstItem="WFu-D8-R06" firstAttribute="top" secondItem="Iw5-AJ-bfS" secondAttribute="bottom" constant="30" id="727-9I-n5I"/>
+                            <constraint firstItem="CD4-6Q-8LM" firstAttribute="baseline" secondItem="fkY-M5-sXj" secondAttribute="baseline" id="9Ef-I6-OPz"/>
+                            <constraint firstItem="brf-3h-9Bp" firstAttribute="top" secondItem="WFu-D8-R06" secondAttribute="bottom" constant="8" id="FPD-Pt-3FI"/>
+                            <constraint firstItem="brf-3h-9Bp" firstAttribute="centerX" secondItem="5BT-WO-xHt" secondAttribute="centerX" id="ISU-ro-Dzw"/>
+                            <constraint firstItem="LoI-Mg-rNd" firstAttribute="centerX" secondItem="5BT-WO-xHt" secondAttribute="centerX" id="OkX-pw-D1V"/>
+                            <constraint firstItem="LoI-Mg-rNd" firstAttribute="top" secondItem="brf-3h-9Bp" secondAttribute="bottom" constant="8" id="XkL-bv-GEn"/>
+                            <constraint firstItem="CD4-6Q-8LM" firstAttribute="leading" secondItem="LoI-Mg-rNd" secondAttribute="leading" id="aiX-01-mwe"/>
+                            <constraint firstItem="eT2-ZY-hjQ" firstAttribute="leading" secondItem="5BT-WO-xHt" secondAttribute="leading" id="eV5-dH-HN7"/>
+                            <constraint firstItem="lqV-G6-ovK" firstAttribute="top" secondItem="fkY-M5-sXj" secondAttribute="bottom" constant="8" id="fXD-vB-lUt"/>
+                            <constraint firstItem="XwJ-y9-8Xe" firstAttribute="top" secondItem="eT2-ZY-hjQ" secondAttribute="bottom" id="mHM-p4-eab"/>
+                            <constraint firstItem="fkY-M5-sXj" firstAttribute="top" secondItem="LoI-Mg-rNd" secondAttribute="bottom" constant="8" id="oie-G2-ALD"/>
+                            <constraint firstItem="fkY-M5-sXj" firstAttribute="trailing" secondItem="LoI-Mg-rNd" secondAttribute="trailing" id="uOD-JK-Xf2"/>
+                            <constraint firstAttribute="trailing" secondItem="eT2-ZY-hjQ" secondAttribute="trailing" id="xEw-tJ-JHX"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="hintLabel" destination="CD4-6Q-8LM" id="HuP-iT-MHa"/>
+                        <outlet property="loginButton" destination="fkY-M5-sXj" id="6Qx-xn-6rn"/>
+                        <outlet property="mapView" destination="eT2-ZY-hjQ" id="C3A-bF-owk"/>
+                        <outlet property="passwordTextField" destination="LoI-Mg-rNd" id="MmI-na-Ndq"/>
+                        <outlet property="usernameTextField" destination="brf-3h-9Bp" id="uJX-f9-niI"/>
+                        <outletCollection property="loginSection" destination="WFu-D8-R06" collectionClass="NSMutableArray" id="bvY-aU-DqJ"/>
+                        <outletCollection property="loginSection" destination="brf-3h-9Bp" collectionClass="NSMutableArray" id="UhF-NG-SX4"/>
+                        <outletCollection property="loginSection" destination="LoI-Mg-rNd" collectionClass="NSMutableArray" id="gpZ-Ju-kmC"/>
+                        <outletCollection property="loginSection" destination="fkY-M5-sXj" collectionClass="NSMutableArray" id="ZNa-55-6zx"/>
+                        <outletCollection property="simulatorSection" destination="lqV-G6-ovK" collectionClass="NSMutableArray" id="ZPf-Xs-rJo"/>
+                        <outletCollection property="simulatorSection" destination="eT2-ZY-hjQ" collectionClass="NSMutableArray" id="wDR-iM-rOC"/>
+                        <outletCollection property="loginSection" destination="CD4-6Q-8LM" collectionClass="NSMutableArray" id="iph-Ti-GiI"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KlB-hz-vrM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-177" y="-307"/>
         </scene>
         <!--Map View Controller-->
         <scene sceneID="vQt-NQ-UjC">
@@ -525,7 +643,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q1c-wl-IGd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="585" y="-275"/>
+            <point key="canvasLocation" x="585" y="-339"/>
         </scene>
     </scenes>
     <resources>
