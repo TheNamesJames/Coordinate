@@ -11,7 +11,7 @@ import Parse
 
 class LoginViewController: UIViewController {
   
-  
+// FIXME: Update UI to look like screenshot jobs app
   @IBOutlet weak var usernameTextField: UITextField!
   @IBOutlet weak var firstNameTextField: UITextField!
   @IBOutlet weak var passwordTextField: UITextField!
@@ -24,19 +24,53 @@ class LoginViewController: UIViewController {
   private var newUser = true
   
   @IBAction func rightButtonPressed(sender: UIBarButtonItem) {
+    let oldRightBarButtonItem = self.navigationItem.rightBarButtonItem
+    let spinner = UIActivityIndicatorView(frame: CGRectMake(0, 0, 20, 20))
+    spinner.activityIndicatorViewStyle = .Gray
+    let spinnerBarButton = UIBarButtonItem(customView: spinner)
+    self.navigationItem.setRightBarButtonItem(spinnerBarButton, animated: true)
+    spinner.startAnimating()
+    
+    
+    let whitespace = NSCharacterSet.whitespaceAndNewlineCharacterSet()
+    let user = usernameTextField.text?.stringByTrimmingCharactersInSet(whitespace)
+    let pass = passwordTextField.text
+    
     if newUser {
+      let first = firstNameTextField.text?.stringByTrimmingCharactersInSet(whitespace)
+      let confirm = confirmTextField.text
       
+      if let user = user where !user.isEmpty,
+        let first = first where !first.isEmpty,
+        let pass = pass where !pass.isEmpty,
+        let confirm = confirm where confirm == pass {
+          let newGuy = PFUser()
+          newGuy.username = first
+          newGuy.password = pass
+          newGuy.email = user
+          newGuy.signUpInBackgroundWithBlock({ (success, error) -> Void in
+            if let error = error {
+              print(error)
+              self.hintLabel.text = "Signup failed. oops"
+              self.hintLabel.textColor = UIColor.redColor()
+            } else {
+              print("success")
+            }
+            
+            self.navigationItem.setRightBarButtonItem(oldRightBarButtonItem, animated: true)
+          })
+      }
     } else {
-      let whitespace = NSCharacterSet.whitespaceAndNewlineCharacterSet()
-      let user = usernameTextField.text?.stringByTrimmingCharactersInSet(whitespace)
-      let pass = passwordTextField.text?.stringByTrimmingCharactersInSet(whitespace)
       if let user = user where !user.isEmpty,
         let pass = pass where !pass.isEmpty {
           PFUser.logInWithUsernameInBackground(user, password: pass, block: { (user, error) -> Void in
             if let error = error {
               print(error)
               self.hintLabel.text = "Incorrect.. Try again"
+            } else {
+              print("success")
             }
+            self.navigationItem.setRightBarButtonItem(oldRightBarButtonItem, animated: true)
           })
       }
     }
@@ -46,20 +80,19 @@ class LoginViewController: UIViewController {
     if newUser {
       self.navigationItem.rightBarButtonItem?.title = "Login"
       
-      if self.firstNameTextField.isFirstResponder() || self.confirmTextField.isFirstResponder() {
-        self.usernameTextField.becomeFirstResponder()
-      }
-      
       UIView.animateWithDuration(0.1, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
         self.firstNameTextField.alpha = 0
         self.confirmTextField.alpha = 0
-        }, completion: { (_) -> Void in
-      })
+        }, completion: nil)
       
       UIView.animateWithDuration(0.15, delay: 0.05, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
         self.passwordTextField.frame = self.firstNameTextField.frame
+        self.switchUserType.titleLabel?.text = "I'm a new user"
         }, completion: { (_) -> Void in
           self.newUser = false
+          if self.firstNameTextField.isFirstResponder() || self.confirmTextField.isFirstResponder() {
+            self.usernameTextField.becomeFirstResponder()
+          }
       })
     } else {
       self.navigationItem.rightBarButtonItem?.title = "Sign up"
@@ -68,8 +101,8 @@ class LoginViewController: UIViewController {
         let yDiff = (self.confirmTextField.frame.origin.y - self.firstNameTextField.frame.origin.y) / 2
         let frame = self.passwordTextField.frame.offsetBy(dx: 0.0, dy: yDiff)
         self.passwordTextField.frame = frame
-        }, completion: { (_) -> Void in
-      })
+        self.switchUserType.titleLabel?.text = "Already have an account?"
+        }, completion: nil)
       
       UIView.animateWithDuration(0.1, delay: 0.1, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
         self.firstNameTextField.alpha = 1
@@ -93,7 +126,7 @@ class LoginViewController: UIViewController {
         }
         
         UIView.animateWithDuration(duration, delay: 0.0, options: curve, animations: { () -> Void in
-          self.view.layoutIfNeeded()
+          self.view.layoutSubviews()
           }, completion: nil)
       }
     }
@@ -108,7 +141,7 @@ class LoginViewController: UIViewController {
         self.textFieldConstraint.constant = 0
 
         UIView.animateWithDuration(duration, delay: 0.0, options: curve, animations: { () -> Void in
-          self.view.layoutIfNeeded()
+          self.view.layoutSubviews()
           }, completion: nil)
       }
     }
@@ -150,25 +183,36 @@ class LoginViewController: UIViewController {
 extension LoginViewController: UITextFieldDelegate {
   func textFieldShouldReturn(textField: UITextField) -> Bool {
     
+    var shouldReturn = false
+    
     switch textField {
     case self.usernameTextField:
       let next = self.newUser ? self.firstNameTextField : self.passwordTextField
       next.becomeFirstResponder()
+
     case self.firstNameTextField:
       self.passwordTextField.becomeFirstResponder()
+
     case self.passwordTextField:
       if newUser {
         self.confirmTextField.becomeFirstResponder()
       } else {
         textField.resignFirstResponder()
+        shouldReturn = true
       }
     case self.confirmTextField:
       textField.resignFirstResponder()
+      shouldReturn = true
       
     default:
       break
     }
     
-    return true
+    if !shouldReturn {
+      textField.setNeedsLayout()
+      textField.layoutIfNeeded()
+    }
+    
+    return shouldReturn
   }
 }
