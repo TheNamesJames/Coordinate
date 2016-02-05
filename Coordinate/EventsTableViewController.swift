@@ -123,11 +123,15 @@ class EventsTableViewController: UITableViewController {
   */
   
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-      self.performSegueWithIdentifier("ShowSimulatorSegue", sender: nil)
-    } else {
+//    if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+//      self.performSegueWithIdentifier("ShowSimulatorSegue", sender: nil)
+//    } else {
       self.performSegueWithIdentifier("ShowEventSegue", sender: tableView.cellForRowAtIndexPath(indexPath))
-    }
+//    }
+  }
+  
+  override func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
+    self.performSegueWithIdentifier("ShowSimulatorSegue", sender: tableView.cellForRowAtIndexPath(indexPath))
   }
   
   

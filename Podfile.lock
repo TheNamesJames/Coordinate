@@ -10,10 +10,10 @@ PODS:
     - CocoaLumberjack/Default
   - Parse (1.12.0):
     - Bolts/Tasks (~> 1.5)
-  - PubNub (4.2.3):
+  - PubNub (4.2.5):
     - CocoaLumberjack (= 2.2.0)
-    - PubNub/Core (= 4.2.3)
-  - PubNub/Core (4.2.3):
+    - PubNub/Core (= 4.2.5)
+  - PubNub/Core (4.2.5):
     - CocoaLumberjack (= 2.2.0)
 
 DEPENDENCIES:
@@ -24,6 +24,6 @@ SPEC CHECKSUMS:
   Bolts: f52a250053bb517ca874523c3913776359ab3def
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
   Parse: de2c52a9a1421b91ae7594ab8ce191afd184f19b
-  PubNub: 461805c30ce11332a6ee5ab2c34be2d4c82c38d7
+  PubNub: 92c9e3556a5666a597bcf613c72e2e426d3321d4
 
 COCOAPODS: 0.39.0

@@ -434,11 +434,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="EventCell" id="RGE-rM-8aF" customClass="EventTableViewCell" customModule="Coordinate" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="EventCell" id="RGE-rM-8aF" customClass="EventTableViewCell" customModule="Coordinate" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="92" width="600" height="88"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RGE-rM-8aF" id="chv-pC-Gae">
-                                    <rect key="frame" x="0.0" y="0.0" width="567" height="88"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="553" height="88"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zP5-77-J54" customClass="RoundedImageView" customModule="Coordinate" customModuleProvider="target">
@@ -453,7 +453,7 @@
                                                 <constraint firstAttribute="width" secondItem="wau-kP-jJT" secondAttribute="height" multiplier="1:1" id="Rlq-y4-0rX"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NpV-lV-Hcl">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NpV-lV-Hcl">
                                             <rect key="frame" x="88" y="8" width="466" height="28"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -546,10 +546,12 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                             </textField>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eT2-ZY-hjQ">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" pitchEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eT2-ZY-hjQ">
                                 <rect key="frame" x="0.0" y="298" width="600" height="302"/>
+                                <gestureRecognizers/>
                                 <connections>
                                     <outlet property="delegate" destination="Tuu-MT-r8B" id="wPq-TN-2bk"/>
+                                    <outletCollection property="gestureRecognizers" destination="2a6-fb-ZT8" appends="YES" id="ni1-U7-YVg"/>
                                 </connections>
                             </mapView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Drag map to set location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lqV-G6-ovK">
@@ -570,6 +572,14 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Location Pin Blue" translatesAutoresizingMaskIntoConstraints="NO" id="Zrx-zl-LS6">
+                                <rect key="frame" x="280" y="409" width="40" height="40"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="0zF-PL-KgE"/>
+                                    <constraint firstAttribute="width" secondItem="Zrx-zl-LS6" secondAttribute="height" multiplier="1:1" id="oPn-iw-ge5"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -578,10 +588,12 @@
                             <constraint firstItem="eT2-ZY-hjQ" firstAttribute="top" secondItem="lqV-G6-ovK" secondAttribute="bottom" constant="40" id="2Vu-Fj-GqB"/>
                             <constraint firstItem="WFu-D8-R06" firstAttribute="top" secondItem="Iw5-AJ-bfS" secondAttribute="bottom" constant="30" id="727-9I-n5I"/>
                             <constraint firstItem="CD4-6Q-8LM" firstAttribute="baseline" secondItem="fkY-M5-sXj" secondAttribute="baseline" id="9Ef-I6-OPz"/>
+                            <constraint firstItem="Zrx-zl-LS6" firstAttribute="centerY" secondItem="eT2-ZY-hjQ" secondAttribute="centerY" constant="-20" id="9Nq-RX-i3u"/>
                             <constraint firstItem="brf-3h-9Bp" firstAttribute="top" secondItem="WFu-D8-R06" secondAttribute="bottom" constant="8" id="FPD-Pt-3FI"/>
                             <constraint firstItem="brf-3h-9Bp" firstAttribute="centerX" secondItem="5BT-WO-xHt" secondAttribute="centerX" id="ISU-ro-Dzw"/>
                             <constraint firstItem="LoI-Mg-rNd" firstAttribute="centerX" secondItem="5BT-WO-xHt" secondAttribute="centerX" id="OkX-pw-D1V"/>
                             <constraint firstItem="LoI-Mg-rNd" firstAttribute="top" secondItem="brf-3h-9Bp" secondAttribute="bottom" constant="8" id="XkL-bv-GEn"/>
+                            <constraint firstItem="Zrx-zl-LS6" firstAttribute="centerX" secondItem="eT2-ZY-hjQ" secondAttribute="centerX" id="ZA9-ig-co6"/>
                             <constraint firstItem="CD4-6Q-8LM" firstAttribute="leading" secondItem="LoI-Mg-rNd" secondAttribute="leading" id="aiX-01-mwe"/>
                             <constraint firstItem="eT2-ZY-hjQ" firstAttribute="leading" secondItem="5BT-WO-xHt" secondAttribute="leading" id="eV5-dH-HN7"/>
                             <constraint firstItem="lqV-G6-ovK" firstAttribute="top" secondItem="fkY-M5-sXj" secondAttribute="bottom" constant="8" id="fXD-vB-lUt"/>
@@ -592,6 +604,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="centerPin" destination="Zrx-zl-LS6" id="JzI-9J-YMa"/>
                         <outlet property="hintLabel" destination="CD4-6Q-8LM" id="HuP-iT-MHa"/>
                         <outlet property="loginButton" destination="fkY-M5-sXj" id="6Qx-xn-6rn"/>
                         <outlet property="mapView" destination="eT2-ZY-hjQ" id="C3A-bF-owk"/>
@@ -607,6 +620,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KlB-hz-vrM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" maximumNumberOfTouches="2" id="2a6-fb-ZT8">
+                    <connections>
+                        <action selector="panned:" destination="Tuu-MT-r8B" id="glL-Ut-Hp2"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-177" y="-307"/>
         </scene>
@@ -648,5 +666,6 @@
     </scenes>
     <resources>
         <image name="Contact" width="36" height="36"/>
+        <image name="Location Pin Blue" width="49" height="66"/>
     </resources>
 </document>

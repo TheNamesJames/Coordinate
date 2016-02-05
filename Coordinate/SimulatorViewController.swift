@@ -16,6 +16,7 @@ class SimulatorViewController: UIViewController {
   @IBOutlet weak var passwordTextField: UITextField!
   @IBOutlet weak var loginButton: UIButton!
   @IBOutlet weak var hintLabel: UILabel!
+  @IBOutlet weak var centerPin: UIImageView!
   
   @IBOutlet var loginSection: [UIView]!
   
@@ -50,10 +51,10 @@ class SimulatorViewController: UIViewController {
     super.viewDidLoad()
     
     // Do any additional setup after loading the view.
-    self.simulatorSection.forEach { (view) -> () in
-      view.alpha = 0.4
-      view.userInteractionEnabled = false
-    }
+//    self.simulatorSection.forEach { (view) -> () in
+//      view.alpha = 0.4
+//      view.userInteractionEnabled = false
+//    }
   }
   
   override func didReceiveMemoryWarning() {
@@ -61,6 +62,10 @@ class SimulatorViewController: UIViewController {
     // Dispose of any resources that can be recreated.
   }
   
+  
+  @IBAction func panned(sender: AnyObject) {
+    
+  }
   
   /*
   // MARK: - Navigation
@@ -72,4 +77,48 @@ class SimulatorViewController: UIViewController {
   }
   */
   
+}
+
+extension SimulatorViewController: MKMapViewDelegate {
+  func mapView(mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
+    if animated {
+      UIView.animateWithDuration(0.05, animations: { () -> Void in
+        self.centerPin.alpha = 0.7
+      })
+    } else {
+      self.centerPin.alpha = 0.7
+    }
+  }
+  
+  func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+    if animated {
+      UIView.animateWithDuration(0.05, animations: { () -> Void in
+        self.centerPin.alpha = 1
+      })
+    } else {
+      self.centerPin.alpha = 1
+    }
+    
+    let newCenter = mapView.region.center
+    print(newCenter)
+    var dataDictionary: [String:AnyObject] = [:]
+    // TODO: Add name/id of user
+    dataDictionary["latitude"] = newCenter.latitude
+    dataDictionary["longitude"] = newCenter.longitude
+    
+    if NSJSONSerialization.isValidJSONObject(dataDictionary) {
+      do {
+        let data = try NSJSONSerialization.dataWithJSONObject(dataDictionary, options: NSJSONWritingOptions.init(rawValue: 0))
+        if let message = NSString(data: data, encoding: NSUTF8StringEncoding) {
+          let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+          delegate.pubnubClient?.publish(message, toChannel: delegate.channel, withCompletion: { (status) -> Void in
+            print(status)
+          })
+        }
+        
+      } catch let error {
+        print(error)
+      }
+    }
+  }
 }
