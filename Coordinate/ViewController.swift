@@ -29,7 +29,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, PreviewMember
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view, typically from a nib.
-    print("Hello World!")
     self.locationManager.delegate = self
     if CLLocationManager.locationServicesEnabled() {
       print("Location services enabled")
@@ -40,7 +39,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, PreviewMember
     }
     
     self.membersTVC = self.storyboard!.instantiateViewControllerWithIdentifier("MembersTableViewController") as! MembersTableViewController
-    self.membersTVC.data = self.data
+//    self.membersTVC.data = self.data
     self.membersTVC.mapView = self.mapVC.mapView
     self.membersTVC.addPreviewMemberListener(self.mapVC)
     self.membersTVC.addPreviewMemberListener(self)
@@ -136,12 +135,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, PreviewMember
   
   private var prePreviewTitle: String? = nil
   
-  func previewMember(member: Member?) {
+  func previewMember(member: User?) {
     if let member = member {
       if prePreviewTitle == nil {
         prePreviewTitle = self.title
       }
-      self.title = member.name
+      self.title = member.first!
     } else {
       if self.prePreviewTitle != nil {
         self.title = prePreviewTitle

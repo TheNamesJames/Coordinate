@@ -8,53 +8,19 @@
 
 import UIKit
 import MapKit
-import Parse
+import Firebase
 
 class SimulatorViewController: UIViewController {
   
-  @IBOutlet weak var usernameTextField: UITextField!
-  @IBOutlet weak var passwordTextField: UITextField!
-  @IBOutlet weak var loginButton: UIButton!
-  @IBOutlet weak var hintLabel: UILabel!
-  @IBOutlet weak var centerPin: UIImageView!
+  let ref = Firebase(url: "https://dazzling-heat-2970.firebaseio.com/")
   
-  @IBOutlet var loginSection: [UIView]!
+  var team: Team!
   
   @IBOutlet weak var mapView: MKMapView!
-  @IBOutlet var simulatorSection: [UIView]!
-  
-  @IBAction func loginPressed(sender: AnyObject) {
-    if let user = usernameTextField.text where !user.isEmpty,
-      let pass = passwordTextField.text where !pass.isEmpty {
-        PFUser.logInWithUsernameInBackground(user, password: pass, block: { (user, error) -> Void in
-          if let error = error {
-            print(error)
-            self.hintLabel.text = "Incorrect.. Try again"
-          } else {
-            print("success")
-          }
-          UIView.animateWithDuration(0.2, animations: { () -> Void in
-            self.loginSection.forEach({ (view) -> () in
-              view.alpha = 0.3
-              view.userInteractionEnabled = false
-            })
-            self.simulatorSection.forEach({ (view) -> () in
-              view.alpha = 1.0
-              view.userInteractionEnabled = true
-            })
-          })
-        })
-    }
-  }
+  @IBOutlet weak var centerPin: UIImageView!
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    // Do any additional setup after loading the view.
-//    self.simulatorSection.forEach { (view) -> () in
-//      view.alpha = 0.4
-//      view.userInteractionEnabled = false
-//    }
   }
   
   override func didReceiveMemoryWarning() {
@@ -100,25 +66,11 @@ extension SimulatorViewController: MKMapViewDelegate {
     }
     
     let newCenter = mapView.region.center
-    print(newCenter)
     var dataDictionary: [String:AnyObject] = [:]
     // TODO: Add name/id of user
-    dataDictionary["latitude"] = newCenter.latitude
-    dataDictionary["longitude"] = newCenter.longitude
+    dataDictionary["lat"] = newCenter.latitude
+    dataDictionary["lon"] = newCenter.longitude
     
-    if NSJSONSerialization.isValidJSONObject(dataDictionary) {
-      do {
-        let data = try NSJSONSerialization.dataWithJSONObject(dataDictionary, options: NSJSONWritingOptions.init(rawValue: 0))
-        if let message = NSString(data: data, encoding: NSUTF8StringEncoding) {
-          let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
-          delegate.pubnubClient?.publish(message, toChannel: delegate.channel, withCompletion: { (status) -> Void in
-            print(status)
-          })
-        }
-        
-      } catch let error {
-        print(error)
-      }
-    }
+    ref.childByAppendingPath("locations/\(team.id)/\(team.currentMember.username)").childByAutoId().setValue(dataDictionary)
   }
 }

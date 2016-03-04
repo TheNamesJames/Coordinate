@@ -54,7 +54,7 @@ class MapViewController: UIViewController, PreviewMemberListener {
   
   private var prePreviewMapRect: MKMapRect? = nil
   
-  func previewMember(member: Member?) {
+  func previewMember(member: User?) {
     if let member = member {
       if prePreviewMapRect == nil {
         prePreviewMapRect = self.mapView.visibleMapRect
@@ -63,7 +63,7 @@ class MapViewController: UIViewController, PreviewMemberListener {
       var region = self.mapView.region;
       let span = MKCoordinateSpanMake(0.005, 0.005);
       
-      region.center = member.location;
+      region.center = member.location!;
       
       region.span = span;
       

@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PNObjectEventListener {
     configuration.TLSEnabled = true
     // Instantiate PubNub client.
 //FIXME: Reinstate pubnub stuff
-    pubnubClient = PubNub.clientWithConfiguration(configuration)
+//    pubnubClient = PubNub.clientWithConfiguration(configuration)
     
     super.init()
     pubnubClient?.addListener(self)

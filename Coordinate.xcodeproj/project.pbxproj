@@ -7,25 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A005DCB51C86E6B900C42922 /* NewTeamContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A005DCB41C86E6B900C42922 /* NewTeamContainerViewController.swift */; };
+		A005DCB71C8727C800C42922 /* MembershipTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A005DCB61C8727C800C42922 /* MembershipTableViewController.swift */; };
+		A005DCBB1C87421F00C42922 /* TeamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A005DCBA1C87421F00C42922 /* TeamViewController.swift */; };
+		A005DCBD1C87426600C42922 /* TeamMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A005DCBC1C87426600C42922 /* TeamMapViewController.swift */; };
+		A005DCBF1C875AD800C42922 /* TeamMembersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A005DCBE1C875AD800C42922 /* TeamMembersTableViewController.swift */; };
 		A009C3DA1C5B68F200E34A89 /* SimulatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009C3D91C5B68F200E34A89 /* SimulatorViewController.swift */; };
+		A00FCF8D1C801D3B00396263 /* NewTeamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00FCF8C1C801D3B00396263 /* NewTeamViewController.swift */; };
+		A00FCF8F1C8026B200396263 /* ShowAllMembersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00FCF8E1C8026B200396263 /* ShowAllMembersTableViewController.swift */; };
+		A00FCF911C802D3900396263 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00FCF901C802D3900396263 /* Team.swift */; };
+		A0283EA31C68D24D00B5E44D /* FirebaseTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0283EA21C68D24D00B5E44D /* FirebaseTestViewController.swift */; };
 		A04105A61C53AD9200B01C47 /* TransparentTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04105A51C53AD9200B01C47 /* TransparentTableView.swift */; };
 		A04183C41C4EA9E10091D1AF /* MemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04183C31C4EA9E10091D1AF /* MemberTableViewCell.swift */; };
 		A069B6981C5A98C000413CC4 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069B6971C5A98C000413CC4 /* LoginViewController.swift */; };
 		A08B4E5F1C352E7B0043D79D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08B4E5E1C352E7B0043D79D /* AppDelegate.swift */; };
-		A08B4E611C352E7B0043D79D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08B4E601C352E7B0043D79D /* ViewController.swift */; };
 		A08B4E641C352E7B0043D79D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A08B4E621C352E7B0043D79D /* Main.storyboard */; };
 		A08B4E671C352E7B0043D79D /* Coordinate.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A08B4E651C352E7B0043D79D /* Coordinate.xcdatamodeld */; };
 		A08B4E691C352E7B0043D79D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A08B4E681C352E7B0043D79D /* Assets.xcassets */; };
 		A08B4E6C1C352E7B0043D79D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A08B4E6A1C352E7B0043D79D /* LaunchScreen.storyboard */; };
 		A08B4E771C352E7B0043D79D /* CoordinateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08B4E761C352E7B0043D79D /* CoordinateTests.swift */; };
 		A08B4E821C352E7B0043D79D /* CoordinateUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08B4E811C352E7B0043D79D /* CoordinateUITests.swift */; };
-		A09E6DD81C4EAF5200ADC53F /* MembersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09E6DD71C4EAF5200ADC53F /* MembersTableViewController.swift */; };
 		A09E6DDA1C4FC55A00ADC53F /* EventTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09E6DD91C4FC55A00ADC53F /* EventTableViewCell.swift */; };
-		A09E6DDC1C4FC57800ADC53F /* EventsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09E6DDB1C4FC57800ADC53F /* EventsTableViewController.swift */; };
 		A0B2B2211C5429E900356333 /* RoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B2B2201C5429E900356333 /* RoundedImageView.swift */; };
 		A0B2B2231C54394F00356333 /* UserTrackingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B2B2221C54394F00356333 /* UserTrackingButton.swift */; };
 		A0C7F2B71C5663E4001BD3C5 /* LocationControlTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C7F2B61C5663E4001BD3C5 /* LocationControlTableViewCell.swift */; };
-		A0CC8E851C53A4510001897E /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CC8E841C53A4510001897E /* MapViewController.swift */; };
 		A0D7B5BC1C47B68E00F1F3C1 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0D7B5BB1C47B68E00F1F3C1 /* MapKit.framework */; };
 		A0DC0BCA1C502C6F00FD378A /* ParseTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DC0BC91C502C6F00FD378A /* ParseTestViewController.swift */; };
 		FE159DA21B523D88F67C4AE6 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF3F27652FDEBDFE62FE93EC /* Pods.framework */; };
@@ -49,13 +54,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A005DCB41C86E6B900C42922 /* NewTeamContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTeamContainerViewController.swift; sourceTree = "<group>"; };
+		A005DCB61C8727C800C42922 /* MembershipTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MembershipTableViewController.swift; sourceTree = "<group>"; };
+		A005DCBA1C87421F00C42922 /* TeamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamViewController.swift; sourceTree = "<group>"; };
+		A005DCBC1C87426600C42922 /* TeamMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamMapViewController.swift; sourceTree = "<group>"; };
+		A005DCBE1C875AD800C42922 /* TeamMembersTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamMembersTableViewController.swift; sourceTree = "<group>"; };
 		A009C3D91C5B68F200E34A89 /* SimulatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimulatorViewController.swift; sourceTree = "<group>"; };
+		A00FCF8C1C801D3B00396263 /* NewTeamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTeamViewController.swift; sourceTree = "<group>"; };
+		A00FCF8E1C8026B200396263 /* ShowAllMembersTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowAllMembersTableViewController.swift; sourceTree = "<group>"; };
+		A00FCF901C802D3900396263 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
+		A0283EA21C68D24D00B5E44D /* FirebaseTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseTestViewController.swift; sourceTree = "<group>"; };
 		A04105A51C53AD9200B01C47 /* TransparentTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransparentTableView.swift; sourceTree = "<group>"; };
 		A04183C31C4EA9E10091D1AF /* MemberTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberTableViewCell.swift; sourceTree = "<group>"; };
 		A069B6971C5A98C000413CC4 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		A08B4E5B1C352E7B0043D79D /* Coordinate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Coordinate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A08B4E5E1C352E7B0043D79D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A08B4E601C352E7B0043D79D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A08B4E631C352E7B0043D79D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A08B4E661C352E7B0043D79D /* Coordinate.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Coordinate.xcdatamodel; sourceTree = "<group>"; };
 		A08B4E681C352E7B0043D79D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -67,13 +80,10 @@
 		A08B4E7D1C352E7B0043D79D /* CoordinateUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoordinateUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A08B4E811C352E7B0043D79D /* CoordinateUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateUITests.swift; sourceTree = "<group>"; };
 		A08B4E831C352E7B0043D79D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A09E6DD71C4EAF5200ADC53F /* MembersTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MembersTableViewController.swift; sourceTree = "<group>"; };
 		A09E6DD91C4FC55A00ADC53F /* EventTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTableViewCell.swift; sourceTree = "<group>"; };
-		A09E6DDB1C4FC57800ADC53F /* EventsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsTableViewController.swift; sourceTree = "<group>"; };
 		A0B2B2201C5429E900356333 /* RoundedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedImageView.swift; sourceTree = "<group>"; };
 		A0B2B2221C54394F00356333 /* UserTrackingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTrackingButton.swift; sourceTree = "<group>"; };
 		A0C7F2B61C5663E4001BD3C5 /* LocationControlTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationControlTableViewCell.swift; sourceTree = "<group>"; };
-		A0CC8E841C53A4510001897E /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		A0D7B5BB1C47B68E00F1F3C1 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		A0DC0BC91C502C6F00FD378A /* ParseTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseTestViewController.swift; sourceTree = "<group>"; };
 		AA0CFF06E68CB79057393298 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -151,6 +161,7 @@
 		A08B4E5D1C352E7B0043D79D /* Coordinate */ = {
 			isa = PBXGroup;
 			children = (
+				A00FCF901C802D3900396263 /* Team.swift */,
 				A08B4E5E1C352E7B0043D79D /* AppDelegate.swift */,
 				A0DFD8631C5A28DC00EDA31D /* Views */,
 				A0DFD8621C5A28C700EDA31D /* Controllers */,
@@ -186,11 +197,14 @@
 		A0DFD8621C5A28C700EDA31D /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				A0CC8E841C53A4510001897E /* MapViewController.swift */,
-				A08B4E601C352E7B0043D79D /* ViewController.swift */,
-				A09E6DDB1C4FC57800ADC53F /* EventsTableViewController.swift */,
-				A09E6DD71C4EAF5200ADC53F /* MembersTableViewController.swift */,
 				A069B6971C5A98C000413CC4 /* LoginViewController.swift */,
+				A005DCB61C8727C800C42922 /* MembershipTableViewController.swift */,
+				A005DCBA1C87421F00C42922 /* TeamViewController.swift */,
+				A005DCBE1C875AD800C42922 /* TeamMembersTableViewController.swift */,
+				A005DCBC1C87426600C42922 /* TeamMapViewController.swift */,
+				A005DCB41C86E6B900C42922 /* NewTeamContainerViewController.swift */,
+				A00FCF8E1C8026B200396263 /* ShowAllMembersTableViewController.swift */,
+				A00FCF8C1C801D3B00396263 /* NewTeamViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -211,6 +225,7 @@
 		A0FD0E4A1C5044A600984A9E /* InitialSetup */ = {
 			isa = PBXGroup;
 			children = (
+				A0283EA21C68D24D00B5E44D /* FirebaseTestViewController.swift */,
 				A0DC0BC91C502C6F00FD378A /* ParseTestViewController.swift */,
 			);
 			name = InitialSetup;
@@ -399,16 +414,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A005DCBB1C87421F00C42922 /* TeamViewController.swift in Sources */,
 				A069B6981C5A98C000413CC4 /* LoginViewController.swift in Sources */,
 				A0C7F2B71C5663E4001BD3C5 /* LocationControlTableViewCell.swift in Sources */,
-				A0CC8E851C53A4510001897E /* MapViewController.swift in Sources */,
+				A005DCB71C8727C800C42922 /* MembershipTableViewController.swift in Sources */,
+				A005DCBD1C87426600C42922 /* TeamMapViewController.swift in Sources */,
+				A005DCB51C86E6B900C42922 /* NewTeamContainerViewController.swift in Sources */,
+				A00FCF911C802D3900396263 /* Team.swift in Sources */,
+				A005DCBF1C875AD800C42922 /* TeamMembersTableViewController.swift in Sources */,
 				A0B2B2231C54394F00356333 /* UserTrackingButton.swift in Sources */,
 				A09E6DDA1C4FC55A00ADC53F /* EventTableViewCell.swift in Sources */,
-				A08B4E611C352E7B0043D79D /* ViewController.swift in Sources */,
-				A09E6DDC1C4FC57800ADC53F /* EventsTableViewController.swift in Sources */,
+				A00FCF8F1C8026B200396263 /* ShowAllMembersTableViewController.swift in Sources */,
+				A0283EA31C68D24D00B5E44D /* FirebaseTestViewController.swift in Sources */,
 				A04183C41C4EA9E10091D1AF /* MemberTableViewCell.swift in Sources */,
 				A08B4E671C352E7B0043D79D /* Coordinate.xcdatamodeld in Sources */,
-				A09E6DD81C4EAF5200ADC53F /* MembersTableViewController.swift in Sources */,
+				A00FCF8D1C801D3B00396263 /* NewTeamViewController.swift in Sources */,
 				A009C3DA1C5B68F200E34A89 /* SimulatorViewController.swift in Sources */,
 				A0DC0BCA1C502C6F00FD378A /* ParseTestViewController.swift in Sources */,
 				A0B2B2211C5429E900356333 /* RoundedImageView.swift in Sources */,
@@ -561,6 +581,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "co.james-wilkinson.Coordinate";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -574,6 +595,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "co.james-wilkinson.Coordinate";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
