@@ -20,6 +20,8 @@
 		A04105A61C53AD9200B01C47 /* TransparentTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04105A51C53AD9200B01C47 /* TransparentTableView.swift */; };
 		A04183C41C4EA9E10091D1AF /* MemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04183C31C4EA9E10091D1AF /* MemberTableViewCell.swift */; };
 		A069B6981C5A98C000413CC4 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069B6971C5A98C000413CC4 /* LoginViewController.swift */; };
+		A07F4F3F1C8F384400BEB4A0 /* TeamTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07F4F3E1C8F384400BEB4A0 /* TeamTransition.swift */; };
+		A07F4F441C8F495400BEB4A0 /* TransitionManagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07F4F431C8F495400BEB4A0 /* TransitionManagerController.swift */; };
 		A08B4E5F1C352E7B0043D79D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08B4E5E1C352E7B0043D79D /* AppDelegate.swift */; };
 		A08B4E641C352E7B0043D79D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A08B4E621C352E7B0043D79D /* Main.storyboard */; };
 		A08B4E671C352E7B0043D79D /* Coordinate.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A08B4E651C352E7B0043D79D /* Coordinate.xcdatamodeld */; };
@@ -67,6 +69,8 @@
 		A04105A51C53AD9200B01C47 /* TransparentTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransparentTableView.swift; sourceTree = "<group>"; };
 		A04183C31C4EA9E10091D1AF /* MemberTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberTableViewCell.swift; sourceTree = "<group>"; };
 		A069B6971C5A98C000413CC4 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		A07F4F3E1C8F384400BEB4A0 /* TeamTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamTransition.swift; sourceTree = "<group>"; };
+		A07F4F431C8F495400BEB4A0 /* TransitionManagerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionManagerController.swift; sourceTree = "<group>"; };
 		A08B4E5B1C352E7B0043D79D /* Coordinate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Coordinate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A08B4E5E1C352E7B0043D79D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A08B4E631C352E7B0043D79D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -136,6 +140,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		A07F4F3D1C8F380700BEB4A0 /* AnimationControllers */ = {
+			isa = PBXGroup;
+			children = (
+				A07F4F3E1C8F384400BEB4A0 /* TeamTransition.swift */,
+				A07F4F431C8F495400BEB4A0 /* TransitionManagerController.swift */,
+			);
+			name = AnimationControllers;
+			sourceTree = "<group>";
+		};
 		A08B4E521C352E7B0043D79D = {
 			isa = PBXGroup;
 			children = (
@@ -197,6 +210,7 @@
 		A0DFD8621C5A28C700EDA31D /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				A07F4F3D1C8F380700BEB4A0 /* AnimationControllers */,
 				A069B6971C5A98C000413CC4 /* LoginViewController.swift */,
 				A005DCB61C8727C800C42922 /* MembershipTableViewController.swift */,
 				A005DCBA1C87421F00C42922 /* TeamViewController.swift */,
@@ -414,6 +428,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A07F4F441C8F495400BEB4A0 /* TransitionManagerController.swift in Sources */,
 				A005DCBB1C87421F00C42922 /* TeamViewController.swift in Sources */,
 				A069B6981C5A98C000413CC4 /* LoginViewController.swift in Sources */,
 				A0C7F2B71C5663E4001BD3C5 /* LocationControlTableViewCell.swift in Sources */,
@@ -423,6 +438,7 @@
 				A00FCF911C802D3900396263 /* Team.swift in Sources */,
 				A005DCBF1C875AD800C42922 /* TeamMembersTableViewController.swift in Sources */,
 				A0B2B2231C54394F00356333 /* UserTrackingButton.swift in Sources */,
+				A07F4F3F1C8F384400BEB4A0 /* TeamTransition.swift in Sources */,
 				A09E6DDA1C4FC55A00ADC53F /* EventTableViewCell.swift in Sources */,
 				A00FCF8F1C8026B200396263 /* ShowAllMembersTableViewController.swift in Sources */,
 				A0283EA31C68D24D00B5E44D /* FirebaseTestViewController.swift in Sources */,

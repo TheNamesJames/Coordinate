@@ -2,6 +2,4 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 use_frameworks!
 
-pod "PubNub"
-pod "Parse"
 pod 'Firebase', '>= 2.5.0'

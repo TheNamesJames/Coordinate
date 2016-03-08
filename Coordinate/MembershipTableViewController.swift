@@ -16,13 +16,11 @@ class MembershipTableViewController: UITableViewController {
     var teamName: String?
   }
   
-  @IBOutlet var signedInLabel: UILabel!
-  
   let ref = Firebase(url: "https://dazzling-heat-2970.firebaseio.com/")
   
   var username: String! {
     didSet {
-      self.signedInLabel?.text = "Signed in as \(username)"
+//      self.signedInLabel?.text = "Signed in as \(username)"
     }
   }
   var data: [Membership] = []
