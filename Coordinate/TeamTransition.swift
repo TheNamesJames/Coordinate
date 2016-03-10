@@ -69,7 +69,15 @@ class TeamTransition: NSObject, UIViewControllerAnimatedTransitioning {
       let toBGColour = toView.backgroundColor
       toView.backgroundColor = UIColor.clearColor()
       
-      let navbarSnap = toVC.navigationController!.navigationBar.snapshotViewAfterScreenUpdates(true)
+//      let navbarSnap = toVC.navigationController!.navigationBar.snapshotViewAfterScreenUpdates(false)
+      UIGraphicsBeginImageContextWithOptions(toVC.navigationController!.navigationBar.bounds.size, false, 0)
+      
+      toVC.navigationController!.navigationBar.drawViewHierarchyInRect(toVC.navigationController!.navigationBar.bounds, afterScreenUpdates:true)
+      
+      let navbarSnap = UIImageView(image: UIGraphicsGetImageFromCurrentImageContext())
+      
+      UIGraphicsEndImageContext()
+      
       navbarSnap.frame = toVC.navigationController!.navigationBar.frame
       toVC.navigationController!.navigationBar.alpha = 0
       container.addSubview(navbarSnap)

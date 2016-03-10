@@ -20,13 +20,18 @@ class MembershipTableViewController: UITableViewController {
   
   var username: String! {
     didSet {
-//      self.signedInLabel?.text = "Signed in as \(username)"
+      self.signedInUsername.text = "Signed in as \(username)"
     }
   }
   var data: [Membership] = []
   
+  @IBOutlet var signedInUserImage: UIImageView!
+  @IBOutlet var signedInUsername: UILabel!
+  
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    self.navigationItem.hidesBackButton = true
     
     // Uncomment the following line to preserve selection between presentations
     // self.clearsSelectionOnViewWillAppear = false
@@ -83,6 +88,31 @@ class MembershipTableViewController: UITableViewController {
     // Dispose of any resources that can be recreated.
   }
   
+  @IBOutlet weak var joinTeamHint: UILabel!
+  
+  @IBAction func joinTeamEditingBegin(sender: UITextField) {
+    
+    UIView.animateWithDuration(0.3) { () -> Void in
+      sender.placeholder = "Enter the team ID to sign in"
+//      sender.frame = frame
+      self.joinTeamHint.alpha = 1
+    }
+  }
+  @IBAction func joinTeamEditingEnd(sender: UITextField) {
+    if sender.text != nil || sender.text != "" {
+      
+      UIView.animateWithDuration(0.3) { () -> Void in
+        sender.placeholder = "Want to join another team?"
+//        sender.frame = frame
+        self.joinTeamHint.alpha = 0
+      }
+    }
+  }
+  
+  @IBAction func joinTeamDone(sender: UITextField) {
+    sender.resignFirstResponder()
+  }
+  
   // MARK: - Table view data source
   
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -105,6 +135,34 @@ class MembershipTableViewController: UITableViewController {
     
     return cell
   }
+  
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    
+//    let overallHeight = self.view.bounds.height
+//    let minimumHeight = overallHeight - tableView.rowHeight
+////    let totalRowsHeight = CGFloat(tableView.numberOfRowsInSection(0)) * tableView.rowHeight
+//    var frame = self.tableView.tableFooterView!.frame
+//    frame.size.height = minimumHeight
+//    self.tableView.tableFooterView!.frame = frame
+  }
+  
+//  override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+//    let overallHeight = self.view.bounds.height
+//    let minimumHeight = overallHeight - tableView.rowHeight
+////    let totalRowsHeight = CGFloat(tableView.numberOfRowsInSection(0)) * tableView.rowHeight
+//    
+//    return minimumHeight / 2
+//  }
+//  
+//  override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//    var frame = tableView.bounds
+//    frame.size.height = self.tableView(self.tableView, heightForFooterInSection: section)
+//    let view = UIView(frame: frame)
+//    view.backgroundColor = UIColor.redColor()
+//    
+//    return view
+//  }
   
   
   /*

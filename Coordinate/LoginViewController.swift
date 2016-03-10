@@ -84,8 +84,18 @@ class LoginViewController: UIViewController {
     }
   }
   
+  @IBAction func logout(sender: UIStoryboardSegue) {
+    self.navigationItem.rightBarButtonItem = loginBarButton
+    self.ref.unauth()
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    if let _ = ref.authData {
+      self.performSegueWithIdentifier("ShowMembership", sender: nil)
+//      print(ref.authData)
+    }
     
     // Do any additional setup after loading the view.
 //    ref.createUser("himynameisjamesw@gmail.com", password: "password") { (error: NSError!, userDict: [NSObject : AnyObject]!) -> Void in

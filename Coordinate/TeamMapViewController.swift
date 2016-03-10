@@ -8,7 +8,6 @@
 
 import UIKit
 import MapKit
-//import PubNub
 import Firebase
 
 class TeamMapViewController: UIViewController, PreviewMemberListener {
@@ -57,10 +56,6 @@ class TeamMapViewController: UIViewController, PreviewMemberListener {
         }
       })
     }
-    
-    
-//    let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//    delegate.pubnubClient?.addListener(self)
   }
   
   override func didReceiveMemoryWarning() {
@@ -133,24 +128,3 @@ extension TeamMapViewController: MKMapViewDelegate {
     return annotationView
   }
 }
-
-//extension TeamMapViewController: PNObjectEventListener {
-//  func client(client: PubNub!, didReceiveMessage message: PNMessageResult!) {
-//    print(message.data.message)
-//    let x = message.data.message as! NSDictionary
-//    let lat = x.valueForKey("latitude") as! Double
-//    let lon = x.valueForKey("longitude") as! Double
-//    
-//    let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lon)
-//    
-//    for annotation in self.mapView.annotations {
-//      if let annotation = annotation as? MKPointAnnotation,
-//        title = annotation.title where title == "John" {
-//          UIView.animateWithDuration(0.1, animations: { () -> Void in
-//            annotation.coordinate = coordinate
-//          })
-//      }
-//    }
-//    
-//  }
-//}

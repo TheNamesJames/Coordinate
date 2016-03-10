@@ -34,7 +34,6 @@
 		A0B2B2231C54394F00356333 /* UserTrackingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B2B2221C54394F00356333 /* UserTrackingButton.swift */; };
 		A0C7F2B71C5663E4001BD3C5 /* LocationControlTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C7F2B61C5663E4001BD3C5 /* LocationControlTableViewCell.swift */; };
 		A0D7B5BC1C47B68E00F1F3C1 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0D7B5BB1C47B68E00F1F3C1 /* MapKit.framework */; };
-		A0DC0BCA1C502C6F00FD378A /* ParseTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DC0BC91C502C6F00FD378A /* ParseTestViewController.swift */; };
 		FE159DA21B523D88F67C4AE6 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF3F27652FDEBDFE62FE93EC /* Pods.framework */; };
 /* End PBXBuildFile section */
 
@@ -89,7 +88,6 @@
 		A0B2B2221C54394F00356333 /* UserTrackingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTrackingButton.swift; sourceTree = "<group>"; };
 		A0C7F2B61C5663E4001BD3C5 /* LocationControlTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationControlTableViewCell.swift; sourceTree = "<group>"; };
 		A0D7B5BB1C47B68E00F1F3C1 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		A0DC0BC91C502C6F00FD378A /* ParseTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseTestViewController.swift; sourceTree = "<group>"; };
 		AA0CFF06E68CB79057393298 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		DF3F27652FDEBDFE62FE93EC /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FDB2B16321FD8B732BDC370C /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -240,7 +238,6 @@
 			isa = PBXGroup;
 			children = (
 				A0283EA21C68D24D00B5E44D /* FirebaseTestViewController.swift */,
-				A0DC0BC91C502C6F00FD378A /* ParseTestViewController.swift */,
 			);
 			name = InitialSetup;
 			sourceTree = "<group>";
@@ -446,7 +443,6 @@
 				A08B4E671C352E7B0043D79D /* Coordinate.xcdatamodeld in Sources */,
 				A00FCF8D1C801D3B00396263 /* NewTeamViewController.swift in Sources */,
 				A009C3DA1C5B68F200E34A89 /* SimulatorViewController.swift in Sources */,
-				A0DC0BCA1C502C6F00FD378A /* ParseTestViewController.swift in Sources */,
 				A0B2B2211C5429E900356333 /* RoundedImageView.swift in Sources */,
 				A08B4E5F1C352E7B0043D79D /* AppDelegate.swift in Sources */,
 				A04105A61C53AD9200B01C47 /* TransparentTableView.swift in Sources */,
