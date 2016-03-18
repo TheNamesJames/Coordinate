@@ -11,10 +11,70 @@ import Firebase
 import CoreLocation
 
 typealias TeamResponse = (Team?, NSError?) -> Void
+typealias TeamMembersResponse = ([Team.Member]!) -> Void
 
-private let ref = Firebase(url: "https://dazzling-heat-2970.firebaseio.com/testusers")
 
-struct Team: CustomStringConvertible {
+typealias ATeamResponse = (ATeam! -> Void)
+//typealias ATeamMembersResponse = ([AMember]! -> Void)
+
+class ATeam {
+  let teamID: String
+  var name: String?
+  var currentMember: AMember
+  var otherMembers: [AMember]?
+  
+  let teamNameRef: Firebase
+  let teamMembersRef: Firebase
+  
+  private init(teamID: String, currentMember: AMember) {
+    self.teamID         = teamID
+    self.currentMember  = currentMember
+    
+    self.teamNameRef    = Firebase(url: "https://dazzling-heat-2970.firebaseio.com/teams/\(teamID)/name")
+    self.teamMembersRef = Firebase(url: "https://dazzling-heat-2970.firebaseio.com/teams/\(teamID)/members")
+  }
+}
+
+class AMember {
+  let username: String
+  private(set) var forename: String?
+  private(set) var surname: String?
+  
+  
+  private init(username: String) {
+    self.username = username
+  }
+}
+
+class ATeamMember: AMember {
+  private let teamID: String
+  //  private var locationUpdates: [ALocationUpdate]?
+  
+  private init(username: String, teamID: String) {
+    self.teamID = teamID
+    super.init(username: username)
+  }
+  
+//  func getLocationUpdatesWithBlock(doneBlock: (ALocationUpdate? -> Void)) {
+//    
+//  }
+}
+
+struct ALocationUpdate {
+  let location: CLLocationCoordinate2D
+  private(set) var timestamp: NSTimeInterval?
+  
+  private init(location: CLLocationCoordinate2D) {
+    self.location = location
+  }
+}
+
+
+
+let rootRef = Firebase(url:"https://dazzling-heat-2970.firebaseio.com")
+
+
+class Team: CustomStringConvertible {
   let id: String
   var name: String?
   let currentMember: Member
@@ -37,7 +97,7 @@ struct Team: CustomStringConvertible {
     return "@\(id) > \(members)"
   }
   
-  struct Member: CustomStringConvertible {
+  class Member: CustomStringConvertible {
     let username: String
     //  var id: String?
     var name: String?

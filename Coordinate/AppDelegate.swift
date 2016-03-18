@@ -14,13 +14,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   var window: UIWindow?
   
-  override init() {
-    
-    super.init()
-  }
-  
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
     // Override point for customization after application launch.
+    
+    if FIREBASE_ROOT_REF.authData == nil {
+      let nav = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("LoginNavigationController")
+      self.window!.rootViewController = nav
+    }
     
     return true
   }

@@ -10,14 +10,16 @@ import UIKit
 import MapKit
 import Firebase
 
-protocol PreviewMemberListener: NSObjectProtocol {
-  //  func previewMember(member: Member?) //, atZoomLevel: MKZoomScale)
-  func previewMember(member: Team.Member?) //, atZoomLevel: MKZoomScale)
-}
+//protocol PreviewMemberListener: NSObjectProtocol {
+//  //  func previewMember(member: Member?) //, atZoomLevel: MKZoomScale)
+//  func previewMember(member: Team.Member?) //, atZoomLevel: MKZoomScale)
+//}
 
 class TeamMembersTableViewController: UITableViewController {
   
   let ref = Firebase(url: "https://dazzling-heat-2970.firebaseio.com/")
+  
+  var membersCollectionViewController: MembersCollectionViewController!
   
   weak var mapView: MKMapView? {
     didSet {
@@ -33,12 +35,14 @@ class TeamMembersTableViewController: UITableViewController {
   
   func addPreviewMemberListener(listener: PreviewMemberListener) {
     self.previewMemberListeners.append(listener)
+    self.membersCollectionViewController.addPreviewMemberListener(listener)
   }
   
   func removePreviewMemberListener(listener: PreviewMemberListener) {
     if let index = self.previewMemberListeners.indexOf({ $0 === listener }) {
       self.previewMemberListeners.removeAtIndex(index)
     }
+    self.membersCollectionViewController.removePreviewMemberListener(listener)
   }
   
   override func viewDidLoad() {
@@ -194,7 +198,7 @@ class TeamMembersTableViewController: UITableViewController {
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     switch section {
     case 0:
-      return 1
+      return 0
     case 1:
       // TODO: Remove fake rows
       return self.team.members.count// * 3
@@ -263,14 +267,18 @@ class TeamMembersTableViewController: UITableViewController {
   }
   */
   
-  /*
   // MARK: - Navigation
   
   // In a storyboard-based application, you will often want to do a little preparation before navigation
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    if segue.identifier == "EmbedMembersCollection" {
+      let destination = segue.destinationViewController as! MembersCollectionViewController
+      destination.team = self.team
+      destination.previewMemberListeners = self.previewMemberListeners
+      self.membersCollectionViewController = destination
+    }
   // Get the new view controller using segue.destinationViewController.
   // Pass the selected object to the new view controller.
   }
-  */
   
 }

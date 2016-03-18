@@ -11,14 +11,45 @@ import Firebase
 
 class LoginViewController: UIViewController {
   
-  let ref = Firebase(url: "https://dazzling-heat-2970.firebaseio.com/testusers/teams")
+  let ref = Firebase(url: "https://dazzling-heat-2970.firebaseio.com/")
   
-  @IBOutlet weak var emailTextField: UITextField!
-  @IBOutlet weak var passwordTextField: UITextField!
-  @IBOutlet var loginBarButton: UIBarButtonItem!
-//  @IBOutlet weak var loginModeControl: UISegmentedControl!
+  @IBOutlet var loginButton: UIButton!
+  
+  @IBOutlet var switchHelpLabel: UILabel!
+  @IBOutlet var tableView: UITableView!
+  private var signupMode = false
+  private let loginPlaceholders = ["Your email address", "Your password", "", ""]
+  private let signupPlaceholders = ["Your email address", "Enter a password", "Choose a username", "What's your name?"]
+  private var items: [TextFieldTableViewCell.ListItem] = [] // email / password / username / full name
   
   
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    
+    for _ in 0..<4 {
+      let item = TextFieldTableViewCell.ListItem()
+      self.items.append(item)
+    }
+    
+    self.automaticallyAdjustsScrollViewInsets = false // Prevent tableView gaining content inset
+    
+    let cell = UINib(nibName: "TextFieldTableViewCell", bundle: nil)
+    self.tableView.registerNib(cell, forCellReuseIdentifier: "textfieldCell")
+    
+    let footer = UINib(nibName: "LoginFooter", bundle: nil)
+    self.tableView.registerNib(footer, forHeaderFooterViewReuseIdentifier: "LoginFooter")
+  }
+  
+  override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    self.tableView.selectRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), animated: animated, scrollPosition: .Top)
+  }
+  
+  override func preferredInterfaceOrientationForPresentation() -> UIInterfaceOrientation {
+    return .Portrait
+  }
+
 //  @IBAction func checkEmail(sender: UITextField) {
 //    let emails = Firebase(url: "https://dazzling-heat-2970.firebaseio.com/emails")
 //    emails.observeSingleEventOfType(.Value, withBlock: { (snapshot: FDataSnapshot!) -> Void in
@@ -36,128 +67,235 @@ class LoginViewController: UIViewController {
 //    }
 //  }
   
-  @IBAction func editingChanged() {
-    if let email = emailTextField.text where email.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) != "",
-      let password = passwordTextField.text where password.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) != "" {
-        self.navigationItem.rightBarButtonItem?.enabled = true
+  @IBAction func switchMode(sender: UITapGestureRecognizer) {
+    if self.signupMode {
+      self.signupMode = false
+      self.switchHelpLabel.text = "Don't have an account? Sign up"
+      
+        self.tableView.beginUpdates()
+        self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0), NSIndexPath(forRow: 1, inSection: 0)], withRowAnimation: .None)
+        self.tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: 2, inSection: 0), NSIndexPath(forRow: 3, inSection: 0)], withRowAnimation: .Fade)
+        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+        self.tableView.endUpdates()
     } else {
-      self.navigationItem.rightBarButtonItem?.enabled = false
+      self.signupMode = true
+      self.switchHelpLabel.text = "Already got an account? Login"
+      
+        self.loginButton.alpha = 0.0
+        self.tableView.beginUpdates()
+        self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: 2, inSection: 0), NSIndexPath(forRow: 3, inSection: 0)], withRowAnimation: .Fade)
+        self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0), NSIndexPath(forRow: 1, inSection: 0)], withRowAnimation: .Fade)
+        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Fade)
+        self.tableView.endUpdates()
+      
     }
+    self.tableView.selectRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), animated: true, scrollPosition: .Top)
   }
   
-  @IBAction func quickLogin(sender: UIButton) {
-    let email: String
-    if sender.titleLabel?.text == "fred" {
-      email = "himynameisjames@live.co.uk"
-    } else { // "barney"
-      email = "himynameisjamesw@gmail.com"
-    }
-    let password = "password"
-    
-    self.emailTextField.text = email
-    self.passwordTextField.text = password
-    
-    self.loginPressed(UIBarButtonItem())
+  @IBAction func editingChanged() {
+    self.loginButton.enabled = self.validateItems()
   }
   
-  @IBAction func loginPressed(sender: UIBarButtonItem) {
+  private func validateItems() -> Bool {
+    let email     = self.items[0].text
+    let password  = self.items[1].text
+    
+    guard self.validateEmail(email, andPassword: password) else {
+      return false
+    }
+    
+    if signupMode {
+      let username  = self.items[2].text
+      let fullname  = self.items[3].text
+      guard self.validateUsername(username, andFullName: fullname) else {
+        return false
+      }
+    }
+    
+    return true
+  }
+
+  private func validateEmail(email: String, andPassword pass: String) -> Bool {
+    if email.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) == "" {
+      return false
+    }
+    if pass.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) == "" {
+      return false
+    }
+    
+    return true
+  }
+  private func validateUsername(user: String, andFullName name: String) -> Bool {
+    if user.stringByTrimmingCharactersInSet(NSMutableCharacterSet.whitespaceAndNewlineCharacterSet()) == "" {
+      return false
+    }
+    let invalidUsernameChars = NSCharacterSet(charactersInString: ".$#[]/")
+    if let _ = user.rangeOfCharacterFromSet(invalidUsernameChars) {
+      return false
+    }
+    
+    if name.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) == "" {
+      return false
+    }
+    
+    return true
+  }
+  
+  @IBAction func loginPressed(sender: UIButton) {
     let spinner = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
     spinner.hidesWhenStopped = true
     spinner.startAnimating()
-    self.navigationItem.setRightBarButtonItem(UIBarButtonItem(customView: spinner), animated: true)
-//    self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: spinner)
+    spinner.center = self.loginButton.center
+    self.loginButton.addSubview(spinner)
+    self.loginButton.titleLabel?.hidden = true
     
+    self.switchHelpLabel.enabled = false
+    self.switchHelpLabel.userInteractionEnabled = false
+    for cell in self.tableView.visibleCells as! [TextFieldTableViewCell] {
+      cell.textField.enabled = false
+    }
     
-    if let email = emailTextField.text where email.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) != "",
-    let password = passwordTextField.text where password.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) != "" {
-      ref.authUser(email, password: password, withCompletionBlock: { (error: NSError!, authData: FAuthData!) -> Void in
-        if let error = error {
-          print(error)
-          // Stop spinner and replace with disabled login button
-          spinner.stopAnimating()
-          self.loginBarButton.enabled = false
-          self.navigationItem.setRightBarButtonItem(self.loginBarButton, animated: true)
-        } else {
-          self.performSegueWithIdentifier("ShowMembership", sender: sender)
+    // Stop spinner and replace with disabled login button
+    let complete: Void -> Void = {
+      [weak self] in
+      spinner.stopAnimating()
+      self?.loginButton.titleLabel?.hidden = false
+      self?.loginButton.enabled = false
+      spinner.removeFromSuperview()
+      
+      self?.switchHelpLabel.enabled = true
+      self?.switchHelpLabel.userInteractionEnabled = true
+      for cell in self?.tableView.visibleCells as! [TextFieldTableViewCell] {
+        cell.textField.enabled = true
+      }
+    }
+    
+    let email = self.items[0].text
+    let password = self.items[1].text
+    
+    guard validateItems() else {
+      complete()
+      return
+    }
+    
+    if signupMode {
+      let username = self.items[2].text
+      let fullname = self.items[3].text
+      
+      self.ref.childByAppendingPath("users/\(username)").observeSingleEventOfType(.Value, withBlock: { (snap: FDataSnapshot!) -> Void in
+        guard !snap.exists() else {
+          complete()
+          return
         }
+        self.signup(email, password, username, fullname, complete: complete)
       })
+    } else {
+      login(email, password, complete: complete)
     }
   }
   
-  @IBAction func logout(sender: UIStoryboardSegue) {
-    self.navigationItem.rightBarButtonItem = loginBarButton
-    self.ref.unauth()
+  private func signup(email: String, _ password: String, _ username: String, _ fullname: String, complete: (Void -> Void)) {
+    self.ref.createUser(email, password: password, withValueCompletionBlock: { (error: NSError!, userDict: [NSObject : AnyObject]!) -> Void in
+      if let error = error {
+        print(error)
+        complete()
+        return
+      }
+      
+      // Add /users/username branch if doesn't exist
+      self.ref.childByAppendingPath("users/\(username)").runTransactionBlock({ (currentData: FMutableData!) -> FTransactionResult! in
+        //          print("currentData:: \(currentData.value as! NSObject)")
+        
+        guard currentData.value as! NSObject == NSNull() else {
+          return FTransactionResult.abort()
+        }
+        currentData.value = ["name" : fullname]
+        return FTransactionResult.successWithValue(currentData)
+        
+        }, andCompletionBlock: { (error: NSError!, committed: Bool, finalData: FDataSnapshot!) -> Void in
+          //            print("Completion:: error:\(error)\n    :: committed:\(committed)\n    :: finalData\(finalData)")
+          
+          // If above committed, add uid:username reference pair
+          if committed {
+            let uid = userDict["uid"] as! String
+            self.ref.childByAppendingPath("identifiers/\(uid)").setValue(username, withCompletionBlock: { (error: NSError!, _: Firebase!) -> Void in
+              // If can't set uid:username reference pair, undo above work
+              guard error == nil else {
+                print(error)
+                self.ref.childByAppendingPath("users/\(username)").removeValue()
+                complete()
+                return
+              }
+              
+              self.login(email, password, complete: complete)
+            })
+          } else {
+            complete()
+          }
+        }, withLocalEvents: false)
+    })
   }
   
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    
-    if let _ = ref.authData {
-      self.performSegueWithIdentifier("ShowMembership", sender: nil)
-//      print(ref.authData)
-    }
-    
-    // Do any additional setup after loading the view.
-//    ref.createUser("himynameisjamesw@gmail.com", password: "password") { (error: NSError!, userDict: [NSObject : AnyObject]!) -> Void in
-//      if let error = error {
-//        print(error.description)
-//      } else {
-//        print(userDict)
-//      }
-//    }
+  private func login(email:String, _ password: String, complete: (Void -> Void)) {
+    ref.authUser(email, password: password, withCompletionBlock: { (error: NSError!, authData: FAuthData!) -> Void in
+      if let error = error {
+        print(error)
+        complete()
+      } else {
+        let nav = self.storyboard!.instantiateInitialViewController() as! UINavigationController
+        nav.modalTransitionStyle = .CrossDissolve
+        self.presentViewController(nav, animated: true, completion: { () -> Void in
+          let appDelegate = UIApplication.sharedApplication().delegate
+          appDelegate?.window!?.rootViewController = nav
+        })
+      }
+    })
   }
+  
+//  @IBAction func logout(sender: UIStoryboardSegue) {
+//    self.navigationItem.rightBarButtonItem = loginBarButton
+//    self.ref.unauth()
+//  }
+  
   
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
   }
   
-  
-  /*
-  // MARK: - Navigation
-  
-  // In a storyboard-based application, you will often want to do a little preparation before navigation
-  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-  // Get the new view controller using segue.destinationViewController.
-  // Pass the selected object to the new view controller.
-  }
-  */
-  
 }
 
-//extension LoginViewController: UITextFieldDelegate {
-//  func textFieldShouldReturn(textField: UITextField) -> Bool {
-//    
-//    var shouldReturn = false
-//    
-//    switch textField {
-//    case self.usernameTextField:
-//      let next = self.newUser ? self.firstNameTextField : self.passwordTextField
-//      next.becomeFirstResponder()
-//
-//    case self.firstNameTextField:
-//      self.passwordTextField.becomeFirstResponder()
-//
-//    case self.passwordTextField:
-//      if newUser {
-//        self.confirmTextField.becomeFirstResponder()
-//      } else {
-//        textField.resignFirstResponder()
-//        shouldReturn = true
-//      }
-//    case self.confirmTextField:
-//      textField.resignFirstResponder()
-//      shouldReturn = true
-//      
-//    default:
-//      break
-//    }
-//    
-//    if !shouldReturn {
-//      textField.setNeedsLayout()
-//      textField.layoutIfNeeded()
-//    }
-//    
-//    return shouldReturn
-//  }
-//}
+extension LoginViewController: UITableViewDataSource, UITableViewDelegate {
+  
+  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return self.signupMode ? 4 : 2
+//    return 2
+  }
+  
+  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCellWithIdentifier("textfieldCell") as! TextFieldTableViewCell
+    
+    cell.textField.addTarget(self, action: "editingChanged", forControlEvents: .EditingChanged)
+    cell.textField.placeholder = self.signupMode ? self.signupPlaceholders[indexPath.row] : self.loginPlaceholders[indexPath.row]
+    cell.listItem = self.items[indexPath.row]
+    
+    return cell
+  }
+  
+  func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    return 48
+  }
+  
+  func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    return tableView.dequeueReusableHeaderFooterViewWithIdentifier("LoginFooter") as! LoginFooterView
+  }
+  
+  func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    let footer = view as! LoginFooterView
+    self.loginButton = footer.button
+    footer.contentView.backgroundColor = UIColor.redColor()
+    footer.contentView.alpha = 1.0
+    footer.button.setTitle(self.signupMode ? "Sign up" : "Login", forState: .Normal)
+    footer.button.addTarget(self, action: "loginPressed:", forControlEvents: .TouchUpInside)
+  }
+}

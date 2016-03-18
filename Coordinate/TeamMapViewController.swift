@@ -14,48 +14,166 @@ class TeamMapViewController: UIViewController, PreviewMemberListener {
   
   @IBOutlet weak var mapView: MKMapView!
   
-  let ref = Firebase(url: "https://dazzling-heat-2970.firebaseio.com/")
-  var team: Team!
+  @IBOutlet var centerPin: UIImageView!
+  private var settingWaypointForMemberAnnotation: MemberAnnotation? = nil {
+    didSet {
+      if let _ = settingWaypointForMemberAnnotation {
+        self.centerPin.hidden = false
+      } else {
+        self.centerPin.hidden = true
+      }
+    }
+  }
+  private var polylineForTemporaryWaypoint: MKPolyline? = nil {
+    willSet {
+      if let polyline = polylineForTemporaryWaypoint {
+        self.mapView.removeOverlay(polyline)
+      }
+    }
+    didSet {
+      if let polyline = polylineForTemporaryWaypoint {
+        self.mapView.addOverlay(polyline)
+      }
+    }
+  }
+  
+  @IBAction func temporaryWaypointTapped(sender: UITapGestureRecognizer) {
+//    let waypoint = WaypointAnnotation(associatedMember: self.settingWaypointForMemberAnnotation)
+//    waypoint.coordinate = self.mapView.centerCoordinate
+    let member = self.settingWaypointForMemberAnnotation!.title!
+//    waypoint.title = "Sending \(member) here"
+//    self.mapView.addAnnotation(waypoint)
+    
+    let dictionary = ["lat" : self.mapView.centerCoordinate.latitude, "lon" : self.mapView.centerCoordinate.longitude]
+    self.waypointRef!.childByAppendingPath("\(member)").setValue(dictionary)
+    
+    self.polylineForTemporaryWaypoint = nil
+    self.settingWaypointForMemberAnnotation = nil
+  }
+  
+  var waypointRef: Firebase? {
+    willSet {
+      self.waypointRef?.removeAllObservers()
+    }
+    didSet {
+      self.waypointRef?.observeEventType(.ChildAdded, withBlock: waypointAdded)
+      self.waypointRef?.observeEventType(.ChildChanged, withBlock: waypointAdded)
+      self.waypointRef?.observeEventType(.ChildRemoved, withBlock: waypointRemoved)
+    }
+  }
+  
+  func waypointAdded(snap: FDataSnapshot!) {
+    let username = snap.key
+    guard let coordinateDictionary = snap.value as? NSDictionary else {
+      return
+    }
+//    let coordinateDictionary = snap.value as! NSDictionary
+    let lat = coordinateDictionary["lat"] as! Double
+    let lon = coordinateDictionary["lon"] as! Double
+    
+    let index = self.mapView.annotations.indexOf({ $0.title! == username })
+    
+    // Remove waypoint for this user if it exists already
+    for annotation in self.mapView.annotations {
+      if let annotation = annotation as? WaypointAnnotation {
+        if annotation.associatedMember?.title == username {
+          self.mapView.removeAnnotation(annotation)
+        }
+      }
+    }
+    
+    if let index = index {
+      let userAnnotation = self.mapView.annotations[index] as! MemberAnnotation
+
+      let annotation = WaypointAnnotation(associatedMember: userAnnotation)
+      annotation.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+      annotation.title = "Sending \(username) here"
+      
+      self.mapView.addAnnotation(annotation)
+    }
+
+  }
+  
+  func waypointRemoved(snap: FDataSnapshot!) {
+    let username = snap.key
+    
+    // Remove waypoint for this user if it exists already
+    for annotation in self.mapView.annotations {
+      if let annotation = annotation as? WaypointAnnotation {
+        if annotation.associatedMember?.title == username {
+          self.mapView.removeAnnotation(annotation)
+        }
+      }
+    }
+  }
+
+  
+  var teamRef: Firebase? {
+    willSet {
+      self.teamRef?.removeAllObservers()
+    }
+    didSet {
+      self.teamRef?.observeEventType(.ChildAdded, withBlock: memberAdded)
+    }
+  }
+  
+  func memberAdded(snap: FDataSnapshot!) {
+    let username = snap.key
+    
+    snap.ref.root.childByAppendingPath("locations/\(self.team.id)/\(username)").queryLimitedToLast(1).observeEventType(.ChildAdded, withBlock: updateMemberLocation)
+  }
+  
+  func updateMemberLocation(snap: FDataSnapshot!) {
+    let username = snap.ref.parent.key
+//    print("member \(username) updated location")
+    let dictionary = snap.value as! [String:Double]
+    
+    guard let lat = dictionary["lat"],
+      let lon = dictionary["lon"] else {
+        print("WARNING: Latest location update \(snap.key) has no lat/lon value")
+        return
+    }
+    
+    // 3: Add/update annotation for that user
+    let index = self.mapView.annotations.indexOf({ $0.title! == username })
+    if let index = index {
+      let userAnnotation = self.mapView.annotations[index] as! MKPointAnnotation
+      userAnnotation.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+      // remove annotation & re-add??
+    } else {
+      let annotation = MemberAnnotation()
+      annotation.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+      annotation.title = username
+      //          annotation.subtitle = first & last?? OR time??
+      self.mapView.addAnnotation(annotation)
+    }
+    
+    if self.currentlyPreviewingMember?.username == username {
+      self.previewMember(self.currentlyPreviewingMember)
+    }
+    
+    waypointRef!.childByAppendingPath("\(username)").observeSingleEventOfType(.Value, withBlock: waypointAdded)
+  }
+  
+  var team: Team! {
+    didSet {
+      if let team = self.team {
+        self.teamRef = Firebase(url: "https://dazzling-heat-2970.firebaseio.com/teams/\(team.id)/members")
+        self.waypointRef = Firebase(url: "https://dazzling-heat-2970.firebaseio.com/waypoints/\(team.id)/")
+      } else {
+        self.teamRef = nil
+        self.waypointRef = nil
+      }
+    }
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
     // Do any additional setup after loading the view.
     
-    // Show all team members last locations
-    // 1: Get all team members for team ID
-    ref.childByAppendingPath("teams/\(self.team.id)/members").observeEventType(.ChildAdded) { (memberSnap: FDataSnapshot!) -> Void in
-      let username = memberSnap.key
-      
-      // 2: As location updates arrive for this username
-      self.ref.childByAppendingPath("locations/\(self.team.id)/\(username)").queryLimitedToLast(1).observeEventType(.ChildAdded, withBlock: { (lastLocationSnap: FDataSnapshot!) -> Void in
-        let dictionary = lastLocationSnap.value as! [String:Double]
-        
-        guard let lat = dictionary["lat"],
-          let lon = dictionary["lon"] else {
-          print("WARNING: Latest location update \(lastLocationSnap.key) has no lat value")
-          return
-        }
-        
-        // 3: Add/update annotation for that user
-        let index = self.mapView.annotations.indexOf({ $0.title! == username })
-        if let index = index {
-          let userAnnotation = self.mapView.annotations[index] as! MKPointAnnotation
-          userAnnotation.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lon)
-          // remove annotation & re-add??
-        } else {
-          let annotation = MKPointAnnotation()
-          annotation.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lon)
-          annotation.title = username
-//          annotation.subtitle = first & last?? OR time??
-          self.mapView.addAnnotation(annotation)
-        }
-        
-        if self.currentlyPreviewingMember?.username == username {
-          self.previewMember(self.currentlyPreviewingMember)
-        }
-      })
-    }
+    self.centerPin.alpha = 0
+    
   }
   
   override func didReceiveMemoryWarning() {
@@ -112,19 +230,184 @@ class TeamMapViewController: UIViewController, PreviewMemberListener {
 }
 
 extension TeamMapViewController: MKMapViewDelegate {
+  
   func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
     if annotation === mapView.userLocation {
       return nil
     }
     
-    var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier("MemberPinAnnotation")
-    if annotationView == nil {
-      annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "MemberPinAnnotation")
-      annotationView!.centerOffset = CGPointMake(10, -20)
+    var annotationView: MKAnnotationView!
+    switch annotation {
+    case let annotation as MemberAnnotation:
+      annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier("MemberPinAnnotation")
+      if annotationView == nil {
+        annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "MemberPinAnnotation")
+        annotationView.centerOffset = CGPointMake(10, -20)
+        
+        let longPress = UILongPressGestureRecognizer(target: self, action: "longPressed:")
+        longPress.delegate = self
+        longPress.delaysTouchesBegan = false
+        longPress.cancelsTouchesInView = false
+        annotationView.addGestureRecognizer(longPress)
+      } else {
+        annotationView.annotation = annotation
+      }
+//      annotationView.draggable = true
+      
+      annotationView.canShowCallout = true
+      
+    case is WaypointAnnotation:
+      annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier("WaypointPinAnnotation")
+      if annotationView == nil {
+        annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "WaypointPinAnnotation")
+        annotationView!.centerOffset = CGPointMake(10, -50)
+        (annotationView! as! MKPinAnnotationView).pinTintColor = UIColor.greenColor()
+        
+        let tick = UIButton(type: .ContactAdd)
+        annotationView.rightCalloutAccessoryView = tick
+        
+        let cross = UIButton(type: .InfoDark)
+        annotationView.leftCalloutAccessoryView = cross
+        
+        annotationView!.draggable = true
+        annotationView.canShowCallout = true
+      } else {
+        annotationView!.annotation = annotation
+      }
+
+      
+    default:
+      fatalError("unknown annotation type")
     }
     
-    annotationView!.annotation = annotation
-    
     return annotationView
+  }
+  
+  func mapView(mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
+    if let _ = self.settingWaypointForMemberAnnotation {
+      self.centerPin.alpha = 0.7
+    }
+  }
+  
+  func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+    if let _ = self.settingWaypointForMemberAnnotation {
+      self.centerPin.alpha = 0.9
+      
+      var coords = [self.settingWaypointForMemberAnnotation!.coordinate, self.mapView.centerCoordinate]
+      self.polylineForTemporaryWaypoint = MKPolyline(coordinates: &coords, count: 2)
+      // TODO: (re)draw dotted line from member to here
+    }
+  }
+  
+  func longPressed(sender: UILongPressGestureRecognizer) {
+    if sender.state == .Began {
+      let pinAnnotation = sender.view as! MKPinAnnotationView
+      pinAnnotation.selected = false
+      self.settingWaypointForMemberAnnotation = (pinAnnotation.annotation as! MemberAnnotation)
+      
+      // Remove other waypoint(s) for this member
+      for annotation in self.mapView.annotations {
+        if let annotation = annotation as? WaypointAnnotation {
+          if annotation.associatedMember == self.settingWaypointForMemberAnnotation {
+            self.mapView.removeAnnotation(annotation)
+          }
+        }
+      }
+      
+      var coords = [self.settingWaypointForMemberAnnotation!.coordinate, self.mapView.centerCoordinate]
+      self.polylineForTemporaryWaypoint = MKPolyline(coordinates: &coords, count: 2)
+      
+      self.centerPin.alpha = 0.9
+      
+      
+//      UIView.animateWithDuration(0.1, animations: { () -> Void in
+//        self.centerPin.alpha = 1
+//      })
+      
+//      let waypoint = WaypointAnnotation()
+//      let point = sender.locationInView(self.mapView)
+//      waypoint.coordinate = self.mapView.convertPoint(point, toCoordinateFromView: self.mapView)
+//      self.mapView.addAnnotation(waypoint)
+      
+//      let waypointAnnotation = self.mapView.viewForAnnotation(waypoint)!
+//      waypointAnnotation.selected = true
+//      waypointAnnotation.setDragState(.Starting, animated: true)
+    }
+    if sender.state == .Changed {
+//      let pinAnnotation = sender.view as! MKPinAnnotationView
+//      pinAnnotation.selected = false
+      
+//      print(sender.locationInView(self.mapView))
+    }
+  }
+  
+  func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
+//    if overlay is MKPolyline {
+      let polylineRenderer = MKPolylineRenderer(overlay: overlay)
+      polylineRenderer.strokeColor = UIColor.blueColor()
+      polylineRenderer.lineWidth = 5
+      return polylineRenderer
+//    }
+  }
+  
+  func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, didChangeDragState newState: MKAnnotationViewDragState, fromOldState oldState: MKAnnotationViewDragState) {
+    switch view.annotation {
+    // Dragging member pin: Add 'placeholder' pin to take this one's place we move it
+    case let annotation as MemberAnnotation:
+      if oldState == .None {
+        for a in self.mapView.annotations {
+          if let a = a as? WaypointAnnotation {
+            if a.isTemporary {
+              self.mapView.removeAnnotation(a)
+            }
+          }
+        }
+        
+        // Create Member annotation to replace this one
+        let placeholder = MemberAnnotation()
+        placeholder.coordinate = annotation.coordinate
+        placeholder.title = "Move \(annotation.title) here?"
+//        self.mapView.addAnnotation(placeholder)
+        
+        (view as! MKPinAnnotationView).pinTintColor = UIColor.blueColor()
+        view.canShowCallout = true
+      }
+      
+    case let annotation as WaypointAnnotation:
+      print("Waypoint annotation dragged")
+      
+    default:
+      print("dragging unexpected annotation: \(view.annotation)")
+    }
+  }
+}
+
+extension TeamMapViewController : UIGestureRecognizerDelegate {
+  func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    return true
+  }
+  
+  func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOfGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    if let _ = otherGestureRecognizer as? UIPanGestureRecognizer {
+      return false
+    }
+    
+    return false
+  }
+}
+
+class MemberAnnotation: MKPointAnnotation {
+}
+
+class WaypointAnnotation: MKPointAnnotation {
+  let associatedMember: MemberAnnotation?
+  var isTemporary = false
+  
+  convenience override init() {
+    self.init(associatedMember: nil)
+  }
+  init(associatedMember: MemberAnnotation?) {
+    self.associatedMember = associatedMember
+    super.init()
   }
 }
