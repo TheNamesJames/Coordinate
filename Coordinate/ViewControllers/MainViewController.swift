@@ -15,6 +15,11 @@ class MainViewController: UIViewController {
   var membersDrawVC: MembersDrawViewController!
   var membersMapVC: TeamMapViewController!
   
+  var currentMember: Team.Member! {
+    didSet {
+      self.membersDrawVC!.currentMember = currentMember
+    }
+  }
   var team: Team? {
     didSet {
       if let team = self.team {
@@ -33,16 +38,44 @@ class MainViewController: UIViewController {
     
     // Do any additional setup after loading the view.
     
-    if let uid = rootRef.authData?.uid {
-      rootRef.childByAppendingPath("identifiers/\(uid)").observeSingleEventOfType(.Value, withBlock: { (idSnap) -> Void in
-        guard let username = idSnap.value as? String else {
-          return
-        }
-        rootRef.childByAppendingPath("users/\(username)/teams").observeSingleEventOfType(.Value, withBlock: { (teamsSnap) -> Void in
-          print(teamsSnap.value)
+    getCurrentMemberWithCompleteBlock { (uid, current, teams) -> Void in
+      let defaults = NSUserDefaults.standardUserDefaults()
+      if let teamID = defaults.stringForKey(kPreviouslySelectedTeamIDKey) {
+        print(teamID)
+        let team = Team(id: teamID, currentMember: current)
+        FIREBASE_ROOT_REF.childByAppendingPath("teams/\(teamID)/name").observeSingleEventOfType(.Value, withBlock: { (teamSnap: FDataSnapshot!) -> Void in
+          if teamSnap.exists() {
+            team.name = teamSnap.value as! String?
+          }
+          self.team = team
         })
-      })
+      }
+      
+      self.currentMember = current
+      print(teams)
     }
+//    if let uid = FIREBASE_ROOT_REF.authData?.uid {
+//      FIREBASE_ROOT_REF.childByAppendingPath("identifiers/\(uid)").observeSingleEventOfType(.Value, withBlock: { (idSnap) -> Void in
+//        guard let username = idSnap.value as? String else {
+//          return
+//        }
+//        let user = Team.Member(username: username)
+//        
+//        FIREBASE_ROOT_REF.childByAppendingPath("users/\(username)").observeSingleEventOfType(.Value, withBlock: { (userSnap: FDataSnapshot!) -> Void in
+//          guard let userDict = userSnap.value as? [String : AnyObject] else {
+//            print("\(username) does not have a team branch or name")
+//            self.currentMember = user
+//            return
+//          }
+//          
+//          user.name = userDict["name"] as! String?
+//          self.currentMember = user
+//        })
+////        FIREBASE_ROOT_REF.childByAppendingPath("users/\(username)/teams").observeSingleEventOfType(.Value, withBlock: { (teamsSnap) -> Void in
+////          print(teamsSnap.value)
+////        })
+//      })
+//    }
     
 //    self.membersDrawContainer.layer.borderWidth = 1
 //    self.membersDrawContainer.layer.borderColor = UIColor.blackColor().CGColor
@@ -78,15 +111,34 @@ class MainViewController: UIViewController {
       let destination = segue.destinationViewController as! TeamMapViewController
       self.membersMapVC = destination
     }
+    
     if segue.identifier == "AddMember" {
       let destination = segue.destinationViewController as! AddMemberTableViewController
       destination.team = self.team
     }
+    if segue.identifier == "ShowMemberships" {
+      let destination = segue.destinationViewController as! MembershipTableViewController
+      destination.currentMember = self.currentMember
+    }
   }
+  
+  // MARK: - Unwind segue actions
   
   @IBAction func addMember(sender: UIStoryboardSegue) {
     // TODO: get/update self.team
 //    self.team = (sender.destinationViewController as! AddMemberTableViewController).team
   }
 
+  @IBAction func chooseTeam(sender: UIStoryboardSegue) {
+    // TODO: get/update self.team
+    // self.team = selectedRow.team?
+//    self.team = (sender.destinationViewController as! AddMemberTableViewController).team
+
+    let defaults = NSUserDefaults.standardUserDefaults()
+    if let teamID = self.team?.id {
+      defaults.setObject(teamID, forKey: kPreviouslySelectedTeamIDKey)
+    } else {
+      defaults.setObject(nil, forKey: kPreviouslySelectedTeamIDKey)
+    }
+  }
 }

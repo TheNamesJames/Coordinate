@@ -114,13 +114,26 @@ class TeamMapViewController: UIViewController, PreviewMemberListener {
     }
     didSet {
       self.teamRef?.observeEventType(.ChildAdded, withBlock: memberAdded)
+      self.teamRef?.observeEventType(.ChildRemoved, withBlock: memberRemoved)
     }
+  }
+  
+  func memberRemoved(snap: FDataSnapshot!) {
+    let username = snap.key
+    
+    snap.ref.root.childByAppendingPath("locations/\(self.team!.id)/\(username)").removeAllObservers()
+    waypointRef!.childByAppendingPath("\(username)").removeAllObservers()
+    
+    // TODO: remove pin if member removed
   }
   
   func memberAdded(snap: FDataSnapshot!) {
     let username = snap.key
     
-    snap.ref.root.childByAppendingPath("locations/\(self.team.id)/\(username)").queryLimitedToLast(1).observeEventType(.ChildAdded, withBlock: updateMemberLocation)
+    // If member is not currentMember, add pin annotation
+    if username != self.team!.currentMember.username {
+      snap.ref.root.childByAppendingPath("locations/\(self.team!.id)/\(username)").queryLimitedToLast(1).observeEventType(.ChildAdded, withBlock: updateMemberLocation)
+    }
   }
   
   func updateMemberLocation(snap: FDataSnapshot!) {
@@ -153,9 +166,11 @@ class TeamMapViewController: UIViewController, PreviewMemberListener {
     }
     
     waypointRef!.childByAppendingPath("\(username)").observeSingleEventOfType(.Value, withBlock: waypointAdded)
+    // TODO: Update waypoint if changed
+//    waypointRef!.childByAppendingPath("\(username)").observeEventType(.ChildChanged, withBlock: waypointChanged)
   }
   
-  var team: Team! {
+  var team: Team? {
     didSet {
       if let team = self.team {
         self.teamRef = Firebase(url: "https://dazzling-heat-2970.firebaseio.com/teams/\(team.id)/members")

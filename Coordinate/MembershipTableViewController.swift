@@ -11,27 +11,20 @@ import Firebase
 
 class MembershipTableViewController: UITableViewController {
   
-  struct Membership {
-    let teamID: String
-    var teamName: String?
-  }
-  
   let ref = Firebase(url: "https://dazzling-heat-2970.firebaseio.com/")
   
-  var username: String! {
+  var currentMember: Team.Member! {
     didSet {
-      self.signedInUsername.text = "Signed in as \(username)"
+      self.title = "/\(currentMember.username)"
     }
   }
-  var data: [Membership] = []
   
-  @IBOutlet var signedInUserImage: UIImageView!
-  @IBOutlet var signedInUsername: UILabel!
+  private var data: [Team] = []
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    self.navigationItem.hidesBackButton = true
+//    self.navigationItem.hidesBackButton = true
     
     // Uncomment the following line to preserve selection between presentations
     // self.clearsSelectionOnViewWillAppear = false
@@ -39,78 +32,60 @@ class MembershipTableViewController: UITableViewController {
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     
-    // Show all the teams the logged in user is a member of
-    // 1: Get user's username
-    ref.childByAppendingPath("identifiers/\(ref.authData.uid)").observeSingleEventOfType(.Value) { (uidSnap: FDataSnapshot!) -> Void in
-      guard let username = uidSnap.value as? String else {
-        print("WARNING: No corresponding username found for uid \(uidSnap.key)")
-        return
-      }
+    // Lump .ChildAdded callbacks for existing data into a single UI update
+//      self.tableView.beginUpdates()
+  
+    // 1.1: As team IDs become associated with this username..
+    self.ref.childByAppendingPath("users/\(self.currentMember.username)/teams").observeEventType(.ChildAdded, withBlock: { (membershipSnap: FDataSnapshot!) -> Void in
+      let membership = Team(id: membershipSnap.key, currentMember: self.currentMember)
+      let teamID = membershipSnap.key
       
-      self.username = username
-      
-      // 2.1: As team IDs become associated with this username..
-      self.ref.childByAppendingPath("users/\(username)/teams").observeEventType(.ChildAdded, withBlock: { (membershipSnap: FDataSnapshot!) -> Void in
-        var membership = Membership(teamID: membershipSnap.key, teamName: nil)
-        let teamID = membershipSnap.key
-        
-        // 3: Get the team's (descriptive) name for each team ID
-        self.ref.childByAppendingPath("teams/\(teamID)/name").observeEventType(.Value, withBlock: { (teamSnap: FDataSnapshot!) -> Void in
-          guard let teamName = teamSnap.value as? String else {
-            print("WARNING: No corresponding team found for \(teamID)")
-            return
-          }
-          
-          // 4: If all above successful then add membership to the table view
-          membership.teamName = teamName
-          self.data.append(membership)
-          self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: self.data.count-1, inSection: 0)], withRowAnimation: .Automatic)
-        })
-      })
-      // 2.2: As team IDs are disassociated from username..
-      self.ref.childByAppendingPath("users/\(username)/teams").observeEventType(.ChildRemoved, withBlock: { (membershipSnap: FDataSnapshot!) -> Void in
-        let teamID = membershipSnap.key
-//        let index = self.data.indexOf({ (membership) -> Bool in
-//          membership.teamID == teamID
-//        })
-//        if let index = index {
-        // Remove the corresponding `Membership` object from the data source and table view
-        if let index = self.data.indexOf({ $0.teamID == teamID }) {
-          self.data.removeAtIndex(index)
-          self.tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Automatic)
+      // 2: Get the team's (descriptive) name for each team ID
+      self.ref.childByAppendingPath("teams/\(teamID)/name").observeSingleEventOfType(.Value, withBlock: { (teamSnap: FDataSnapshot!) -> Void in
+        guard let teamName = teamSnap.value as? String else {
+          print("WARNING: No corresponding team found for \(teamID)")
+          return
         }
+        
+        // 3: If all above successful then add membership to the table view
+        membership.name = teamName
+        self.data.append(membership)
+        self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: self.data.count-1, inSection: 0)], withRowAnimation: .Automatic)
       })
-    }
+    })
+  
+    // 1.2: As team IDs are disassociated from username..
+    self.ref.childByAppendingPath("users/\(self.currentMember.username)/teams").observeEventType(.ChildRemoved, withBlock: { (membershipSnap: FDataSnapshot!) -> Void in
+      let teamID = membershipSnap.key
+      
+      // Remove the corresponding `Membership` object from the data source and table view
+      if let index = self.data.indexOf({ $0.id == teamID }) {
+        self.data.removeAtIndex(index)
+        self.tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Automatic)
+      }
+    })
+    
+    // 1.3: .Value is called last, so we know all existing teams have been found. Update table
+    self.ref.childByAppendingPath("users/\(self.currentMember.username)/teams").observeSingleEventOfType(.Value, withBlock: { (snap: FDataSnapshot!) -> Void in
+      //        self.tableView.endUpdates()
+      self.tableView.tableFooterView = UIView()
+    })
   }
   
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    
+    //    let overallHeight = self.view.bounds.height
+    //    let minimumHeight = overallHeight - tableView.rowHeight
+    ////    let totalRowsHeight = CGFloat(tableView.numberOfRowsInSection(0)) * tableView.rowHeight
+    //    var frame = self.tableView.tableFooterView!.frame
+    //    frame.size.height = minimumHeight
+    //    self.tableView.tableFooterView!.frame = frame
+  }
+
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
-  }
-  
-  @IBOutlet weak var joinTeamHint: UILabel!
-  
-  @IBAction func joinTeamEditingBegin(sender: UITextField) {
-    
-    UIView.animateWithDuration(0.3) { () -> Void in
-      sender.placeholder = "Enter the team ID to sign in"
-//      sender.frame = frame
-      self.joinTeamHint.alpha = 1
-    }
-  }
-  @IBAction func joinTeamEditingEnd(sender: UITextField) {
-    if sender.text != nil || sender.text != "" {
-      
-      UIView.animateWithDuration(0.3) { () -> Void in
-        sender.placeholder = "Want to join another team?"
-//        sender.frame = frame
-        self.joinTeamHint.alpha = 0
-      }
-    }
-  }
-  
-  @IBAction func joinTeamDone(sender: UITextField) {
-    sender.resignFirstResponder()
   }
   
   // MARK: - Table view data source
@@ -130,22 +105,12 @@ class MembershipTableViewController: UITableViewController {
     
     // Configure the cell...
     let membership = self.data[indexPath.row]
-    cell.textLabel?.text = membership.teamName
-    cell.detailTextLabel?.text = "/\(membership.teamID)"
+    cell.textLabel?.text = membership.name ?? "<Unnamed Team>"
+    cell.detailTextLabel?.text = "/\(membership.id)"
     
     return cell
   }
   
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    
-//    let overallHeight = self.view.bounds.height
-//    let minimumHeight = overallHeight - tableView.rowHeight
-////    let totalRowsHeight = CGFloat(tableView.numberOfRowsInSection(0)) * tableView.rowHeight
-//    var frame = self.tableView.tableFooterView!.frame
-//    frame.size.height = minimumHeight
-//    self.tableView.tableFooterView!.frame = frame
-  }
   
 //  override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
 //    let overallHeight = self.view.bounds.height
@@ -164,6 +129,7 @@ class MembershipTableViewController: UITableViewController {
 //    return view
 //  }
   
+  // MARK: - UITableViewDelegate
   
   /*
   // Override to support conditional editing of the table view.
@@ -206,18 +172,30 @@ class MembershipTableViewController: UITableViewController {
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     // Get the new view controller using segue.destinationViewController.
     // Pass the selected object to the new view controller.
-    if segue.identifier == "ShowTeamMapSegue" {
-      let index = self.tableView.indexPathForSelectedRow!
-      let teamID = self.data[index.row].teamID
-      let teamName = self.data[index.row].teamName
-      
-      // FIXME: Just send team ID? perhaps create Team object with a callback to set destination.data..
-      let destination = segue.destinationViewController as! TeamViewController
-      var team = Team(id: teamID, currentMember: Team.Member(username: self.username))
-      team.name = teamName
-      destination.team = team
-      destination.title = "/\(team.id)"
+    if segue.identifier == "chooseTeam" {
+      let destination = segue.destinationViewController as! MainViewController
+      if let cell = sender as? UITableViewCell {
+        let index = self.tableView.indexPathForCell(cell)!.row
+        destination.team = self.data[index]
+      } else {
+        // New Team button pressed
+        destination.team = nil
+      }
     }
+    
+    
+//    if segue.identifier == "ShowTeamMapSegue" {
+//      let index = self.tableView.indexPathForSelectedRow!
+//      let teamID = self.data[index.row].teamID
+//      let teamName = self.data[index.row].teamName
+//      
+//      // FIXME: Just send team ID? perhaps create Team object with a callback to set destination.data..
+//      let destination = segue.destinationViewController as! TeamViewController
+//      var team = Team(id: teamID, currentMember: Team.Member(username: self.username))
+//      team.name = teamName
+//      destination.team = team
+//      destination.title = "/\(team.id)"
+//    }
   }
   
 }

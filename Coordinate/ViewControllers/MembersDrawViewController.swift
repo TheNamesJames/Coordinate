@@ -15,13 +15,18 @@ protocol PreviewMemberListener: NSObjectProtocol {
 }
 
 extension UIImage {
-  class func imageWithCenteredText(text: NSString, withSize size: CGSize, var withMaxFont font: UIFont) -> UIImage {
+  class func imageWithCenteredText(var text: String, withSize size: CGSize, withFontSizeRange range: ClosedInterval<CGFloat> = 9.0...20.0) -> UIImage {
+    if text.characters.count > 5 {
+      text = text.substringToIndex(text.startIndex.advancedBy(4))
+      text += "…"
+    }
+    
+    var font = UIFont.systemFontOfSize(range.end)
     var fontSize = text.sizeWithAttributes([NSFontAttributeName : font])
     while (fontSize.width * 1.1 > size.width) {
-      font = font.fontWithSize(font.pointSize - 1)
+      font = font.fontWithSize(font.pointSize - 1.0)
       fontSize = text.sizeWithAttributes([NSFontAttributeName : font])
     }
-    print(font.pointSize)
     
     let point = CGPointMake(size.width/2 - fontSize.width/2, size.height/2 - fontSize.height/2)
     
@@ -50,6 +55,15 @@ extension UIImage {
   }
 }
 
+extension String {
+  func initials() -> String {
+    let x = self.componentsSeparatedByString(" ").map({ (partialName) -> String in
+      String(partialName[partialName.startIndex])
+    })
+    return x.reduce("", combine: { $0 + $1 })
+  }
+}
+
 
 class MembersDrawViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
@@ -68,17 +82,25 @@ class MembersDrawViewController: UIViewController, UICollectionViewDataSource, U
   @IBOutlet var searchView: UIView!
   @IBOutlet var collectionView: UICollectionView!
   
-  var team: Team? {
+  var currentMember: Team.Member! {
     didSet {
-      guard let team = self.team else {
-        self.ref = nil
-        self.collectionView.deleteSections(NSIndexSet(index: 1))
-//        self.collectionView.deleteItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 1)])
-        return
-      }
-      self.ref = Firebase(url: "https://dazzling-heat-2970.firebaseio.com/teams/\(team.id)/members")
+      self.collectionView.reloadSections(NSIndexSet(index: 0))
     }
   }
+  var team: Team? {
+    didSet {
+      if let team = self.team {
+        self.data = []
+        self.ref = Firebase(url: "https://dazzling-heat-2970.firebaseio.com/teams/\(team.id)/members")
+      } else {
+        self.ref = nil
+        self.collectionView.deleteSections(NSIndexSet(index: 1))
+        self.data = nil
+//        self.collectionView.deleteItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 1)])
+      }
+    }
+  }
+  var data: [Team.Member]?
   
   
   override func viewDidLoad() {
@@ -104,7 +126,7 @@ class MembersDrawViewController: UIViewController, UICollectionViewDataSource, U
     case 0:
       return 1
     case 1:
-      return self.team?.members.count ?? 0
+      return self.data?.count ?? 0
     case 2:
       return 1
       
@@ -121,11 +143,18 @@ class MembersDrawViewController: UIViewController, UICollectionViewDataSource, U
     
     if let cell = cell as? MemberCollectionViewCell {
       if indexPath.section == 0 {
-        
-        cell.imageView.image = UIImage.imageWithCenteredText("JW", withSize: cell.imageView.bounds.size, withMaxFont: UIFont.systemFontOfSize(20))
+        if let member = self.currentMember {
+          let initials = member.name?.initials().uppercaseString ?? "/\(member.username)"
+          cell.imageView.image = UIImage.imageWithCenteredText(initials, withSize: cell.imageView.bounds.size)
+        } else {
+          cell.imageView.image = UIImage.imageWithCenteredText("", withSize: cell.imageView.bounds.size)
+        }
 //        cell.imageView.image = UIImage(named: "John")?.imageWithCenteredText("HE", withFont: UIFont(name: "Futura-Medium", size: 30)!)
       } else {
-        cell.imageView.image = UIImage(named: self.team!.members[indexPath.row].username)
+        let member = self.data![indexPath.row]
+        let initials = member.name?.initials().uppercaseString ?? "/\(member.username)"
+        
+        cell.imageView.image = UIImage.imageWithCenteredText(initials, withSize: cell.imageView.bounds.size)
       }
     }
 //    else if let cell = cell as? AddMemberCollectionViewCell {
@@ -168,11 +197,10 @@ class MembersDrawViewController: UIViewController, UICollectionViewDataSource, U
   
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
     if indexPath.section == 1 {
-      self.firePreviewMember(self.team!.members[indexPath.row])
+      self.firePreviewMember(self.data![indexPath.row])
     }
     if indexPath.section == 2 {
-      print(self.parentViewController)
-      self.parentViewController?.performSegueWithIdentifier("AddMember", sender: self)
+      self.parentViewController!.performSegueWithIdentifier("AddMember", sender: self)
     }
   }
   
@@ -199,28 +227,31 @@ class MembersDrawViewController: UIViewController, UICollectionViewDataSource, U
   // MARK: - Firebase handlers
   
   func memberAdded(snap: FDataSnapshot!) {
-    let member = Team.Member(username: snap.key)
-//    print("member added: \(member.username)")
+    let username = snap.key
     
-    snap.ref.root.childByAppendingPath("users/\(member.username)/name").observeSingleEventOfType(.Value) { (userSnap: FDataSnapshot!) -> Void in
-      guard let fullName = userSnap.value as? String else {
-        print("WARNING: User \(member.username) does not have an associated name")
-        return
+    // If member is not currentMember, add pin annotation
+    if username != self.team?.currentMember.username {
+      let member = Team.Member(username: snap.key)
+      
+      snap.ref.root.childByAppendingPath("users/\(member.username)/name").observeSingleEventOfType(.Value) { (userSnap: FDataSnapshot!) -> Void in
+        guard let fullName = userSnap.value as? String else {
+          print("WARNING: User \(member.username) does not have an associated name")
+          return
+        }
+        member.name = fullName
+        
+        // 3: If all above successful then add the member to the table view
+        self.data!.append(member)
+        self.collectionView.insertItemsAtIndexPaths([NSIndexPath(forRow: self.data!.count - 1, inSection: 1)])
       }
-      member.name = fullName
-      
-      // 3: If all above successful then add the member to the table view
-      self.team!.members.append(member)
-      self.collectionView.insertItemsAtIndexPaths([NSIndexPath(forRow: self.team!.members.count - 1, inSection: 1)])
-      
     }
   }
   
   func memberRemoved(snap: FDataSnapshot!) {
     let username = snap.key
     
-    if let index = self.team?.members.indexOf({ $0.username == username }) {
-      self.team!.members.removeAtIndex(index)
+    if let index = self.data?.indexOf({ $0.username == username }) {
+      self.data!.removeAtIndex(index)
       self.collectionView.deleteItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 1)])
     }
   }

@@ -170,6 +170,7 @@
 				A08597801C923560006A8CD2 /* MainViewController.swift */,
 				A069B6971C5A98C000413CC4 /* LoginViewController.swift */,
 				A005DCBC1C87426600C42922 /* TeamMapViewController.swift */,
+				A005DCB61C8727C800C42922 /* MembershipTableViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -259,7 +260,6 @@
 				A0223B851C918E95007C1900 /* MembersCollectionViewController.swift */,
 				A0CE11231C91D2260010D177 /* LocateCollectionViewCell.swift */,
 				A009C3D91C5B68F200E34A89 /* SimulatorViewController.swift */,
-				A005DCB61C8727C800C42922 /* MembershipTableViewController.swift */,
 				A005DCBA1C87421F00C42922 /* TeamViewController.swift */,
 				A005DCBE1C875AD800C42922 /* TeamMembersTableViewController.swift */,
 				A005DCB41C86E6B900C42922 /* NewTeamContainerViewController.swift */,

@@ -81,25 +81,17 @@
                     </view>
                     <navigationItem key="navigationItem" id="bX5-eg-cS5">
                         <nil key="title"/>
+                        <barButtonItem key="backBarButtonItem" title="Back" id="8CE-4Y-Aha"/>
                         <barButtonItem key="leftBarButtonItem" title="Logout" id="g5M-lv-uKf">
                             <connections>
                                 <action selector="logoutPressed:" destination="nrl-58-eQz" id="joY-G6-RVO"/>
                             </connections>
                         </barButtonItem>
-                        <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="W54-LY-sbC">
-                            <rect key="frame" x="240" y="7" width="120" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                            <state key="normal" title="Button">
-                                <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                            </state>
-                            <state key="highlighted">
-                                <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                            </state>
+                        <barButtonItem key="rightBarButtonItem" title="Switch" id="JzB-AV-1Hj">
                             <connections>
-                                <segue destination="IAq-Ej-vRX" kind="show" id="1eK-Mx-Ycz"/>
+                                <segue destination="IAq-Ej-vRX" kind="show" identifier="ShowMemberships" id="KkL-SD-IiX"/>
                             </connections>
-                        </button>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="membersDrawContainer" destination="G6F-yo-UKG" id="Z6O-Es-YSr"/>
@@ -274,13 +266,13 @@
         <!--Your Teams-->
         <scene sceneID="KKu-LO-ZWD">
             <objects>
-                <tableViewController title="Your Teams" id="IAq-Ej-vRX" sceneMemberID="viewController">
+                <tableViewController title="Your Teams" id="IAq-Ej-vRX" customClass="MembershipTableViewController" customModule="Coordinate" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="4FU-92-1Cl">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="cFt-78-DG7" style="IBUITableViewCellStyleDefault" id="yvj-Cx-I1p">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MembershipCell" textLabel="cFt-78-DG7" detailTextLabel="kqD-E5-ie1" style="IBUITableViewCellStyleSubtitle" id="yvj-Cx-I1p">
                                 <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yvj-Cx-I1p" id="GKr-Ht-cta">
@@ -288,14 +280,24 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cFt-78-DG7">
-                                            <rect key="frame" x="15" y="0.0" width="570" height="43"/>
+                                            <rect key="frame" x="15" y="5" width="32" height="20"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="kqD-E5-ie1">
+                                            <rect key="frame" x="15" y="25" width="41" height="14"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="rFv-3I-Hkb" kind="unwind" identifier="chooseTeam" unwindAction="chooseTeam:" id="Vd3-Gg-IO9"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -305,6 +307,7 @@
                     </tableView>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V35-Rv-JVO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="rFv-3I-Hkb" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-2154" y="-4661"/>
         </scene>
@@ -460,7 +463,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Title" id="DyO-Ep-I4E">
-                        <barButtonItem key="backBarButtonItem" title="Cancel" id="yei-JJ-FAc"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="CwT-eJ-yfq">
                             <connections>
                                 <segue destination="8IF-BJ-X89" kind="unwind" identifier="addMember" unwindAction="addMember:" id="g5O-9e-E1m"/>
