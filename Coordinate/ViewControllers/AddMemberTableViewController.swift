@@ -10,8 +10,10 @@ import UIKit
 
 class AddMemberTableViewController: UITableViewController {
   
-  private let placeholders = ["What's their email address?", "Choose a team ID", "Enter a team name"]
+  private let placeholders = ["What's their username?", "Choose a team ID", "Enter a team name"]
   private var items: [TextFieldTableViewCell.ListItem] = []
+  
+  var team: Team?
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -25,10 +27,20 @@ class AddMemberTableViewController: UITableViewController {
     let cell = UINib(nibName: "TextFieldTableViewCell", bundle: nil)
     self.tableView.registerNib(cell, forCellReuseIdentifier: "textfieldCell")
     
+    self.tableView.registerClass(TitleHeaderView.self, forHeaderFooterViewReuseIdentifier: "TitleHeader")
+    
+    self.tableView.registerClass(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "BlankFooter")
+    
+    let footer = UINib(nibName: "LoginFooter", bundle: nil)
+    self.tableView.registerNib(footer, forHeaderFooterViewReuseIdentifier: "LoginFooter")
+
+    
     for _ in 0..<1 {
       let item = TextFieldTableViewCell.ListItem()
       self.items.append(item)
     }
+    
+    self.tableView.tableHeaderView = self.tableView.tableFooterView
     
     self.tableView.tableFooterView = UIView() // Hide remaining separators
   }
@@ -41,19 +53,17 @@ class AddMemberTableViewController: UITableViewController {
   // MARK: - Table view data source
   
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-    // TODO: 2 only if team doesn't exist..
-    return 2
+    return self.team == nil ? 2 : 1
   }
   
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    // #warning Incomplete implementation, return the number of rows
     return section == 0 ? items.count : 2
   }
 
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("textfieldCell") as! TextFieldTableViewCell
     
-    cell.textField.addTarget(self, action: "editingChanged", forControlEvents: .EditingChanged)
+//    cell.textField.addTarget(self, action: "editingChanged", forControlEvents: .EditingChanged)
     switch indexPath.section {
     case 0:
       cell.textField.placeholder = self.placeholders[0]
@@ -69,6 +79,58 @@ class AddMemberTableViewController: UITableViewController {
     }
     
     return cell
+  }
+  
+  override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    return 36
+  }
+  
+  override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    return tableView.dequeueReusableHeaderFooterViewWithIdentifier("TitleHeader")
+  }
+  
+  override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    let header = view as! UITableViewHeaderFooterView//TitleHeaderView
+    header.contentView.backgroundColor = UIColor(white: 0.1, alpha: 0.1)
+    header.textLabel!.text = section == 0 ? "Add a member to your team" : "By the way, you need to create a team…"
+    header.textLabel!.textColor = UIColor(white: 0.9, alpha: 1.0)
+  }
+
+  override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    // If last section footer (i.e. button)
+    if section == tableView.numberOfSections - 1 {
+      return 48
+    }
+    
+    return 36
+  }
+  
+  override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    if section == tableView.numberOfSections - 1 {
+      return tableView.dequeueReusableHeaderFooterViewWithIdentifier("LoginFooter") as! LoginFooterView
+    } else {
+      return tableView.dequeueReusableHeaderFooterViewWithIdentifier("BlankFooter")
+    }
+  }
+  
+  override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    if section == tableView.numberOfSections - 1 {
+      let footer = view as! LoginFooterView
+      footer.contentView.alpha = 1.0
+      
+      let title = self.team == nil ? "Create team and Add member" : "Add member"
+      footer.button.setTitle(title, forState: .Normal)
+      // TODO: replace w/ validate check
+      footer.button.enabled = true
+      footer.button.addTarget(self, action: "donePressed:", forControlEvents: .TouchUpInside)
+    } else {
+      let footer = view as! UITableViewHeaderFooterView
+      footer.contentView.backgroundColor = UIColor.clearColor()
+    }
+  }
+  
+  func donePressed(sender: AnyObject) {
+    self.performSegueWithIdentifier("addMember", sender: self)
   }
 
   /*
@@ -105,15 +167,4 @@ class AddMemberTableViewController: UITableViewController {
       return true
   }
   */
-
-  /*
-  // MARK: - Navigation
-
-  // In a storyboard-based application, you will often want to do a little preparation before navigation
-  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-      // Get the new view controller using segue.destinationViewController.
-      // Pass the selected object to the new view controller.
-  }
-  */
-
 }

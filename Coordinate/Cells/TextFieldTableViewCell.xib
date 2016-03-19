@@ -3,35 +3,38 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="TextFieldTableViewCell" customModule="Coordinate" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
-            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <subviews>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Your email address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gYt-rj-2mi">
-                    <rect key="frame" x="20" y="1" width="560" height="47"/>
-                    <color key="textColor" red="0.95294117649999999" green="0.95294117649999999" blue="0.95294117649999999" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="20"/>
-                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress"/>
-                </textField>
-            </subviews>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="HG1-9i-sDX" customClass="TextFieldTableViewCell" customModule="Coordinate" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="416" height="48"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HG1-9i-sDX" id="ESg-Dx-igE">
+                <rect key="frame" x="0.0" y="0.0" width="416" height="47"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Your email address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gYt-rj-2mi">
+                        <rect key="frame" x="20" y="0.0" width="376" height="47"/>
+                        <color key="textColor" red="0.95294117649999999" green="0.95294117649999999" blue="0.95294117649999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="20"/>
+                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress"/>
+                    </textField>
+                </subviews>
+                <color key="backgroundColor" white="0.10000000000000001" alpha="0.10000000000000001" colorSpace="calibratedWhite"/>
+                <constraints>
+                    <constraint firstItem="gYt-rj-2mi" firstAttribute="leading" secondItem="ESg-Dx-igE" secondAttribute="leading" constant="20" id="3Fz-Lw-a24"/>
+                    <constraint firstAttribute="bottom" secondItem="gYt-rj-2mi" secondAttribute="bottom" id="Kwh-N8-WKa"/>
+                    <constraint firstAttribute="trailing" secondItem="gYt-rj-2mi" secondAttribute="trailing" constant="20" id="d2O-Ot-f6B"/>
+                    <constraint firstItem="gYt-rj-2mi" firstAttribute="top" secondItem="ESg-Dx-igE" secondAttribute="top" id="qe1-Sy-Fr8"/>
+                </constraints>
+                <edgeInsets key="layoutMargins" top="8" left="20" bottom="8" right="20"/>
+            </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-            <constraints>
-                <constraint firstAttribute="bottom" secondItem="gYt-rj-2mi" secondAttribute="bottom" id="4IC-je-5Tt"/>
-                <constraint firstItem="gYt-rj-2mi" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="dlw-qn-EPm"/>
-                <constraint firstItem="gYt-rj-2mi" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="1" id="p5t-E1-Beo"/>
-                <constraint firstAttribute="trailingMargin" secondItem="gYt-rj-2mi" secondAttribute="trailing" id="sJt-pG-h2m"/>
-            </constraints>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <edgeInsets key="layoutMargins" top="8" left="20" bottom="8" right="20"/>
             <connections>
-                <outlet property="textField" destination="gYt-rj-2mi" id="T1a-cZ-DWH"/>
+                <outlet property="textField" destination="gYt-rj-2mi" id="Ubb-NY-aNY"/>
             </connections>
-            <point key="canvasLocation" x="574" y="379"/>
-        </view>
+            <point key="canvasLocation" x="617" y="209"/>
+        </tableViewCell>
     </objects>
 </document>

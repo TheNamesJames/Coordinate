@@ -78,6 +78,15 @@ class MainViewController: UIViewController {
       let destination = segue.destinationViewController as! TeamMapViewController
       self.membersMapVC = destination
     }
+    if segue.identifier == "AddMember" {
+      let destination = segue.destinationViewController as! AddMemberTableViewController
+      destination.team = self.team
+    }
+  }
+  
+  @IBAction func addMember(sender: UIStoryboardSegue) {
+    // TODO: get/update self.team
+//    self.team = (sender.destinationViewController as! AddMemberTableViewController).team
   }
 
 }

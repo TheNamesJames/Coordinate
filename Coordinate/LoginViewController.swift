@@ -147,9 +147,8 @@ class LoginViewController: UIViewController {
     spinner.startAnimating()
     spinner.center = self.loginButton.center
     self.loginButton.addSubview(spinner)
-    self.loginButton.titleLabel?.hidden = true
+    self.loginButton.titleLabel!.alpha = 0.0
     
-    self.switchHelpLabel.enabled = false
     self.switchHelpLabel.userInteractionEnabled = false
     for cell in self.tableView.visibleCells as! [TextFieldTableViewCell] {
       cell.textField.enabled = false
@@ -159,11 +158,10 @@ class LoginViewController: UIViewController {
     let complete: Void -> Void = {
       [weak self] in
       spinner.stopAnimating()
-      self?.loginButton.titleLabel?.hidden = false
+      self?.loginButton.titleLabel?.alpha = 1.0
       self?.loginButton.enabled = false
       spinner.removeFromSuperview()
       
-      self?.switchHelpLabel.enabled = true
       self?.switchHelpLabel.userInteractionEnabled = true
       for cell in self?.tableView.visibleCells as! [TextFieldTableViewCell] {
         cell.textField.enabled = true
@@ -293,7 +291,6 @@ extension LoginViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
     let footer = view as! LoginFooterView
     self.loginButton = footer.button
-    footer.contentView.backgroundColor = UIColor.redColor()
     footer.contentView.alpha = 1.0
     footer.button.setTitle(self.signupMode ? "Sign up" : "Login", forState: .Normal)
     footer.button.addTarget(self, action: "loginPressed:", forControlEvents: .TouchUpInside)

@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -12,10 +13,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DtX-oX-Fe3">
-                    <rect key="frame" x="252" y="0.0" width="96" height="48"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="96" id="YnG-4j-mP9"/>
-                    </constraints>
+                    <rect key="frame" x="8" y="0.0" width="584" height="48"/>
                     <state key="normal" title="Button"/>
                 </button>
             </subviews>
@@ -23,6 +21,8 @@
                 <constraint firstItem="DtX-oX-Fe3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="OqB-qL-Sc5"/>
                 <constraint firstItem="DtX-oX-Fe3" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Sfy-bO-nva"/>
                 <constraint firstAttribute="bottom" secondItem="DtX-oX-Fe3" secondAttribute="bottom" id="Sh0-iy-Ysl"/>
+                <constraint firstItem="DtX-oX-Fe3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="ilu-e1-AeV"/>
+                <constraint firstItem="DtX-oX-Fe3" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailingMargin" id="jLJ-sJ-zJl"/>
                 <constraint firstItem="DtX-oX-Fe3" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="kuU-sA-LJi"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

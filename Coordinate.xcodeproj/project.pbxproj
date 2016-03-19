@@ -17,19 +17,17 @@
 		A00FCF8F1C8026B200396263 /* ShowAllMembersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00FCF8E1C8026B200396263 /* ShowAllMembersTableViewController.swift */; };
 		A00FCF911C802D3900396263 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00FCF901C802D3900396263 /* Team.swift */; };
 		A0223B861C918E95007C1900 /* MembersCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0223B851C918E95007C1900 /* MembersCollectionViewController.swift */; };
-		A0223B8A1C9193C2007C1900 /* CollectionTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0223B891C9193C2007C1900 /* CollectionTestViewController.swift */; };
 		A0283EA31C68D24D00B5E44D /* FirebaseTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0283EA21C68D24D00B5E44D /* FirebaseTestViewController.swift */; };
 		A04105A61C53AD9200B01C47 /* TransparentTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04105A51C53AD9200B01C47 /* TransparentTableView.swift */; };
 		A04183C41C4EA9E10091D1AF /* MemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04183C31C4EA9E10091D1AF /* MemberTableViewCell.swift */; };
 		A04507E91C9C489800AB825A /* TextFieldTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A04507E81C9C489800AB825A /* TextFieldTableViewCell.xib */; };
 		A04507EB1C9C4AD800AB825A /* AddMemberTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04507EA1C9C4AD800AB825A /* AddMemberTableViewController.swift */; };
+		A04507EF1C9CACCF00AB825A /* TitleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04507EE1C9CACCF00AB825A /* TitleHeaderView.swift */; };
 		A04DC62F1C9C1552004A2160 /* FirebaseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04DC62E1C9C1552004A2160 /* FirebaseExtensions.swift */; };
 		A04DC6311C9C2EF8004A2160 /* LoginTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04DC6301C9C2EF8004A2160 /* LoginTableViewCell.swift */; };
 		A04DC6331C9C3160004A2160 /* LoginFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04DC6321C9C3160004A2160 /* LoginFooterView.swift */; };
 		A04DC6351C9C31A1004A2160 /* LoginFooter.xib in Resources */ = {isa = PBXBuildFile; fileRef = A04DC6341C9C31A1004A2160 /* LoginFooter.xib */; };
 		A069B6981C5A98C000413CC4 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069B6971C5A98C000413CC4 /* LoginViewController.swift */; };
-		A07F4F3F1C8F384400BEB4A0 /* TeamTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07F4F3E1C8F384400BEB4A0 /* TeamTransition.swift */; };
-		A07F4F441C8F495400BEB4A0 /* TransitionManagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07F4F431C8F495400BEB4A0 /* TransitionManagerController.swift */; };
 		A08597811C923560006A8CD2 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08597801C923560006A8CD2 /* MainViewController.swift */; };
 		A08597851C9235D8006A8CD2 /* MemberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08597841C9235D8006A8CD2 /* MemberCollectionViewCell.swift */; };
 		A08597871C923660006A8CD2 /* MembersDrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08597861C923660006A8CD2 /* MembersDrawViewController.swift */; };
@@ -79,19 +77,17 @@
 		A00FCF8E1C8026B200396263 /* ShowAllMembersTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowAllMembersTableViewController.swift; sourceTree = "<group>"; };
 		A00FCF901C802D3900396263 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		A0223B851C918E95007C1900 /* MembersCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MembersCollectionViewController.swift; sourceTree = "<group>"; };
-		A0223B891C9193C2007C1900 /* CollectionTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTestViewController.swift; sourceTree = "<group>"; };
 		A0283EA21C68D24D00B5E44D /* FirebaseTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseTestViewController.swift; sourceTree = "<group>"; };
 		A04105A51C53AD9200B01C47 /* TransparentTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransparentTableView.swift; sourceTree = "<group>"; };
 		A04183C31C4EA9E10091D1AF /* MemberTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberTableViewCell.swift; sourceTree = "<group>"; };
 		A04507E81C9C489800AB825A /* TextFieldTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TextFieldTableViewCell.xib; path = Cells/TextFieldTableViewCell.xib; sourceTree = "<group>"; };
 		A04507EA1C9C4AD800AB825A /* AddMemberTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddMemberTableViewController.swift; path = ViewControllers/AddMemberTableViewController.swift; sourceTree = "<group>"; };
+		A04507EE1C9CACCF00AB825A /* TitleHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleHeaderView.swift; sourceTree = "<group>"; };
 		A04DC62E1C9C1552004A2160 /* FirebaseExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseExtensions.swift; sourceTree = "<group>"; };
 		A04DC6301C9C2EF8004A2160 /* LoginTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginTableViewCell.swift; path = Cells/LoginTableViewCell.swift; sourceTree = "<group>"; };
 		A04DC6321C9C3160004A2160 /* LoginFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFooterView.swift; sourceTree = "<group>"; };
 		A04DC6341C9C31A1004A2160 /* LoginFooter.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginFooter.xib; sourceTree = "<group>"; };
 		A069B6971C5A98C000413CC4 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		A07F4F3E1C8F384400BEB4A0 /* TeamTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamTransition.swift; sourceTree = "<group>"; };
-		A07F4F431C8F495400BEB4A0 /* TransitionManagerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionManagerController.swift; sourceTree = "<group>"; };
 		A08597801C923560006A8CD2 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = ViewControllers/MainViewController.swift; sourceTree = "<group>"; };
 		A08597841C9235D8006A8CD2 /* MemberCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MemberCollectionViewCell.swift; path = Cells/MemberCollectionViewCell.swift; sourceTree = "<group>"; };
 		A08597861C923660006A8CD2 /* MembersDrawViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MembersDrawViewController.swift; path = ViewControllers/MembersDrawViewController.swift; sourceTree = "<group>"; };
@@ -166,21 +162,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		A07F4F3D1C8F380700BEB4A0 /* AnimationControllers */ = {
-			isa = PBXGroup;
-			children = (
-				A07F4F3E1C8F384400BEB4A0 /* TeamTransition.swift */,
-				A07F4F431C8F495400BEB4A0 /* TransitionManagerController.swift */,
-			);
-			name = AnimationControllers;
-			sourceTree = "<group>";
-		};
 		A08597821C92356A006A8CD2 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				A04507EA1C9C4AD800AB825A /* AddMemberTableViewController.swift */,
 				A08597861C923660006A8CD2 /* MembersDrawViewController.swift */,
 				A08597801C923560006A8CD2 /* MainViewController.swift */,
+				A069B6971C5A98C000413CC4 /* LoginViewController.swift */,
+				A005DCBC1C87426600C42922 /* TeamMapViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -221,7 +210,6 @@
 		A08B4E5D1C352E7B0043D79D /* Coordinate */ = {
 			isa = PBXGroup;
 			children = (
-				A0223B891C9193C2007C1900 /* CollectionTestViewController.swift */,
 				A00FCF901C802D3900396263 /* Team.swift */,
 				A08B4E5E1C352E7B0043D79D /* AppDelegate.swift */,
 				A04DC62E1C9C1552004A2160 /* FirebaseExtensions.swift */,
@@ -231,10 +219,7 @@
 				A04DC6341C9C31A1004A2160 /* LoginFooter.xib */,
 				A04507E81C9C489800AB825A /* TextFieldTableViewCell.xib */,
 				A0DFD8631C5A28DC00EDA31D /* Views */,
-				A0DFD8621C5A28C700EDA31D /* Controllers */,
-				A0223B851C918E95007C1900 /* MembersCollectionViewController.swift */,
-				A0CE11231C91D2260010D177 /* LocateCollectionViewCell.swift */,
-				A009C3D91C5B68F200E34A89 /* SimulatorViewController.swift */,
+				A0DFD8621C5A28C700EDA31D /* Other */,
 				A08B4E681C352E7B0043D79D /* Assets.xcassets */,
 				A08B4E6A1C352E7B0043D79D /* LaunchScreen.storyboard */,
 				A08B4E6D1C352E7B0043D79D /* Info.plist */,
@@ -262,32 +247,33 @@
 			path = CoordinateUITests;
 			sourceTree = "<group>";
 		};
-		A0DFD8621C5A28C700EDA31D /* Controllers */ = {
+		A0DFD8621C5A28C700EDA31D /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				A07F4F3D1C8F380700BEB4A0 /* AnimationControllers */,
-				A069B6971C5A98C000413CC4 /* LoginViewController.swift */,
+				A04105A51C53AD9200B01C47 /* TransparentTableView.swift */,
+				A0B2B2201C5429E900356333 /* RoundedImageView.swift */,
+				A0B2B2221C54394F00356333 /* UserTrackingButton.swift */,
+				A0C7F2B61C5663E4001BD3C5 /* LocationControlTableViewCell.swift */,
+				A04183C31C4EA9E10091D1AF /* MemberTableViewCell.swift */,
+				A09E6DD91C4FC55A00ADC53F /* EventTableViewCell.swift */,
+				A0223B851C918E95007C1900 /* MembersCollectionViewController.swift */,
+				A0CE11231C91D2260010D177 /* LocateCollectionViewCell.swift */,
+				A009C3D91C5B68F200E34A89 /* SimulatorViewController.swift */,
 				A005DCB61C8727C800C42922 /* MembershipTableViewController.swift */,
 				A005DCBA1C87421F00C42922 /* TeamViewController.swift */,
 				A005DCBE1C875AD800C42922 /* TeamMembersTableViewController.swift */,
-				A005DCBC1C87426600C42922 /* TeamMapViewController.swift */,
 				A005DCB41C86E6B900C42922 /* NewTeamContainerViewController.swift */,
 				A00FCF8E1C8026B200396263 /* ShowAllMembersTableViewController.swift */,
 				A00FCF8C1C801D3B00396263 /* NewTeamViewController.swift */,
 			);
-			name = Controllers;
+			name = Other;
 			sourceTree = "<group>";
 		};
 		A0DFD8631C5A28DC00EDA31D /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				A04DC6321C9C3160004A2160 /* LoginFooterView.swift */,
-				A0B2B2221C54394F00356333 /* UserTrackingButton.swift */,
-				A0C7F2B61C5663E4001BD3C5 /* LocationControlTableViewCell.swift */,
-				A04105A51C53AD9200B01C47 /* TransparentTableView.swift */,
-				A09E6DD91C4FC55A00ADC53F /* EventTableViewCell.swift */,
-				A04183C31C4EA9E10091D1AF /* MemberTableViewCell.swift */,
-				A0B2B2201C5429E900356333 /* RoundedImageView.swift */,
+				A04507EE1C9CACCF00AB825A /* TitleHeaderView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -485,7 +471,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A07F4F441C8F495400BEB4A0 /* TransitionManagerController.swift in Sources */,
 				A08597871C923660006A8CD2 /* MembersDrawViewController.swift in Sources */,
 				A08597811C923560006A8CD2 /* MainViewController.swift in Sources */,
 				A005DCBB1C87421F00C42922 /* TeamViewController.swift in Sources */,
@@ -493,14 +478,13 @@
 				A069B6981C5A98C000413CC4 /* LoginViewController.swift in Sources */,
 				A0C7F2B71C5663E4001BD3C5 /* LocationControlTableViewCell.swift in Sources */,
 				A005DCB71C8727C800C42922 /* MembershipTableViewController.swift in Sources */,
+				A04507EF1C9CACCF00AB825A /* TitleHeaderView.swift in Sources */,
 				A005DCBD1C87426600C42922 /* TeamMapViewController.swift in Sources */,
 				A005DCB51C86E6B900C42922 /* NewTeamContainerViewController.swift in Sources */,
 				A00FCF911C802D3900396263 /* Team.swift in Sources */,
-				A0223B8A1C9193C2007C1900 /* CollectionTestViewController.swift in Sources */,
 				A08597851C9235D8006A8CD2 /* MemberCollectionViewCell.swift in Sources */,
 				A005DCBF1C875AD800C42922 /* TeamMembersTableViewController.swift in Sources */,
 				A0B2B2231C54394F00356333 /* UserTrackingButton.swift in Sources */,
-				A07F4F3F1C8F384400BEB4A0 /* TeamTransition.swift in Sources */,
 				A09E6DDA1C4FC55A00ADC53F /* EventTableViewCell.swift in Sources */,
 				A08597891C923DA4006A8CD2 /* AddMemberCollectionViewCell.swift in Sources */,
 				A00FCF8F1C8026B200396263 /* ShowAllMembersTableViewController.swift in Sources */,
