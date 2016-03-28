@@ -28,7 +28,7 @@ class UserTrackingButton: UIButton {
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     
-    self.addTarget(self, action: "pressed:", forControlEvents: UIControlEvents.TouchUpInside)
+    self.addTarget(self, action: #selector(UserTrackingButton.pressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
   }
   
   override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {

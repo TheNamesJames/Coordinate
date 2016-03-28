@@ -12,20 +12,23 @@ import Firebase
 protocol PreviewMemberListener: NSObjectProtocol {
   //  func previewMember(member: Member?) //, atZoomLevel: MKZoomScale)
   func previewMember(member: Team.Member?) //, atZoomLevel: MKZoomScale)
+  func locateSelf()
 }
 
 extension UIImage {
-  class func imageWithCenteredText(var text: String, withSize size: CGSize, withFontSizeRange range: ClosedInterval<CGFloat> = 9.0...20.0) -> UIImage {
+  class func imageWithCenteredText(text: String, withSize size: CGSize, withFontSizeRange range: ClosedInterval<CGFloat> = 9.0...20.0) -> UIImage {
+    let limitedText: String
     if text.characters.count > 5 {
-      text = text.substringToIndex(text.startIndex.advancedBy(4))
-      text += "…"
+      limitedText = text.substringToIndex(text.startIndex.advancedBy(4)) + "…"
+    } else {
+      limitedText = text
     }
     
     var font = UIFont.systemFontOfSize(range.end)
-    var fontSize = text.sizeWithAttributes([NSFontAttributeName : font])
+    var fontSize = limitedText.sizeWithAttributes([NSFontAttributeName : font])
     while (fontSize.width * 1.1 > size.width) {
       font = font.fontWithSize(font.pointSize - 1.0)
-      fontSize = text.sizeWithAttributes([NSFontAttributeName : font])
+      fontSize = limitedText.sizeWithAttributes([NSFontAttributeName : font])
     }
     
     let point = CGPointMake(size.width/2 - fontSize.width/2, size.height/2 - fontSize.height/2)
@@ -84,7 +87,7 @@ class MembersDrawViewController: UIViewController, UICollectionViewDataSource, U
   
   var currentMember: Team.Member! {
     didSet {
-      self.collectionView.reloadSections(NSIndexSet(index: 0))
+      //self.collectionView.reloadSections(NSIndexSet(index: 0))
     }
   }
   var team: Team? {
@@ -98,6 +101,7 @@ class MembersDrawViewController: UIViewController, UICollectionViewDataSource, U
         self.data = nil
 //        self.collectionView.deleteItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 1)])
       }
+      self.collectionView.reloadData()
     }
   }
   var data: [Team.Member]?
@@ -196,6 +200,9 @@ class MembersDrawViewController: UIViewController, UICollectionViewDataSource, U
   }
   
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    if indexPath.section == 0 {
+      self.fireLocateSelf()
+    }
     if indexPath.section == 1 {
       self.firePreviewMember(self.data![indexPath.row])
     }
@@ -220,6 +227,12 @@ class MembersDrawViewController: UIViewController, UICollectionViewDataSource, U
   func firePreviewMember(member: Team.Member?) {
     for listener in previewMemberListeners {
       listener.previewMember(member)
+    }
+  }
+  
+  func fireLocateSelf() {
+    for listener in previewMemberListeners {
+      listener.locateSelf()
     }
   }
   
@@ -267,4 +280,51 @@ class MembersDrawViewController: UIViewController, UICollectionViewDataSource, U
   }
   */
 
+}
+
+extension MembersDrawViewController: UIGestureRecognizerDelegate {
+  @IBAction func memberLongPressed(sender: UILongPressGestureRecognizer) {
+    if sender.state == .Began {
+      print("Begna")
+      if let cellIndex = self.collectionView.indexPathForItemAtPoint(sender.locationInView(self.collectionView)) {
+        
+        // FIXME: Get the actual member username and team ID
+        // FIXME: Check this actually removes members from teams
+        let username = "fred"
+        let teamID = "photon"
+        
+        let alert = UIAlertController(title: "Remove Member", message: "Are you sure you want to remove \(username) from \(teamID)?", preferredStyle: .ActionSheet)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Remove", style: .Destructive, handler: { (action: UIAlertAction) in
+          var dict: [String: AnyObject] = [:]
+          dict["users/\(username)/teams/\(teamID)"] = NSNull()
+          dict["teams/\(teamID)/members/\(username)"] = NSNull()
+          
+          FIREBASE_ROOT_REF.updateChildValues(dict)
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
+      }
+      
+      // Reset
+      sender.enabled = false
+      sender.enabled = true
+    }
+    if sender.state == .Ended {
+      print("Ended")
+    }
+    if sender.state == .Failed {
+      print("Faild")
+    }
+  }
+  
+  func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+    let point = gestureRecognizer.locationInView(self.collectionView)
+    if let index = self.collectionView.indexPathForItemAtPoint(point) {
+      if index.section == 1 {
+        return true
+      }
+    }
+    
+    return false
+  }
 }

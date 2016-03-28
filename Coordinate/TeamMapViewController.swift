@@ -134,6 +134,7 @@ class TeamMapViewController: UIViewController, PreviewMemberListener {
     if username != self.team!.currentMember.username {
       snap.ref.root.childByAppendingPath("locations/\(self.team!.id)/\(username)").queryLimitedToLast(1).observeEventType(.ChildAdded, withBlock: updateMemberLocation)
     }
+    
   }
   
   func updateMemberLocation(snap: FDataSnapshot!) {
@@ -182,10 +183,24 @@ class TeamMapViewController: UIViewController, PreviewMemberListener {
     }
   }
   
+  private var locationManager = CLLocationManager() {
+    didSet{
+      print("didSet")
+    }
+  }
   override func viewDidLoad() {
     super.viewDidLoad()
     
     // Do any additional setup after loading the view.
+    
+    self.locationManager.delegate = self
+//    if CLLocationManager.locationServicesEnabled() {
+//      print("Location services enabled")
+//      if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.NotDetermined {
+//        print("Requesting always status")
+//        CLLocationManager().requestAlwaysAuthorization()
+//      }
+//    }
     
     self.centerPin.alpha = 0
     
@@ -194,6 +209,7 @@ class TeamMapViewController: UIViewController, PreviewMemberListener {
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
+    
   }
   
   
@@ -209,16 +225,40 @@ class TeamMapViewController: UIViewController, PreviewMemberListener {
   
   // MARK: - PreviewMemberDelegate
   
-  private var prePreviewMapRect: MKMapRect? = nil
+  func locateSelf() {
+//    self.previewMember(nil)
+    guard CLLocationManager.locationServicesEnabled() else {
+      let alert = UIAlertController(title: "Location services disabled", message: "We need location services enabled to be able to show your location", preferredStyle: .Alert)
+      alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+      self.presentViewController(alert, animated: true, completion: nil)
+      return
+    }
+    
+    switch CLLocationManager.authorizationStatus() {
+    case .AuthorizedAlways, .AuthorizedWhenInUse:
+      self.mapView.setUserTrackingMode(.Follow, animated: true)
+      
+    default: // .Restricted, .Denied, .NotDetermined
+      let alert = UIAlertController(title: "Location services denied", message: "We need location services enabled to be able to show your location", preferredStyle: .Alert)
+      alert.addAction(UIAlertAction(title: "Settings", style: .Cancel, handler: { (action: UIAlertAction) in
+        UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+      }))
+      alert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: nil))
+      self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+  }
+
+//  private var prePreviewMapRect: MKMapRect? = nil
   private var currentlyPreviewingMember: Team.Member?
   
   func previewMember(member: Team.Member?) {
     self.currentlyPreviewingMember = member
     
     if let member = member {
-      if prePreviewMapRect == nil {
-        prePreviewMapRect = self.mapView.visibleMapRect
-      }
+//      if prePreviewMapRect == nil {
+//        prePreviewMapRect = self.mapView.visibleMapRect
+//      }
       
       var region = self.mapView.region;
       let span = MKCoordinateSpanMake(0.005, 0.005);
@@ -235,13 +275,15 @@ class TeamMapViewController: UIViewController, PreviewMemberListener {
       MKMapView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 10, options: UIViewAnimationOptions.CurveEaseIn, animations: {
         self.mapView.setRegion(region, animated: true)
         }, completion: nil)
-    } else {
-      if self.prePreviewMapRect != nil {
-        mapView.setVisibleMapRect(self.prePreviewMapRect!, animated:true)
-        prePreviewMapRect = nil
-      }
     }
+//    else {
+//      if self.prePreviewMapRect != nil {
+//        mapView.setVisibleMapRect(self.prePreviewMapRect!, animated:true)
+//        prePreviewMapRect = nil
+//      }
+//    }
   }
+  
 }
 
 extension TeamMapViewController: MKMapViewDelegate {
@@ -259,7 +301,7 @@ extension TeamMapViewController: MKMapViewDelegate {
         annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "MemberPinAnnotation")
         annotationView.centerOffset = CGPointMake(10, -20)
         
-        let longPress = UILongPressGestureRecognizer(target: self, action: "longPressed:")
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(TeamMapViewController.longPressed(_:)))
         longPress.delegate = self
         longPress.delaysTouchesBegan = false
         longPress.cancelsTouchesInView = false
@@ -424,5 +466,33 @@ class WaypointAnnotation: MKPointAnnotation {
   init(associatedMember: MemberAnnotation?) {
     self.associatedMember = associatedMember
     super.init()
+  }
+}
+
+extension TeamMapViewController: CLLocationManagerDelegate {
+  func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+    guard CLLocationManager.locationServicesEnabled() else {
+      print("Location services disabled")
+      return
+    }
+    
+    switch CLLocationManager.authorizationStatus() {
+    case .NotDetermined:
+      print("Not determined")
+      self.locationManager.requestWhenInUseAuthorization()
+      
+    case .Restricted:
+      self.mapView.showsUserLocation = false
+      
+      let alert = UIAlertController(title: "Location access restricted", message: "Coordinate is not authorised use location services", preferredStyle: .Alert)
+      alert.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: nil))
+      self.presentViewController(alert, animated: true, completion: nil)
+      
+    case .Denied:
+      self.mapView.showsUserLocation = false
+      
+    case .AuthorizedWhenInUse, .AuthorizedAlways:
+      self.mapView.showsUserLocation = true
+    }
   }
 }

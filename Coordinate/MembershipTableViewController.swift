@@ -20,6 +20,97 @@ class MembershipTableViewController: UITableViewController {
   }
   
   private var data: [Team] = []
+  var selectedTeamID: String?
+  
+  @IBAction func logoutPressed(sender: UIBarButtonItem) {
+    FirebaseLoginHelpers.unauthAndDismissToLoginFrom(self.navigationController!)
+  }
+  
+  @IBAction func createTeam(sender: AnyObject) {
+    let alert = UIAlertController(title: "Create a new team", message: nil, preferredStyle: .Alert)
+    var teamIDTextField: UITextField!
+    alert.addTextFieldWithConfigurationHandler { (textfield) in
+      textfield.placeholder = "Choose a team ID"
+      textfield.addTarget(self, action: #selector(MembershipTableViewController.validateTeamIDTextField(_:)), forControlEvents: .EditingChanged)
+      teamIDTextField = textfield
+    }
+    var teamNameTextField: UITextField!
+    alert.addTextFieldWithConfigurationHandler { (textfield) in
+      textfield.placeholder = "Enter a team name"
+      textfield.addTarget(self, action: #selector(MembershipTableViewController.validateTeamIDTextField(_:)), forControlEvents: .EditingChanged)
+      teamNameTextField = textfield
+    }
+    alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+    alert.addAction(UIAlertAction(title: "Create", style: .Default, handler: { (_) in
+      let teamID = teamIDTextField.text!
+      let teamName = teamNameTextField.text!
+      self.createTeamWithID(teamID, teamName: teamName)
+    }))
+    self.presentViewController(alert, animated: true, completion: nil)
+  }
+  
+  func validateTeamIDTextField(sender: UITextField) {
+    let alertController = self.presentedViewController as! UIAlertController
+    let addTeamAction = alertController.actions.last
+    
+    let teamID = alertController.textFields!.first?.text ?? ""
+    let teamName = alertController.textFields!.last?.text ?? ""
+    
+    addTeamAction?.enabled = validateCreateTeamID(teamID, teamName: teamName)
+  }
+  
+  private func validateCreateTeamID(teamID: String, teamName: String) -> Bool {
+    if teamID.characters.count <= 1 || teamName.characters.count == 0 {
+      return false
+    }
+    
+    let invalidChars = NSMutableCharacterSet.whitespaceAndNewlineCharacterSet()
+    invalidChars.removeCharactersInString(" ") // Allow spaces
+    if let _ = teamName.rangeOfCharacterFromSet(invalidChars, options: .LiteralSearch, range: Range<String.Index>(teamName.startIndex..<teamName.endIndex)) {
+      return false
+    }
+    
+    
+    invalidChars.addCharactersInString(".$#[]/")
+    let idRange = Range<String.Index>(teamID.startIndex.advancedBy(1) ..< teamID.endIndex)
+    if let _ = teamID.rangeOfCharacterFromSet(invalidChars, options: .LiteralSearch, range: idRange) {
+      return false
+    }
+    
+    return true
+  }
+  
+  private func createTeamWithID(teamID: String, teamName: String) {
+    
+    
+    FIREBASE_ROOT_REF.childByAppendingPath("teams/\(teamID)").observeSingleEventOfType(.Value, withBlock: { (teamSnap) in
+      if teamSnap.exists() {
+        let alert = UIAlertController(title: "Team ID already taken", message: "Please try again", preferredStyle: .Alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Try again", style: .Default, handler: { (action) in
+          self.createTeam(action)
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
+      } else {
+        var teamDict = [String : AnyObject]()
+        teamDict["teams/\(teamID)/members/\(self.currentMember.username)"] = true
+        teamDict["teams/\(teamID)/name"] = teamName
+        teamDict["users/\(self.currentMember.username)/teams/\(teamID)"] = true
+        
+        FIREBASE_ROOT_REF.updateChildValues(teamDict, withCompletionBlock: { (error, firebase) in
+          guard error == nil else {
+            print(error)
+            let alert = UIAlertController(title: "Oops. Something's broke", message: "Could not create team", preferredStyle: .Alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            return
+          }
+          
+          print("Team created")
+        })
+      }
+    })
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -107,6 +198,7 @@ class MembershipTableViewController: UITableViewController {
     let membership = self.data[indexPath.row]
     cell.textLabel?.text = membership.name ?? "<Unnamed Team>"
     cell.detailTextLabel?.text = "/\(membership.id)"
+    cell.accessoryType = membership.id == self.selectedTeamID ? .Checkmark : .None
     
     return cell
   }
@@ -172,14 +264,30 @@ class MembershipTableViewController: UITableViewController {
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     // Get the new view controller using segue.destinationViewController.
     // Pass the selected object to the new view controller.
+//    if segue.identifier == "chooseTeam" {
+//      let destination = segue.destinationViewController as! MainViewController
+//      if let cell = sender as? UITableViewCell {
+//        let index = self.tableView.indexPathForCell(cell)!.row
+//        if self.data[index].id != self.selectedTeamID {
+//          destination.team = self.data[index]
+//        }
+//      } else {
+//        // New Team button pressed
+//        // TODO: Create team, add to self.data and return that.. 
+//        destination.team = nil
+//      }
+//    }
+    
     if segue.identifier == "chooseTeam" {
-      let destination = segue.destinationViewController as! MainViewController
       if let cell = sender as? UITableViewCell {
         let index = self.tableView.indexPathForCell(cell)!.row
-        destination.team = self.data[index]
+//        if self.data[index].id != self.selectedTeamID {
+          self.selectedTeamID = self.data[index].id
+//        }
       } else {
         // New Team button pressed
-        destination.team = nil
+        // TODO: Create team, add to self.data and return that..
+        self.selectedTeamID = nil
       }
     }
     

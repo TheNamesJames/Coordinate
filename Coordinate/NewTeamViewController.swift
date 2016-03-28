@@ -44,7 +44,7 @@ class NewTeamViewController: UIViewController {
       self.input.placeholder = "Choose a username"
       self.helpLabel.text = "This uniquely identifies you within your team. You may use different usernames across teams.\nThis must contain only lowercase letters, numbers, hyphens and underscores."
       
-      let doneButton = UIBarButtonItem(title: "Done", style: .Done, target: self, action: "donePressed:")
+      let doneButton = UIBarButtonItem(title: "Done", style: .Done, target: self, action: #selector(NewTeamViewController.donePressed(_:)))
       self.navigationItem.rightBarButtonItem = doneButton
     }
     self.helpLabel.sizeToFit()

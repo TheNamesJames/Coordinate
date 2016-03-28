@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class AddMemberTableViewController: UITableViewController {
   
@@ -122,15 +123,37 @@ class AddMemberTableViewController: UITableViewController {
       footer.button.setTitle(title, forState: .Normal)
       // TODO: replace w/ validate check
       footer.button.enabled = true
-      footer.button.addTarget(self, action: "donePressed:", forControlEvents: .TouchUpInside)
+      footer.button.addTarget(self, action: #selector(AddMemberTableViewController.donePressed(_:)), forControlEvents: .TouchUpInside)
     } else {
       let footer = view as! UITableViewHeaderFooterView
       footer.contentView.backgroundColor = UIColor.clearColor()
     }
   }
   
-  func donePressed(sender: AnyObject) {
-    self.performSegueWithIdentifier("addMember", sender: self)
+  @IBAction func donePressed(sender: AnyObject) {
+    // Check for invalid usernames
+    for item in self.items {
+      if item.text.stringByTrimmingCharactersInSet(NSMutableCharacterSet.whitespaceAndNewlineCharacterSet()) == "" {
+        return
+      }
+      let invalidUsernameChars = NSCharacterSet(charactersInString: ".$#[]/")
+      if let _ = item.text.rangeOfCharacterFromSet(invalidUsernameChars) {
+        return
+      }
+    }
+    
+    let username = items.first!.text
+    FIREBASE_ROOT_REF.childByAppendingPath("users/\(username)").observeSingleEventOfType(.Value) { (memberSnap: FDataSnapshot!) -> Void in
+      if memberSnap.exists() {
+        FIREBASE_ROOT_REF.updateChildValues([
+          "teams/\(self.team!.id)/members/\(username)": true,
+          "users/\(username)/teams/\(self.team!.id)": true
+          ])
+        self.performSegueWithIdentifier("addMember", sender: self)
+      } else {
+        UIAlertController.showAlertWithTitle("Member doesn't exist", message: "/\(username) does not exist", onViewController: self)
+      }
+    }
   }
 
   /*

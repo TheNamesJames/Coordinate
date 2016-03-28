@@ -202,8 +202,7 @@ class LoginViewController: UIViewController {
       
       // Add /users/username branch if doesn't exist
       self.ref.childByAppendingPath("users/\(username)").runTransactionBlock({ (currentData: FMutableData!) -> FTransactionResult! in
-        //          print("currentData:: \(currentData.value as! NSObject)")
-        
+        // Ensure nothing exists at this branch
         guard currentData.value as! NSObject == NSNull() else {
           return FTransactionResult.abort()
         }
@@ -235,6 +234,10 @@ class LoginViewController: UIViewController {
   }
   
   private func login(email:String, _ password: String, complete: (Void -> Void)) {
+    FirebaseLoginHelpers.currentMember = nil
+    FirebaseLoginHelpers.initialMemberships = []
+    FirebaseLoginHelpers.userDefaultsForPreviouslySelectedTeamID = nil
+    
     ref.authUser(email, password: password, withCompletionBlock: { (error: NSError!, authData: FAuthData!) -> Void in
       if let error = error {
         print(error)
@@ -273,7 +276,7 @@ extension LoginViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("textfieldCell") as! TextFieldTableViewCell
     
-    cell.textField.addTarget(self, action: "editingChanged", forControlEvents: .EditingChanged)
+    cell.textField.addTarget(self, action: #selector(LoginViewController.editingChanged), forControlEvents: .EditingChanged)
     cell.textField.placeholder = self.signupMode ? self.signupPlaceholders[indexPath.row] : self.loginPlaceholders[indexPath.row]
     cell.listItem = self.items[indexPath.row]
     
@@ -293,6 +296,6 @@ extension LoginViewController: UITableViewDataSource, UITableViewDelegate {
     self.loginButton = footer.button
     footer.contentView.alpha = 1.0
     footer.button.setTitle(self.signupMode ? "Sign up" : "Login", forState: .Normal)
-    footer.button.addTarget(self, action: "loginPressed:", forControlEvents: .TouchUpInside)
+    footer.button.addTarget(self, action: #selector(LoginViewController.loginPressed(_:)), forControlEvents: .TouchUpInside)
   }
 }

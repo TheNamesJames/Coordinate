@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import CoreLocation
 
 class MainViewController: UIViewController {
 
@@ -15,11 +16,7 @@ class MainViewController: UIViewController {
   var membersDrawVC: MembersDrawViewController!
   var membersMapVC: TeamMapViewController!
   
-  var currentMember: Team.Member! {
-    didSet {
-      self.membersDrawVC!.currentMember = currentMember
-    }
-  }
+  var currentMember: Team.Member!
   var team: Team? {
     didSet {
       if let team = self.team {
@@ -38,9 +35,8 @@ class MainViewController: UIViewController {
     
     // Do any additional setup after loading the view.
     
-    getCurrentMemberWithCompleteBlock { (uid, current, teams) -> Void in
-      let defaults = NSUserDefaults.standardUserDefaults()
-      if let teamID = defaults.stringForKey(kPreviouslySelectedTeamIDKey) {
+    FirebaseLoginHelpers.isLoggedInWithCompleteBlock { (uid, current, teams) -> Void in
+      if let teamID = FirebaseLoginHelpers.userDefaultsForPreviouslySelectedTeamID {
         print(teamID)
         let team = Team(id: teamID, currentMember: current)
         FIREBASE_ROOT_REF.childByAppendingPath("teams/\(teamID)/name").observeSingleEventOfType(.Value, withBlock: { (teamSnap: FDataSnapshot!) -> Void in
@@ -92,20 +88,15 @@ class MainViewController: UIViewController {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
   }
-  
-  @IBAction func logoutPressed(sender: UIBarButtonItem) {
-    unauthAndDismissToLoginFrom(self.navigationController!)
-  }
 
   // MARK: - Navigation
 
   // In a storyboard-based application, you will often want to do a little preparation before navigation
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    // Get the new view controller using segue.destinationViewController.
-    // Pass the selected object to the new view controller.
     if segue.identifier == "EmbedMembersDraw" {
       let destination = segue.destinationViewController as! MembersDrawViewController
       self.membersDrawVC = destination
+      self.membersDrawVC!.currentMember = currentMember
     }
     if segue.identifier == "EmbedMembersMap" {
       let destination = segue.destinationViewController as! TeamMapViewController
@@ -119,6 +110,12 @@ class MainViewController: UIViewController {
     if segue.identifier == "ShowMemberships" {
       let destination = segue.destinationViewController as! MembershipTableViewController
       destination.currentMember = self.currentMember
+      destination.selectedTeamID = self.team?.id
+    }
+    if segue.identifier == "ShowTeamInfo" {
+      let destination = segue.destinationViewController as! TeamInfoTableViewController
+      destination.currentMember = self.currentMember
+      destination.team = self.team
     }
   }
   
@@ -127,18 +124,5 @@ class MainViewController: UIViewController {
   @IBAction func addMember(sender: UIStoryboardSegue) {
     // TODO: get/update self.team
 //    self.team = (sender.destinationViewController as! AddMemberTableViewController).team
-  }
-
-  @IBAction func chooseTeam(sender: UIStoryboardSegue) {
-    // TODO: get/update self.team
-    // self.team = selectedRow.team?
-//    self.team = (sender.destinationViewController as! AddMemberTableViewController).team
-
-    let defaults = NSUserDefaults.standardUserDefaults()
-    if let teamID = self.team?.id {
-      defaults.setObject(teamID, forKey: kPreviouslySelectedTeamIDKey)
-    } else {
-      defaults.setObject(nil, forKey: kPreviouslySelectedTeamIDKey)
-    }
   }
 }
