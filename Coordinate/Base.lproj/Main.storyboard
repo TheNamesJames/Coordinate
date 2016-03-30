@@ -422,7 +422,7 @@
                                     <outlet property="delegate" destination="Zh7-VR-xtG" id="a81-GC-5d6"/>
                                 </connections>
                             </mapView>
-                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Location Pin Blue" translatesAutoresizingMaskIntoConstraints="NO" id="rlD-da-hKm">
+                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Waypoint" translatesAutoresizingMaskIntoConstraints="NO" id="rlD-da-hKm">
                                 <rect key="frame" x="270" y="208" width="60" height="60"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
@@ -574,7 +574,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Location Pin Blue" width="49" height="66"/>
+        <image name="Waypoint" width="48" height="43"/>
         <image name="plus" width="81" height="80"/>
         <image name="search" width="64" height="64"/>
         <image name="separator" width="4" height="72"/>

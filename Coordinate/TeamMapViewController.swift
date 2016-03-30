@@ -321,6 +321,12 @@ class TeamMapViewController: UIViewController, PreviewMemberListener {
     }
   }
 
+  func memberIconLongPressed(member: Team.Member) {
+    if let index = self.mapView.annotations.indexOf({ $0.title! == member.username}) {
+      let memberAnnotation = self.mapView.annotations[index] as! MemberAnnotation
+      self.longPressedForMemberAnnotation(memberAnnotation)
+    }
+  }
 }
 
 extension TeamMapViewController: MKMapViewDelegate {
@@ -432,26 +438,12 @@ extension TeamMapViewController: MKMapViewDelegate {
       pinAnnotation.selected = false
       
       if let memberAnnotation = pinAnnotation.annotation as? MemberAnnotation {
-        self.settingWaypointForMemberAnnotation = memberAnnotation
+        self.longPressedForMemberAnnotation(memberAnnotation)
       } else {
         let memberWaypoint = pinAnnotation.annotation as! WaypointAnnotation
-        let memberAnnotation = memberWaypoint.associatedMember
-        self.settingWaypointForMemberAnnotation = memberAnnotation
+        let memberAnnotation = memberWaypoint.associatedMember!
+        self.longPressedForMemberAnnotation(memberAnnotation)
       }
-      
-      // Remove other waypoint(s) for this member
-      for annotation in self.mapView.annotations {
-        if let annotation = annotation as? WaypointAnnotation {
-          if annotation.associatedMember == self.settingWaypointForMemberAnnotation {
-            self.mapView.removeAnnotation(annotation)
-          }
-        }
-      }
-      
-      var coords = [self.settingWaypointForMemberAnnotation!.coordinate, self.mapView.centerCoordinate]
-      self.polylineForTemporaryWaypoint = MKPolyline(coordinates: &coords, count: 2)
-      
-      self.centerPin.alpha = 0.9
       
       
 //      UIView.animateWithDuration(0.1, animations: { () -> Void in
@@ -473,6 +465,24 @@ extension TeamMapViewController: MKMapViewDelegate {
       
 //      print(sender.locationInView(self.mapView))
     }
+  }
+  
+  private func longPressedForMemberAnnotation(annotation: MemberAnnotation) {
+    self.settingWaypointForMemberAnnotation = annotation
+    
+    // Remove other waypoint(s) for this member
+    for annotation in self.mapView.annotations {
+      if let annotation = annotation as? WaypointAnnotation {
+        if annotation.associatedMember == self.settingWaypointForMemberAnnotation {
+          self.mapView.removeAnnotation(annotation)
+        }
+      }
+    }
+    
+    var coords = [self.settingWaypointForMemberAnnotation!.coordinate, self.mapView.centerCoordinate]
+    self.polylineForTemporaryWaypoint = MKPolyline(coordinates: &coords, count: 2)
+    
+    self.centerPin.alpha = 0.9
   }
   
   func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
@@ -536,8 +546,9 @@ extension TeamMapViewController: MKMapViewDelegate {
     dataDictionary["lat"] = newCenter.latitude
     dataDictionary["lon"] = newCenter.longitude
     
-    // FIXME: re-enable location updates
-//    self.locationsRef!.childByAppendingPath(self.team!.currentMember.username).childByAutoId().setValue(dataDictionary)
+    if let username = self.team?.currentMember.username {
+      self.locationsRef?.childByAppendingPath(username).childByAutoId().setValue(dataDictionary)
+    }
   }
 }
 

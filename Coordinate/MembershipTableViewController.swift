@@ -41,11 +41,13 @@ class MembershipTableViewController: UITableViewController {
       teamNameTextField = textfield
     }
     alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-    alert.addAction(UIAlertAction(title: "Create", style: .Default, handler: { (_) in
+    let createAction = UIAlertAction(title: "Create", style: .Default, handler: { (_) in
       let teamID = teamIDTextField.text!
       let teamName = teamNameTextField.text!
       self.createTeamWithID(teamID, teamName: teamName)
-    }))
+    })
+    createAction.enabled = false
+    alert.addAction(createAction)
     self.presentViewController(alert, animated: true, completion: nil)
   }
   
@@ -81,8 +83,6 @@ class MembershipTableViewController: UITableViewController {
   }
   
   private func createTeamWithID(teamID: String, teamName: String) {
-    
-    
     FIREBASE_ROOT_REF.childByAppendingPath("teams/\(teamID)").observeSingleEventOfType(.Value, withBlock: { (teamSnap) in
       if teamSnap.exists() {
         let alert = UIAlertController(title: "Team ID already taken", message: "Please try again", preferredStyle: .Alert)
@@ -107,6 +107,70 @@ class MembershipTableViewController: UITableViewController {
           }
           
           print("Team created")
+        })
+      }
+    })
+  }
+  
+  
+  func joinTeam(sender: AnyObject) {
+    let alert = UIAlertController(title: "Join a Team", message: nil, preferredStyle: .Alert)
+    var teamIDTextField: UITextField!
+    alert.addTextFieldWithConfigurationHandler { (textField) in
+      textField.placeholder = "Enter the team ID"
+      textField.addTarget(self, action: #selector(MembershipTableViewController.validateJoinTeamIDTextField(_:)), forControlEvents: .EditingChanged)
+      teamIDTextField = textField
+    }
+    alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+    let joinTeamAction = UIAlertAction(title: "Join", style: .Default) { (action) in
+      self.joinTeamWithID(teamIDTextField.text!)
+    }
+    joinTeamAction.enabled = false
+    alert.addAction(joinTeamAction)
+    self.presentViewController(alert, animated: true, completion: nil)
+  }
+  
+  func validateJoinTeamIDTextField(sender: UITextField) {
+    let alertController = self.presentedViewController as! UIAlertController
+    let joinTeamAction = alertController.actions.last
+    
+    let teamID = sender.text ?? ""
+    
+    
+    let invalidChars = NSMutableCharacterSet.whitespaceAndNewlineCharacterSet()
+    invalidChars.addCharactersInString(".$#[]/")
+    
+    let validTeamID: Bool
+    if teamID.characters.count <= 1 {
+      validTeamID = false
+    } else if let _ = teamID.rangeOfCharacterFromSet(invalidChars, options: .LiteralSearch, range: Range<String.Index>(teamID.startIndex..<teamID.endIndex)) {
+      validTeamID = false
+    } else {
+      validTeamID = true
+    }
+    
+    joinTeamAction?.enabled = validTeamID
+  }
+  
+  func joinTeamWithID(teamID: String) {
+    FIREBASE_ROOT_REF.childByAppendingPath("teams/\(teamID)").observeSingleEventOfType(.Value, withBlock: { (teamSnap) in
+      if !teamSnap.exists() {
+        UIAlertController.showAlertWithTitle("Team ID does not exist", message: "Hmm. Not much I can do to help here..", onViewController: self)
+      } else {
+        var teamDict = [String : AnyObject]()
+        teamDict["teams/\(teamID)/members/\(self.currentMember.username)"] = true
+        teamDict["users/\(self.currentMember.username)/teams/\(teamID)"] = true
+        
+        FIREBASE_ROOT_REF.updateChildValues(teamDict, withCompletionBlock: { (error, firebase) in
+          guard error == nil else {
+            print(error)
+            let alert = UIAlertController(title: "Oops. Something's broke", message: "Could not join team", preferredStyle: .Alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            return
+          }
+          
+          print("Team joined")
         })
       }
     })
@@ -159,8 +223,15 @@ class MembershipTableViewController: UITableViewController {
     // 1.3: .Value is called last, so we know all existing teams have been found. Update table
     self.ref.childByAppendingPath("users/\(self.currentMember.username)/teams").observeSingleEventOfType(.Value, withBlock: { (snap: FDataSnapshot!) -> Void in
       //        self.tableView.endUpdates()
-      self.tableView.tableFooterView = UIView()
+//      self.tableView.tableFooterView = UIView()
     })
+    
+    
+    let footer = UINib(nibName: "LoginFooter", bundle: nil).instantiateWithOwner(self, options: nil).first as! LoginFooterView
+    footer.button.setTitle("Join a Team", forState: .Normal)
+    footer.button.enabled = true
+    footer.button.addTarget(self, action: #selector(MembershipTableViewController.joinTeam(_:)), forControlEvents: .TouchUpInside)
+    self.tableView.tableFooterView = footer
   }
   
   override func viewDidLayoutSubviews() {
@@ -204,44 +275,38 @@ class MembershipTableViewController: UITableViewController {
   }
   
   
-//  override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-//    let overallHeight = self.view.bounds.height
-//    let minimumHeight = overallHeight - tableView.rowHeight
-////    let totalRowsHeight = CGFloat(tableView.numberOfRowsInSection(0)) * tableView.rowHeight
-//    
-//    return minimumHeight / 2
-//  }
-//  
-//  override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-//    var frame = tableView.bounds
-//    frame.size.height = self.tableView(self.tableView, heightForFooterInSection: section)
-//    let view = UIView(frame: frame)
-//    view.backgroundColor = UIColor.redColor()
-//    
-//    return view
-//  }
+
   
   // MARK: - UITableViewDelegate
   
-  /*
+  
   // Override to support conditional editing of the table view.
   override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-  // Return false if you do not want the specified item to be editable.
-  return true
+    return true
   }
-  */
   
-  /*
   // Override to support editing the table view.
   override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-  if editingStyle == .Delete {
-  // Delete the row from the data source
-  tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-  } else if editingStyle == .Insert {
-  // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    if editingStyle == .Delete {
+      let team = self.data[indexPath.row]
+      
+      let alert = UIAlertController(destructiveAlertWithTitle: "Are you sure?", message: "Are you sure you want to leave #\(team.id)?", defaultTitle: "Yes", defaultHandler: { (_) in
+        // Delete the row from the data source
+        var dict = [String : AnyObject]()
+        dict["teams/\(team.id)/members/\(self.currentMember.username)"] = NSNull()
+        dict["users/\(self.currentMember.username)/teams/\(team.id)"] = NSNull()
+        
+        FIREBASE_ROOT_REF.updateChildValues(dict)
+      })
+      self.presentViewController(alert, animated: true, completion: nil)
+    } else if editingStyle == .Insert {
+      // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    }
   }
+  
+  override func tableView(tableView: UITableView, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath) -> String {
+    return "Leave"
   }
-  */
   
   /*
   // Override to support rearranging the table view.

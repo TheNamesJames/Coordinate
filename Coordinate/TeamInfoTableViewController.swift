@@ -120,6 +120,10 @@ class TeamInfoTableViewController: UITableViewController {
     }
   }
   
+  override func tableView(tableView: UITableView, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath) -> String {
+    return "Remove"
+  }
+  
   /*
    // Override to support rearranging the table view.
    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {

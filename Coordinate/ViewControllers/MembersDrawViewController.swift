@@ -12,6 +12,7 @@ import Firebase
 protocol PreviewMemberListener: NSObjectProtocol {
   //  func previewMember(member: Member?) //, atZoomLevel: MKZoomScale)
   func previewMember(member: Team.Member?) //, atZoomLevel: MKZoomScale)
+  func memberIconLongPressed(member: Team.Member)
   func locateSelf()
 }
 
@@ -230,6 +231,12 @@ class MembersDrawViewController: UIViewController, UICollectionViewDataSource, U
     }
   }
   
+  func fireMemberIconLongPressed(member: Team.Member) {
+    for listener in previewMemberListeners {
+      listener.memberIconLongPressed(member)
+    }
+  }
+
   func fireLocateSelf() {
     for listener in previewMemberListeners {
       listener.locateSelf()
@@ -287,27 +294,10 @@ extension MembersDrawViewController: UIGestureRecognizerDelegate {
     if sender.state == .Began {
       print("Begna")
       if let cellIndex = self.collectionView.indexPathForItemAtPoint(sender.locationInView(self.collectionView)) {
-        
-        // FIXME: Get the actual member username and team ID
-        // FIXME: Check this actually removes members from teams
-        let username = "fred"
-        let teamID = "photon"
-        
-        let alert = UIAlertController(title: "Remove Member", message: "Are you sure you want to remove \(username) from \(teamID)?", preferredStyle: .ActionSheet)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Remove", style: .Destructive, handler: { (action: UIAlertAction) in
-          var dict: [String: AnyObject] = [:]
-          dict["users/\(username)/teams/\(teamID)"] = NSNull()
-          dict["teams/\(teamID)/members/\(username)"] = NSNull()
-          
-          FIREBASE_ROOT_REF.updateChildValues(dict)
-        }))
-        self.presentViewController(alert, animated: true, completion: nil)
+        if let member = self.data?[cellIndex.item] {
+          self.fireMemberIconLongPressed(member)
+        }
       }
-      
-      // Reset
-      sender.enabled = false
-      sender.enabled = true
     }
     if sender.state == .Ended {
       print("Ended")
