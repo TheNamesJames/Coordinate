@@ -90,6 +90,17 @@ class MainViewController: UIViewController {
   }
 
   // MARK: - Navigation
+  
+  override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+    if identifier == "ShowTeamInfo" {
+      guard self.team != nil else {
+        UIAlertController.showAlertWithTitle("Cannot show team info", message: "You need to create/join a team first", onViewController: self)
+        return false
+      }
+    }
+    
+    return true
+  }
 
   // In a storyboard-based application, you will often want to do a little preparation before navigation
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -106,6 +117,7 @@ class MainViewController: UIViewController {
     if segue.identifier == "AddMember" {
       let destination = segue.destinationViewController as! AddMemberTableViewController
       destination.team = self.team
+      destination.currentMember = self.currentMember
     }
     if segue.identifier == "ShowMemberships" {
       let destination = segue.destinationViewController as! MembershipTableViewController
@@ -121,7 +133,7 @@ class MainViewController: UIViewController {
   
   // MARK: - Unwind segue actions
   
-  @IBAction func addMember(sender: UIStoryboardSegue) {
+  @IBAction func doneAddingMember(sender: UIStoryboardSegue) {
     // TODO: get/update self.team
 //    self.team = (sender.destinationViewController as! AddMemberTableViewController).team
   }

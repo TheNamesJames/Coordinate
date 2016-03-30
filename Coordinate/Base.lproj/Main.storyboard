@@ -564,7 +564,8 @@
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
-                        <segue destination="8IF-BJ-X89" kind="unwind" identifier="addMember" unwindAction="addMember:" id="mSg-D2-7n2"/>
+                        <segue destination="8IF-BJ-X89" kind="unwind" identifier="doneAddingMember" unwindAction="doneAddingMember:" id="mSg-D2-7n2"/>
+                        <segue destination="8IF-BJ-X89" kind="unwind" identifier="chooseTeam" unwindAction="chooseTeam:" id="W4m-Fe-aoe"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c4N-UX-V29" userLabel="First Responder" sceneMemberID="firstResponder"/>

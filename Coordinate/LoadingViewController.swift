@@ -116,8 +116,17 @@ class LoadingViewController: UIViewController {
     //    self.team = (sender.destinationViewController as! AddMemberTableViewController).team
     
     if sender.identifier == "chooseTeam" {
-      let source = sender.sourceViewController as! MembershipTableViewController
-      let chosenTeamID = source.selectedTeamID
+      let chosenTeamID: String?
+      switch sender.sourceViewController {
+      case let source as MembershipTableViewController:
+         chosenTeamID = source.selectedTeamID
+      case let source as AddMemberTableViewController:
+        chosenTeamID = source.createdTeamID
+        
+      default:
+        print("chooseTeam: Unrecognised sourceViewController")
+        chosenTeamID = nil
+      }
       self.doTheLoadingThing(chosenTeamID)
     }
   }
