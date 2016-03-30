@@ -18,7 +18,13 @@ extension UIAlertController {
   
   class func showAlertWithTitle(title: String?, message: String?, onViewController vc: UIViewController) -> UIAlertController {
     let alert = UIAlertController(alertWithTitle: title, message: message)
-    vc.presentViewController(alert, animated: true, completion: nil)
+    if vc is UINavigationController {
+      vc.presentViewController(alert, animated: true, completion: nil)
+    } else if let nav = vc.navigationController {
+      nav.presentViewController(alert, animated: true, completion: nil)
+    } else {
+      vc.presentViewController(alert, animated: true, completion: nil)
+    }
     return alert
   }
   

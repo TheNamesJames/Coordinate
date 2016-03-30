@@ -242,6 +242,7 @@ class LoginViewController: UIViewController {
       if let error = error {
         print(error)
         complete()
+        UIAlertController.showAlertWithTitle("Invalid login", message: "Could not log you in.", onViewController: self.navigationController!)
       } else {
         let nav = self.storyboard!.instantiateInitialViewController() as! UINavigationController
         nav.modalTransitionStyle = .CrossDissolve

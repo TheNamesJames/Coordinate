@@ -278,7 +278,7 @@ class TeamMapViewController: UIViewController, PreviewMemberListener {
     guard CLLocationManager.locationServicesEnabled() else {
       let alert = UIAlertController(title: "Location services disabled", message: "We need location services enabled to be able to show your location", preferredStyle: .Alert)
       alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-      self.presentViewController(alert, animated: true, completion: nil)
+      self.navigationController!.presentViewController(alert, animated: true, completion: nil)
       return
     }
     
@@ -292,7 +292,7 @@ class TeamMapViewController: UIViewController, PreviewMemberListener {
         UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
       }))
       alert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: nil))
-      self.presentViewController(alert, animated: true, completion: nil)
+      self.navigationController!.presentViewController(alert, animated: true, completion: nil)
     }
     
   }
@@ -600,7 +600,7 @@ extension TeamMapViewController: CLLocationManagerDelegate {
       
       let alert = UIAlertController(title: "Location access restricted", message: "Coordinate is not authorised use location services", preferredStyle: .Alert)
       alert.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: nil))
-      self.presentViewController(alert, animated: true, completion: nil)
+      self.navigationController!.presentViewController(alert, animated: true, completion: nil)
       
     case .Denied:
       self.mapView.showsUserLocation = false

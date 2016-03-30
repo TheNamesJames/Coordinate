@@ -55,7 +55,7 @@ class MembershipTableViewController: UITableViewController {
     })
     createAction.enabled = false
     alert.addAction(createAction)
-    self.presentViewController(alert, animated: true, completion: nil)
+    self.navigationController!.presentViewController(alert, animated: true, completion: nil)
   }
   
   func validateTeamIDTextField(sender: UITextField) {
@@ -97,7 +97,7 @@ class MembershipTableViewController: UITableViewController {
         alert.addAction(UIAlertAction(title: "Try again", style: .Default, handler: { (action) in
           self.createTeam(action)
         }))
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.navigationController!.presentViewController(alert, animated: true, completion: nil)
       } else {
         var teamDict = [String : AnyObject]()
         teamDict["teams/\(teamID)/members/\(self.currentMember.username)"] = true
@@ -109,7 +109,7 @@ class MembershipTableViewController: UITableViewController {
             print(error)
             let alert = UIAlertController(title: "Oops. Something's broke", message: "Could not create team", preferredStyle: .Alert)
             alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.navigationController!.presentViewController(alert, animated: true, completion: nil)
             return
           }
           
@@ -135,7 +135,7 @@ class MembershipTableViewController: UITableViewController {
     }
     joinTeamAction.enabled = false
     alert.addAction(joinTeamAction)
-    self.presentViewController(alert, animated: true, completion: nil)
+    self.navigationController!.presentViewController(alert, animated: true, completion: nil)
   }
   
   func validateJoinTeamIDTextField(sender: UITextField) {
@@ -174,7 +174,7 @@ class MembershipTableViewController: UITableViewController {
             print(error)
             let alert = UIAlertController(title: "Oops. Something's broke", message: "Could not join team", preferredStyle: .Alert)
             alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.navigationController!.presentViewController(alert, animated: true, completion: nil)
             return
           }
           
@@ -306,7 +306,7 @@ class MembershipTableViewController: UITableViewController {
         
         FIREBASE_ROOT_REF.updateChildValues(dict)
       })
-      self.presentViewController(alert, animated: true, completion: nil)
+      self.navigationController!.presentViewController(alert, animated: true, completion: nil)
     } else if editingStyle == .Insert {
       // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }

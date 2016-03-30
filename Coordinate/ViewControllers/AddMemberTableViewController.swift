@@ -254,7 +254,7 @@ class AddMemberTableViewController: UITableViewController {
       if teamSnap.exists() {
         let alert = UIAlertController(title: "Team ID already taken", message: "Please try again", preferredStyle: .Alert)
         alert.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: nil))
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.navigationController!.presentViewController(alert, animated: true, completion: nil)
       } else {
         var teamDict = [String : AnyObject]()
         teamDict["teams/\(teamID)/members/\(self.currentMember.username)"] = true
@@ -266,7 +266,7 @@ class AddMemberTableViewController: UITableViewController {
             print(error)
             let alert = UIAlertController(title: "Oops. Something's broke", message: "Could not create team", preferredStyle: .Alert)
             alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.navigationController!.presentViewController(alert, animated: true, completion: nil)
             return
           }
           

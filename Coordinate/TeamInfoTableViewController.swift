@@ -114,7 +114,7 @@ class TeamInfoTableViewController: UITableViewController {
         
         FIREBASE_ROOT_REF.updateChildValues(dict)
       })
-      self.presentViewController(alert, animated: true, completion: nil)
+      self.navigationController!.presentViewController(alert, animated: true, completion: nil)
     } else if editingStyle == .Insert {
       // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }
