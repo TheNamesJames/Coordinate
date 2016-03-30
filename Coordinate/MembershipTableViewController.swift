@@ -31,12 +31,14 @@ class MembershipTableViewController: UITableViewController {
     var teamIDTextField: UITextField!
     alert.addTextFieldWithConfigurationHandler { (textfield) in
       textfield.placeholder = "Choose a team ID"
+      textfield.keyboardType = .Twitter
       textfield.addTarget(self, action: #selector(MembershipTableViewController.validateTeamIDTextField(_:)), forControlEvents: .EditingChanged)
       teamIDTextField = textfield
     }
     var teamNameTextField: UITextField!
     alert.addTextFieldWithConfigurationHandler { (textfield) in
       textfield.placeholder = "Enter a team name"
+      textfield.keyboardType = .ASCIICapable
       textfield.addTarget(self, action: #selector(MembershipTableViewController.validateTeamIDTextField(_:)), forControlEvents: .EditingChanged)
       teamNameTextField = textfield
     }
@@ -118,6 +120,7 @@ class MembershipTableViewController: UITableViewController {
     var teamIDTextField: UITextField!
     alert.addTextFieldWithConfigurationHandler { (textField) in
       textField.placeholder = "Enter the team ID"
+      textField.keyboardType = .Twitter
       textField.addTarget(self, action: #selector(MembershipTableViewController.validateJoinTeamIDTextField(_:)), forControlEvents: .EditingChanged)
       teamIDTextField = textField
     }

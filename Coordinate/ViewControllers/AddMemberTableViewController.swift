@@ -74,13 +74,16 @@ class AddMemberTableViewController: UITableViewController {
     switch indexPath.section {
     case 0:
       cell.textField.placeholder = self.placeholders[0]
+      cell.textField.keyboardType = .Twitter
       cell.listItem = self.usernameItems[indexPath.row]
       
     case 1 where indexPath.row == 0:
       cell.textField.placeholder = self.placeholders[1]
+      cell.textField.keyboardType = .Twitter
       cell.listItem = self.teamItems[indexPath.row]
     case 1 where indexPath.row == 1:
       cell.textField.placeholder = self.placeholders[2]
+      cell.textField.keyboardType = .ASCIICapable
       cell.listItem = self.teamItems[indexPath.row]
       
     default:

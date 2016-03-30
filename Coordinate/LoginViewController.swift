@@ -280,6 +280,26 @@ extension LoginViewController: UITableViewDataSource, UITableViewDelegate {
     cell.textField.placeholder = self.signupMode ? self.signupPlaceholders[indexPath.row] : self.loginPlaceholders[indexPath.row]
     cell.listItem = self.items[indexPath.row]
     
+    if self.signupMode {
+      cell.textField.placeholder = self.signupPlaceholders[indexPath.row]
+    } else {
+      cell.textField.placeholder = self.loginPlaceholders[indexPath.row]
+    }
+    
+    switch indexPath.row {
+    case 0:
+      cell.textField.keyboardType = .EmailAddress
+    case 1:
+      cell.textField.keyboardType = .ASCIICapable
+    case 2:
+      cell.textField.keyboardType = .Twitter
+    case 3:
+      cell.textField.keyboardType = .ASCIICapable
+    default:
+      break
+    }
+    cell.textField.secureTextEntry = indexPath.row == 1
+    
     return cell
   }
   
