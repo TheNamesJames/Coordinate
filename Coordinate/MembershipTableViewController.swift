@@ -23,7 +23,12 @@ class MembershipTableViewController: UITableViewController {
   var selectedTeamID: String?
   
   @IBAction func logoutPressed(sender: UIBarButtonItem) {
-    FirebaseLoginHelpers.unauthAndDismissToLoginFrom(self.navigationController!)
+    let alert = UIAlertController(title: "Log out", message: "Are you sure?", preferredStyle: .Alert)
+    alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+    alert.addAction(UIAlertAction(title: "Logout", style: .Default, handler: { (_) in
+      FirebaseLoginHelpers.unauthAndDismissToLoginFrom(self.navigationController!)
+    }))
+    self.navigationController!.presentViewController(alert, animated: true, completion: nil)
   }
   
   @IBAction func createTeam(sender: AnyObject) {
