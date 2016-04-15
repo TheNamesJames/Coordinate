@@ -18,9 +18,9 @@ class TeamMapViewController: UIViewController, PreviewMemberListener {
   private var settingWaypointForMemberAnnotation: MemberAnnotation? = nil {
     didSet {
       if let _ = settingWaypointForMemberAnnotation {
-        self.centerPin.hidden = false
+//        self.centerPin.hidden = false
       } else {
-        self.centerPin.hidden = true
+//        self.centerPin.hidden = true
       }
     }
   }
@@ -56,6 +56,7 @@ class TeamMapViewController: UIViewController, PreviewMemberListener {
       }
     }
   }
+  var fullnames = [String : String]() // Stores full names for each username
   
   private var locationsHandles = [String : [FirebaseHandle]]()
   var locationsRef: Firebase? {
@@ -171,6 +172,15 @@ class TeamMapViewController: UIViewController, PreviewMemberListener {
     if username != self.team!.currentMember.username {
       let handle = self.locationsRef!.childByAppendingPath(username).queryLimitedToLast(1).observeEventType(.ChildAdded, withBlock: updateMemberLocation)
       
+      FIREBASE_ROOT_REF.childByAppendingPath("users/\(username)/name").observeSingleEventOfType(.Value, withBlock: { (userSnap: FDataSnapshot!) in
+        let fullname = userSnap.value as? String
+        if fullname == nil {
+          print("TeamMapVC failed to get full name for user \(username)")
+        }
+        
+        self.fullnames[username] = fullname
+      })
+      
       if self.locationsHandles[username] != nil {
         self.locationsHandles[username]!.append(handle)
       } else {
@@ -182,6 +192,8 @@ class TeamMapViewController: UIViewController, PreviewMemberListener {
   
   func memberRemoved(snap: FDataSnapshot!) {
     let username = snap.key
+    
+    self.fullnames.removeValueForKey(username)
     
     self.waypointRef!.childByAppendingPath(username).removeAllObservers()
     self.locationsRef!.childByAppendingPath(username).removeAllObservers()
@@ -252,7 +264,7 @@ class TeamMapViewController: UIViewController, PreviewMemberListener {
     self.locationManager.delegate = self
     self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
     
-    self.centerPin.alpha = 0
+//    self.centerPin.alpha = 0
   }
   
   override func didReceiveMemoryWarning() {
@@ -338,11 +350,11 @@ extension TeamMapViewController: MKMapViewDelegate {
     
     var annotationView: MKAnnotationView!
     switch annotation {
-    case is MemberAnnotation:
+    case let annotation as MemberAnnotation:
       annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier("MemberPinAnnotation")
       if annotationView == nil {
-        annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "MemberPinAnnotation")
-        annotationView.centerOffset = CGPointMake(10, -20)
+        annotationView = MemberAnnotationView(annotation: annotation, reuseIdentifier: "MemberPinAnnotation")
+//        annotationView.centerOffset = CGPointMake(10, -20)
         
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(TeamMapViewController.longPressed(_:)))
         longPress.delegate = self
@@ -352,6 +364,11 @@ extension TeamMapViewController: MKMapViewDelegate {
       } else {
         annotationView.annotation = annotation
       }
+      
+      let initials = self.fullnames[annotation.title!]?.initials().uppercaseString ?? "/\(annotation.title!)"
+      let imageView = (annotationView as! MemberAnnotationView).imageView
+      imageView.image = UIImage.imageWithCenteredText(initials, withSize: imageView.bounds.size)
+      
 //      annotationView.draggable = true
       
       annotationView.canShowCallout = true
@@ -373,7 +390,7 @@ extension TeamMapViewController: MKMapViewDelegate {
         crossButton.frame = CGRect(x: 0, y: 0, width: 22, height: 22)
         annotationView.rightCalloutAccessoryView = crossButton
       }
-      annotationView!.centerOffset = CGPointMake(10, -50)
+//      annotationView!.centerOffset = CGPointMake(10, -50)
       (annotationView! as! MKPinAnnotationView).pinTintColor = UIColor.greenColor()
       
 //      annotationView.leftCalloutAccessoryView = nil
@@ -398,13 +415,39 @@ extension TeamMapViewController: MKMapViewDelegate {
         crossButton.frame = CGRect(x: 0, y: 0, width: 22, height: 22)
         annotationView.rightCalloutAccessoryView = crossButton
       }
-      annotationView!.centerOffset = CGPointMake(10, -50)
+//      annotationView!.centerOffset = CGPointMake(10, -50)
       (annotationView! as! MKPinAnnotationView).pinTintColor = UIColor.blueColor()
       
 //      let tick = UIButton(type: .ContactAdd)
 //      annotationView.leftCalloutAccessoryView = tick
       
 //      annotationView!.draggable = true
+      annotationView.canShowCallout = true
+    
+    case is TempWaypointAnnotation:
+      annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier("TempWaypointPinAnnotation")
+      if annotationView == nil {
+        annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "TempWaypointPinAnnotation")
+        
+//        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(TeamMapViewController.longPressed(_:)))
+//        longPress.delegate = self
+//        longPress.delaysTouchesBegan = false
+//        longPress.cancelsTouchesInView = false
+//        annotationView.addGestureRecognizer(longPress)
+        
+        let crossButton = UIButton(type: .Custom)
+        let cross = UIImage(named: "cross")
+        crossButton.setImage(cross, forState: .Normal)
+        crossButton.frame = CGRect(x: 0, y: 0, width: 22, height: 22)
+        annotationView.rightCalloutAccessoryView = crossButton
+      }
+//      annotationView!.centerOffset = CGPointMake(10, -50)
+      (annotationView! as! MKPinAnnotationView).pinTintColor = UIColor.grayColor()
+      
+      //      let tick = UIButton(type: .ContactAdd)
+      //      annotationView.leftCalloutAccessoryView = tick
+      
+      annotationView!.draggable = true
       annotationView.canShowCallout = true
       
     default:
@@ -416,7 +459,7 @@ extension TeamMapViewController: MKMapViewDelegate {
   
   func mapView(mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
     if let _ = self.settingWaypointForMemberAnnotation {
-      self.centerPin.alpha = 0.7
+//      self.centerPin.alpha = 0.7
     }
     
     self.currentlyPreviewingMember = nil
@@ -424,7 +467,7 @@ extension TeamMapViewController: MKMapViewDelegate {
   
   func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
     if let _ = self.settingWaypointForMemberAnnotation {
-      self.centerPin.alpha = 0.9
+//      self.centerPin.alpha = 0.9
       
       var coords = [self.settingWaypointForMemberAnnotation!.coordinate, self.mapView.centerCoordinate]
       self.polylineForTemporaryWaypoint = MKPolyline(coordinates: &coords, count: 2)
@@ -434,8 +477,10 @@ extension TeamMapViewController: MKMapViewDelegate {
   
   func longPressed(sender: UILongPressGestureRecognizer) {
     if sender.state == .Began {
-      let pinAnnotation = sender.view as! MKPinAnnotationView
+      let pinAnnotation = sender.view as! MemberAnnotationView
       pinAnnotation.selected = false
+      
+      self.mapView.removeAnnotations(self.mapView.annotations.filter({ $0 is TempWaypointAnnotation }))
       
       if let memberAnnotation = pinAnnotation.annotation as? MemberAnnotation {
         self.longPressedForMemberAnnotation(memberAnnotation)
@@ -463,9 +508,64 @@ extension TeamMapViewController: MKMapViewDelegate {
 //      let pinAnnotation = sender.view as! MKPinAnnotationView
 //      pinAnnotation.selected = false
       
-//      print(sender.locationInView(self.mapView))
+      var tempAnnotation: TempWaypointAnnotation!
+      self.mapView.annotations.forEach({ if let x = $0 as? TempWaypointAnnotation {
+        tempAnnotation = x
+        }
+      })
+      
+      let touchPoint = sender.locationInView(self.mapView)
+      tempAnnotation.coordinate = self.mapView.convertPoint(touchPoint, toCoordinateFromView: self.mapView)
+      
+      // TODO: Fix up pan on dragging to edge hit points?
+//      let delta = self.mapView.region.span.latitudeDelta / 50
+//      let centerDiff = isPoint(touchPoint, atEdgeOfViewFrame: self.mapView.frame)
+//      
+//      MKMapView.animateWithDuration(0.1, animations: {
+//        if let magnitude = centerDiff.latitude?.rawValue {
+//          self.mapView.centerCoordinate.latitude += magnitude * delta
+//          tempAnnotation.coordinate.latitude += magnitude * delta
+//        }
+//        if let magnitude = centerDiff.longitude?.rawValue {
+//          self.mapView.centerCoordinate.longitude += magnitude * delta
+//          tempAnnotation.coordinate.longitude += magnitude * delta
+//        }
+//      })
     }
   }
+//  private enum Magnitude : Double {
+//    case Postive  = 1
+//    case None     = 0
+//    case Negative = -1
+//  }
+//  private func isPoint(p: CGPoint, atEdgeOfViewFrame frame: CGRect) -> (latitude: Magnitude?, longitude: Magnitude?) {
+//    let dist: CGFloat = 48
+//    
+//    guard !frame.insetBy(dx: dist, dy: dist).contains(p) else {
+//      return (nil, nil)
+//    }
+//    
+//    let left = frame.divide(dist, fromEdge: .MinXEdge).slice
+//    let right = frame.divide(dist, fromEdge: .MaxXEdge).slice
+//    
+//    let top = frame.divide(dist, fromEdge: .MinYEdge).slice
+//    let bottom = frame.divide(dist, fromEdge: .MaxYEdge).slice
+//    
+//    var result: (latitude: Magnitude?, longitude: Magnitude?)
+//    if left.contains(p) {
+//      result.longitude = .Negative
+//    } else if right.contains(p) {
+//      result.longitude = .Postive
+//    }
+//    
+//    if top.contains(p) {
+//      result.latitude = .Postive
+//    } else if bottom.contains(p) {
+//      result.latitude = .Negative
+//    }
+//    
+//    return result
+//  }
   
   private func longPressedForMemberAnnotation(annotation: MemberAnnotation) {
     self.settingWaypointForMemberAnnotation = annotation
@@ -482,7 +582,12 @@ extension TeamMapViewController: MKMapViewDelegate {
     var coords = [self.settingWaypointForMemberAnnotation!.coordinate, self.mapView.centerCoordinate]
     self.polylineForTemporaryWaypoint = MKPolyline(coordinates: &coords, count: 2)
     
-    self.centerPin.alpha = 0.9
+//    self.centerPin.alpha = 0.9
+    let tempWaypoint = TempWaypointAnnotation()
+    tempWaypoint.coordinate = annotation.coordinate
+    tempWaypoint.title = "Send /\(annotation.title!) here"
+    self.mapView.addAnnotation(tempWaypoint)
+//    self.mapView.selectAnnotation(tempWaypoint, animated: true)
   }
   
   func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
@@ -527,7 +632,7 @@ extension TeamMapViewController: MKMapViewDelegate {
         placeholder.title = "Move \(annotation.title) here?"
 //        self.mapView.addAnnotation(placeholder)
         
-        (view as! MKPinAnnotationView).pinTintColor = UIColor.blueColor()
+//        (view as! MKPinAnnotationView).pinTintColor = UIColor.blueColor()
         view.canShowCallout = true
       }
       
@@ -566,6 +671,8 @@ extension TeamMapViewController : UIGestureRecognizerDelegate {
   }
 }
 
+class TempWaypointAnnotation: MKPointAnnotation {
+}
 class CurrentMemberWaypointAnnotation: MKPointAnnotation {
 }
 class MemberAnnotation: MKPointAnnotation {

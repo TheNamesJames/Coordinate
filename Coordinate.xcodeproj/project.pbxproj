@@ -26,6 +26,7 @@
 		A04DC6331C9C3160004A2160 /* LoginFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04DC6321C9C3160004A2160 /* LoginFooterView.swift */; };
 		A04DC6351C9C31A1004A2160 /* LoginFooter.xib in Resources */ = {isa = PBXBuildFile; fileRef = A04DC6341C9C31A1004A2160 /* LoginFooter.xib */; };
 		A069B6981C5A98C000413CC4 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069B6971C5A98C000413CC4 /* LoginViewController.swift */; };
+		A0732C9E1CC11CA5005D5847 /* MemberAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0732C9D1CC11CA5005D5847 /* MemberAnnotationView.swift */; };
 		A08597811C923560006A8CD2 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08597801C923560006A8CD2 /* MainViewController.swift */; };
 		A08597851C9235D8006A8CD2 /* MemberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08597841C9235D8006A8CD2 /* MemberCollectionViewCell.swift */; };
 		A08597871C923660006A8CD2 /* MembersDrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08597861C923660006A8CD2 /* MembersDrawViewController.swift */; };
@@ -88,6 +89,7 @@
 		A04DC6321C9C3160004A2160 /* LoginFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFooterView.swift; sourceTree = "<group>"; };
 		A04DC6341C9C31A1004A2160 /* LoginFooter.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginFooter.xib; sourceTree = "<group>"; };
 		A069B6971C5A98C000413CC4 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		A0732C9D1CC11CA5005D5847 /* MemberAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberAnnotationView.swift; sourceTree = "<group>"; };
 		A08597801C923560006A8CD2 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = ViewControllers/MainViewController.swift; sourceTree = "<group>"; };
 		A08597841C9235D8006A8CD2 /* MemberCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MemberCollectionViewCell.swift; path = Cells/MemberCollectionViewCell.swift; sourceTree = "<group>"; };
 		A08597861C923660006A8CD2 /* MembersDrawViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MembersDrawViewController.swift; path = ViewControllers/MembersDrawViewController.swift; sourceTree = "<group>"; };
@@ -279,6 +281,7 @@
 		A0DFD8631C5A28DC00EDA31D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A0732C9D1CC11CA5005D5847 /* MemberAnnotationView.swift */,
 				A04DC6321C9C3160004A2160 /* LoginFooterView.swift */,
 				A04507EE1C9CACCF00AB825A /* TitleHeaderView.swift */,
 			);
@@ -484,6 +487,7 @@
 				A069B6981C5A98C000413CC4 /* LoginViewController.swift in Sources */,
 				A0C7F2B71C5663E4001BD3C5 /* LocationControlTableViewCell.swift in Sources */,
 				A005DCB71C8727C800C42922 /* MembershipTableViewController.swift in Sources */,
+				A0732C9E1CC11CA5005D5847 /* MemberAnnotationView.swift in Sources */,
 				A04507EF1C9CACCF00AB825A /* TitleHeaderView.swift in Sources */,
 				A005DCBD1C87426600C42922 /* TeamMapViewController.swift in Sources */,
 				A005DCB51C86E6B900C42922 /* NewTeamContainerViewController.swift in Sources */,
