@@ -244,12 +244,7 @@ class LoginViewController: UIViewController {
         complete()
         UIAlertController.showAlertWithTitle("Invalid login", message: "Could not log you in.", onViewController: self.navigationController!)
       } else {
-        let nav = self.storyboard!.instantiateInitialViewController() as! UINavigationController
-        nav.modalTransitionStyle = .CrossDissolve
-        self.presentViewController(nav, animated: true, completion: { () -> Void in
-          let appDelegate = UIApplication.sharedApplication().delegate
-          appDelegate?.window!?.rootViewController = nav
-        })
+        self.performSegueWithIdentifier("loginSuccessful", sender: self)
       }
     })
   }

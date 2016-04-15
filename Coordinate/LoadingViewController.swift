@@ -22,10 +22,17 @@ class LoadingViewController: UIViewController {
     doTheLoadingThing(nil)
   }
   
+  override func viewDidAppear(animated: Bool) {
+    super.viewDidAppear(animated)
+    
+    if FIREBASE_ROOT_REF.authData == nil {
+      self.performSegueWithIdentifier("ShowLogin", sender: self)
+    }
+  }
+  
   private func doTheLoadingThing(chosenTeamID: String?) {
     guard let authData = FIREBASE_ROOT_REF.authData else {
       print("Wasn't logged in somehow @ LoadingViewController")
-      FirebaseLoginHelpers.unauthAndDismissToLoginFrom(self.navigationController!)
       return
     }
     FIREBASE_ROOT_REF.childByAppendingPath("identifiers/\(authData.uid)").observeSingleEventOfType(.Value, withBlock: { (idSnap) -> Void in
@@ -131,4 +138,7 @@ class LoadingViewController: UIViewController {
     }
   }
   
+  @IBAction func loginSuccessful(sender: UIStoryboardSegue) {
+    doTheLoadingThing(nil)
+  }
 }

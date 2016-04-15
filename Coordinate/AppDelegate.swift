@@ -17,11 +17,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
     // Override point for customization after application launch.
     
-    if !FirebaseLoginHelpers.isLoggedInWithCompleteBlock(nil) {
-      let nav = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("LoginNavigationController")
-      self.window!.rootViewController = nav
-    }
-    
     return true
   }
   

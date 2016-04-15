@@ -51,18 +51,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Loading" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="irG-SS-bM7">
-                                <rect key="frame" x="270" y="193" width="61" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="irG-SS-bM7">
+                                <rect key="frame" x="270" y="290" width="61" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="SIM-vb-1L2"/>
+                                    <constraint firstAttribute="width" constant="61" id="nDz-k8-HJb"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="irG-SS-bM7" firstAttribute="centerY" secondItem="JL0-nt-g9L" secondAttribute="centerY" id="ItK-5o-mEt"/>
+                            <constraint firstItem="irG-SS-bM7" firstAttribute="centerX" secondItem="JL0-nt-g9L" secondAttribute="centerX" id="zvI-f4-Jl2"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="MdV-ka-sy0"/>
                     <connections>
                         <segue destination="nrl-58-eQz" kind="show" identifier="ShowTeam" id="yuQ-XV-zfk"/>
+                        <segue destination="x7v-KC-mWp" kind="presentation" identifier="ShowLogin" id="w43-C6-7SW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ker-dg-ntm" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -422,7 +431,7 @@
                                     <outlet property="delegate" destination="Zh7-VR-xtG" id="a81-GC-5d6"/>
                                 </connections>
                             </mapView>
-                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Waypoint" translatesAutoresizingMaskIntoConstraints="NO" id="rlD-da-hKm">
+                            <imageView hidden="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Waypoint" translatesAutoresizingMaskIntoConstraints="NO" id="rlD-da-hKm">
                                 <rect key="frame" x="270" y="208" width="60" height="60"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
@@ -520,15 +529,15 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" id="UMx-7x-hDh">
-                        <barButtonItem key="backBarButtonItem" title="Logout" id="DjM-ce-KDx"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="UMx-7x-hDh"/>
                     <connections>
                         <outlet property="switchHelpLabel" destination="y2j-nt-95k" id="iZi-WD-2Ra"/>
                         <outlet property="tableView" destination="vif-4y-Z1f" id="YjA-bg-iVk"/>
+                        <segue destination="KBj-ft-Sxp" kind="unwind" identifier="loginSuccessful" unwindAction="loginSuccessful:" id="OGo-eM-ear"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6dG-eK-WEG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="KBj-ft-Sxp" userLabel="Exit" sceneMemberID="exit"/>
                 <tapGestureRecognizer id="OT6-Qj-0UE">
                     <connections>
                         <action selector="switchMode:" destination="x7v-KC-mWp" id="tJl-RB-LJU"/>
@@ -580,4 +589,7 @@
         <image name="search" width="64" height="64"/>
         <image name="separator" width="4" height="72"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="w43-C6-7SW"/>
+    </inferredMetricsTieBreakers>
 </document>
