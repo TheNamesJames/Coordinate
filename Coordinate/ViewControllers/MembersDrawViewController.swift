@@ -17,7 +17,7 @@ protocol PreviewMemberListener: NSObjectProtocol {
 }
 
 extension UIImage {
-  class func imageWithCenteredText(text: String, withSize size: CGSize, withFontSizeRange range: ClosedInterval<CGFloat> = 9.0...20.0) -> UIImage {
+  class func imageWithCenteredText(text: String, withSize size: CGSize, andColours colours: (background: UIColor, text: UIColor)? = nil, withFontSizeRange range: ClosedInterval<CGFloat> = 9.0...20.0) -> UIImage {
     let limitedText: String
     if text.characters.count > 5 {
       limitedText = text.substringToIndex(text.startIndex.advancedBy(4)) + "…"
@@ -36,13 +36,17 @@ extension UIImage {
     
     UIGraphicsBeginImageContextWithOptions(size, true, 0)
 //    UIColor(red: 129/255, green: 208/255, blue: 131/255, alpha: 1.0).setFill()
-    UIColor(hue: 122/360, saturation: 100/100, brightness: 25/100, alpha: 1.0).setFill()
+    if let colour = colours?.background {
+      colour.setFill()
+    } else {
+      UIColor(hue: 122/360, saturation: 100/100, brightness: 25/100, alpha: 1.0).setFill()
+    }
     UIRectFill(CGRectMake(0, 0, size.width, size.height))
     
     let rect = CGRectMake(point.x, point.y, size.width, size.height)
     UIColor.whiteColor().set()
     
-    let attr = [NSFontAttributeName : font, NSForegroundColorAttributeName : UIColor.whiteColor()]
+    let attr = [NSFontAttributeName : font, NSForegroundColorAttributeName : colours?.text ?? UIColor.whiteColor()]
     text.drawInRect(rect, withAttributes: attr)
     
     let image = UIGraphicsGetImageFromCurrentImageContext()

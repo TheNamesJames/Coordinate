@@ -26,6 +26,12 @@
                 <constraint firstItem="DtX-oX-Fe3" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="kuU-sA-LJi"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="Sfy-bO-nva"/>
+                    <exclude reference="kuU-sA-LJi"/>
+                </mask>
+            </variation>
             <connections>
                 <outlet property="button" destination="DtX-oX-Fe3" id="x9a-xV-MYW"/>
             </connections>

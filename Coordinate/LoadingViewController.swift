@@ -25,19 +25,21 @@ class LoadingViewController: UIViewController {
   override func viewDidAppear(animated: Bool) {
     super.viewDidAppear(animated)
     
-    if FIREBASE_ROOT_REF.authData == nil {
+    print(FIREBASE_ROOT_REF.authExpired() ? " Expired" : " Expires \(NSDate(timeIntervalSince1970: FIREBASE_ROOT_REF.authData.expires.doubleValue))")
+    if FIREBASE_ROOT_REF.authExpired() {
       self.performSegueWithIdentifier("ShowLogin", sender: self)
     }
   }
   
   private func doTheLoadingThing(chosenTeamID: String?) {
-    guard let authData = FIREBASE_ROOT_REF.authData else {
+    guard !FIREBASE_ROOT_REF.authExpired() else {
       print("Wasn't logged in somehow @ LoadingViewController")
       return
     }
-    FIREBASE_ROOT_REF.childByAppendingPath("identifiers/\(authData.uid)").observeSingleEventOfType(.Value, withBlock: { (idSnap) -> Void in
+    
+    FIREBASE_ROOT_REF.childByAppendingPath("identifiers/\(FIREBASE_ROOT_REF.authData.uid)").observeSingleEventOfType(.Value, withBlock: { (idSnap) -> Void in
       guard let username = idSnap.value as? String else {
-        print("id -> username pair not found for \(authData.uid)")
+        print("id -> username pair not found for \(FIREBASE_ROOT_REF.authData.uid)")
         return
       }
       let user = Team.Member(username: username)

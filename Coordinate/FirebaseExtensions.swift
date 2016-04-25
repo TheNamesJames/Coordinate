@@ -11,6 +11,18 @@ import Firebase
 
 let FIREBASE_ROOT_REF = Firebase(url: "https://dazzling-heat-2970.firebaseio.com/")
 
+extension Firebase {
+  func authExpired() -> Bool {
+    if let authData = self.authData {
+      let expires = authData.expires.doubleValue
+      let now = NSDate().timeIntervalSince1970
+      
+      return now >= expires
+    }
+    return true
+  }
+}
+
 class FirebaseLoginHelpers {
   class func unauthAndDismissToLoginFrom(viewcontroller: UIViewController) {
     FIREBASE_ROOT_REF.unauth()
